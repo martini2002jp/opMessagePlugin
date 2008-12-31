@@ -1,0 +1,55 @@
+Navi:
+  default_navi_message:
+    type: "default"
+    uri: "message/index"
+    
+  friend_navi_message:
+    type: "friend"
+    uri: "message/sendToFriend"
+
+  message_navi_home:
+    type: "message"
+    uri: "message/index"
+
+  message_navi_send_list:
+    type: "message"
+    uri: "message/sendList"
+
+  message_navi_draft_list:
+    type: "message"
+    uri: "message/draftList"
+
+  message_navi_dust_list:
+    type: "message"
+    uri: "message/dustList"
+
+NaviI18n:
+  default_navi_message_i18n:
+    id: default_navi_message
+    caption: "メッセージ"
+    culture: "ja_JP"
+
+  friend_navi_message_i18n:
+    id: friend_navi_message
+    caption: "メッセージを送る"
+    culture: "ja_JP"
+
+  message_navi_home_i18n:
+    id: message_navi_home
+    caption: "受信メッセージ"
+    culture: "ja_JP"
+
+  message_navi_send_list_i18n:
+    id: message_navi_send_list
+    caption: "送信済みメッセージ"
+    culture: "ja_JP"
+
+  message_navi_draft_list_i18n:
+    id: message_navi_draft_list
+    caption: "下書きメッセージ"
+    culture: "ja_JP"
+
+  message_navi_dust_list_i18n:
+    id: message_navi_dust_list
+    caption: "ごみ箱"
+    culture: "ja_JP"

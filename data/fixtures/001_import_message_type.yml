@@ -1,0 +1,32 @@
+MessageType:
+  message_type_default:
+    type_name: "message"
+    
+  message_type_friend:
+    type_name: "friend_link"
+
+  message_type_community:
+    type_name: "community_message"
+    foreignTable: "community"
+    
+MessageTypeI18n:
+  message_type_i18n_default:
+    id: message_type_default
+    body: ""
+    subject: ""
+    caption: "通常のメッセージ"
+    culture: "ja_JP"
+
+  message_type_i18n_friend:
+    id: message_type_friend
+    body: ""
+    subject: ""
+    caption: "フレンド申請"
+    culture: "ja_JP"
+    
+  message_type_i18n_community:
+    id: message_type_community
+    body: ""
+    subject: ""
+    caption: "コミュニティ一括メッセージ"
+    culture: "ja_JP"

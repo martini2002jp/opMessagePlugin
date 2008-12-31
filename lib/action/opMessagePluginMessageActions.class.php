@@ -1,0 +1,248 @@
+<?php
+
+/**
+ * message actions.
+ *
+ * @package    OpenPNE
+ * @subpackage message
+ * @author     Maki TAKAHASHI <maki@jobweb.co.jp>
+ */
+class opMessagePluginMessageActions extends sfActions
+{
+ /**
+  * Executes index action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeIndex($request)
+  {
+    $this->forward('message', 'receiveList');
+    
+  }
+  
+ /**
+  * Executes receiveList action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeReceiveList($request)
+  {
+    $this->pager = MessageSendListPeer::getReceiveMessagePager($this->getUser()->getMemberId(),
+                                                                      $request->getParameter('page'),
+                                                                      sfConfig::get ('app_message_pagenateSize'));
+    $this->messageList($request, 'MessageSendList', 'message/index');
+  }
+  
+ /**
+  * Executes sendList action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeSendList($request)
+  {
+    $this->pager = MessagePeer::getSendMessagePager($this->getUser()->getMemberId(),
+                                                                      $request->getParameter('page'),
+                                                                      sfConfig::get ('app_message_pagenateSize'));
+    $this->messageList($request, 'Message', 'message/sendList');
+  }
+  
+ /**
+  * Executes draftList action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeDraftList($request)
+  {
+    $this->pager = MessagePeer::getDraftMessagePager($this->getUser()->getMemberId(),
+                                                            $request->getParameter('page'),
+                                                            sfConfig::get ('app_message_pagenateSize'));
+    $this->messageList($request, 'Message', 'message/draftList');
+  }
+
+ /**
+  * Executes dustList action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeDustList($request)
+  {
+    $this->pager = DeletedMessagePeer::getDeletedMessagePager($this->getUser()->getMemberId(),
+                                                            $request->getParameter('page'),
+                                                            sfConfig::get ('app_message_pagenateSize'));
+    $this->messageList($request, 'DeletedMessage', 'message/dustList');
+  }
+  
+ /**
+  * Executes show action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeShow($request)
+  {
+    $this->message = MessagePeer::retrieveByPk($request->getParameter('id'));
+    $this->forward404unless($this->message);
+    if ($this->message->getIsSender($this->getUser()->getMemberId()) == 0
+        && $this->message->getIsReceiver($this->getUser()->getMemberId()) == 0) {
+        $this->forward404(); 
+    }
+    if ($this->message->getIsReceiver($this->getUser()->getMemberId()) == 1) {
+        $read_message = MessageSendListPeer::getMessageByReferences(
+                                                  $this->getUser()->getMemberId(), $this->message->getId());
+        $read_message->readMessage();
+    }
+    switch ($request->getParameter('type')) {
+      case "receive":
+        $this->deleteButton = '@deleteReceiveMessage?id='.$read_message->getId();
+        break;
+      case "send":
+        $this->deleteButton = '@deleteSendMessage?id='.$this->message->getId();
+        break;
+      case "dust":
+        $deleted_message = DeletedMessagePeer::getDeletedMessageByMessageId(
+                                                  $this->getUser()->getMemberId(), $this->message->getId());
+        if (!$deleted_message) {
+          $deleted_message = DeletedMessagePeer::getDeletedMessageByMessageSendListId(
+                                                  $this->getUser()->getMemberId(), $this->message->getId());
+        }
+        $this->deleteButton = '@deleteDustMessage?id='.$deleted_message->getId();
+        $this->deletedId = $deleted_message->getId();
+    }
+  }
+  
+ /**
+  * Executes delete action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeDelete($request)
+  {
+    switch ($request->getParameter('type')) {
+      case "receiveList":
+        $object_name = 'MessageSendList';
+        break;
+      case "sendList":
+        $object_name = 'Message';
+        break;
+      case "dustList":
+        $object_name = 'DeletedMessage';
+        break;
+    }
+    if ($object_name) {
+      DeletedMessagePeer::deleteMessage(sfContext::getInstance()->getUser()->getMemberId(),
+                                      $request->getParameter('id'), 
+                                      $object_name);
+    }
+    $this->redirect('message/'.$request->getParameter('type'));
+  }
+  
+ /**
+  * Executes restore action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeRestore($request)
+  {
+    DeletedMessagePeer::restoreMessage($request->getParameter('id'));
+    $this->redirect('message/dustList');
+  }
+  
+ /**
+  * Executes sendMessage action
+  *
+  * @param sfRequest $request A request object
+  */
+  public function executeSendToFriend($request)
+  {
+    if ($request->getParameter('message')) {
+      $send_member_id = $request->getParameter('message[send_member_id]');
+      $this->message = MessagePeer::retrieveByPk($request->getParameter('message[id]'));
+    } else if ($request->getParameter('id')) {
+      $send_member_id = $request->getParameter('id');
+      $this->message = new Message();
+    } else {
+      $this->forward404();
+    }
+    $this->form = new SendMessageForm($this->message, array('send_member_id' => $send_member_id));
+    if ($request->isMethod('post'))
+    {
+      $params = $request->getParameter('message');
+      $this->form->bind($params, $request->getFiles('message'));
+
+      if ($this->form->isValid())
+      {
+        $this->message = $this->form->save();
+        return sfView::SUCCESS;
+      }
+    }
+    return sfView::INPUT;    
+  }
+  
+ /**
+  * Executes editMessage action
+  * 
+  * @param sfRequest $request A request object
+  */
+  public function executeEdit($request)
+  {
+    $this->message = MessagePeer::retrieveByPk($request->getParameter('id'));
+    $this->forward404unless($this->message);
+    if ($this->message->getMessageType() == MessageTypePeer::getMessageTypeIdByName('message')) {
+      $send_list = $this->message->getSendList();
+      $this->forward404Unless($send_list);
+      $this->form = new SendMessageForm($this->message, array('send_member_id' =>$send_list[0]->getMember()->getId()));
+      $this->setTemplate('sendToFriend');
+      return sfView::INPUT;
+    }
+  }
+  
+ /**
+  * Executes replyMessage action
+  * 
+  * @param sfRequest $request A request object
+  */
+  public function executeReply($request)
+  {
+    $message = MessagePeer::retrieveByPk($request->getParameter('id'));
+    $this->forward404unless($message);
+    $this->message = new Message();
+    $this->message->setMessageTypeId($message->getMessageTypeId());
+    $this->message->setReturnMessageId($message->getId());
+    if ($message->getThreadMessageId() != 0) {
+      $this->message->setThreadMessageId($message->getThreadMessageId());
+    } else {
+      $this->message->setThreadMessageId($message->getId());
+    }
+    $this->form = new SendMessageForm($this->message, array('send_member_id' =>$message->getMemberId()));
+    $this->setTemplate('sendToFriend');
+    return sfView::INPUT;
+  }
+
+  /*
+   * messageList
+   * @param sfRequest $request A request object
+   * @param str       $object_name 
+   * @param str       $redirect delete->redirect
+   */
+  protected function messageList(sfRequest $request, $object_name, $redirect)
+  {
+    if ($this->pager->getNbResults()) {
+      $delete_message = null;
+      foreach ($this->pager->getResults() as $message) {
+        $delete_message[] = $message->getId();
+      }
+      $this->form = new MessageDeleteForm(null, array('message' => $delete_message, 'object_name' => $object_name));
+      if ($request->isMethod('post'))
+      {
+        $params = $request->getParameter('message');
+        $this->form->bind($params);
+        if ($this->form->isValid())
+        {
+          $this->message = $this->form->save();
+          $this->redirect($redirect);
+        }
+      }
+    } else {
+      $this->form = null;
+    }
+  }
+}
