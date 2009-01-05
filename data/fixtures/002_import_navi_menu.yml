@@ -2,10 +2,12 @@ Navi:
   default_navi_message:
     type: "default"
     uri: "message/index"
+    sort_order: 11;
     
   friend_navi_message:
     type: "friend"
     uri: "message/sendToFriend"
+    sort_order: 22;
 
   message_navi_home:
     type: "message"
