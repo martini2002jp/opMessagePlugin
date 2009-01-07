@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the OpenPNE package.
  * (c) OpenPNE Project (http://www.openpne.jp/)
@@ -15,7 +14,7 @@
  *
  * @package plugins.opMessagePlugin.lib.model
  */ 
-class MessagePeer extends BaseMessagePeer
+class SendMessageDataPeer extends BaseSendMessageDataPeer
 {
   public static function getHensinMassage($member_id, $message_id)
   {
@@ -42,10 +41,10 @@ class MessagePeer extends BaseMessagePeer
     $c = new Criteria();
     $c->add(self::MEMBER_ID, $member_id);
     $c->add(self::IS_DELETED, 0);
-    $c->add(MessagePeer::IS_SEND, 1);
+    $c->add(SendMessageDataPeer::IS_SEND, 1);
     $c->addDescendingOrderByColumn(self::CREATED_AT);
 
-    $pager = new sfPropelPager('Message', $size);
+    $pager = new sfPropelPager('SendMessageData', $size);
     $pager->setCriteria($c);
     $pager->setPage($page);
     $pager->init();
@@ -65,10 +64,10 @@ class MessagePeer extends BaseMessagePeer
     $c = new Criteria();
     $c->add(self::MEMBER_ID, $member_id);
     $c->add(self::IS_DELETED, 0);
-    $c->add(MessagePeer::IS_SEND, 0);
+    $c->add(SendMessageDataPeer::IS_SEND, 0);
     $c->addDescendingOrderByColumn(self::CREATED_AT);
 
-    $pager = new sfPropelPager('Message', $size);
+    $pager = new sfPropelPager('SendMessageData', $size);
     $pager->setCriteria($c);
     $pager->setPage($page);
     $pager->init();

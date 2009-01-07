@@ -19,7 +19,7 @@ class DeletedMessage extends BaseDeletedMessage
   {
     if ($this->getMessageId()) {
       if (!$this->message) {
-        $this->message = MessagePeer::retrieveByPK($this->getMessageId());
+        $this->message = SendMessageDataPeer::retrieveByPK($this->getMessageId());
       }
       if ($this->message) {
         return $this->message->getSendTo();
@@ -43,7 +43,7 @@ class DeletedMessage extends BaseDeletedMessage
   {
     if ($this->getMessageId()) {
       if (!$this->message) {
-        $this->message = MessagePeer::retrieveByPK($this->getMessageId());
+        $this->message = SendMessageDataPeer::retrieveByPK($this->getMessageId());
       }
       if ($this->message) {
         return $this->message->getSubject();
@@ -67,7 +67,7 @@ class DeletedMessage extends BaseDeletedMessage
   {
     if ($this->getMessageId()) {
       if (!$this->message) {
-        $this->message = MessagePeer::retrieveByPK($this->getMessageId());
+        $this->message = SendMessageDataPeer::retrieveByPK($this->getMessageId());
       }
       if ($this->message) {
         if ($this->message->getIsSend() == 1) {
@@ -93,7 +93,7 @@ class DeletedMessage extends BaseDeletedMessage
   {
     if ($this->getMessageId()) {
       if (!$this->message) {
-        $this->message = MessagePeer::retrieveByPK($this->getMessageId());
+        $this->message = SendMessageDataPeer::retrieveByPK($this->getMessageId());
       }
       if ($this->message) {
         if ($this->message->getIsSend() == 1) {
@@ -119,7 +119,7 @@ class DeletedMessage extends BaseDeletedMessage
   {
     if ($this->getMessageId()) {
       if (!$this->message) {
-        $this->message = MessagePeer::retrieveByPK($this->getMessageId());
+        $this->message = SendMessageDataPeer::retrieveByPK($this->getMessageId());
       }
     } else if ($this->getMessageSendListId()) {
       $this->message = MessageSendListPeer::retrieveByPK($this->getMessageSendListId());

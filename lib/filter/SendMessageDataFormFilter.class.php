@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the OpenPNE package.
  * (c) OpenPNE Project (http://www.openpne.jp/)
@@ -9,14 +8,14 @@
  */
 
 /**
- * Message filter form.
+ * SendMessageData filter form.
  *
  * @package    ##PROJECT_NAME##
  * @subpackage filter
  * @author     ##AUTHOR_NAME##
  * @version    SVN: $Id: sfPropelFormFilterTemplate.php 11675 2008-09-19 15:21:38Z fabien $
  */
-class MessageFormFilter extends BaseMessageFormFilter
+class SendMessageDataFormFilter extends BaseSendMessageDataFormFilter
 {
   public function configure()
   {

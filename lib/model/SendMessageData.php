@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the OpenPNE package.
  * (c) OpenPNE Project (http://www.openpne.jp/)
@@ -15,7 +14,7 @@
  *
  * @package plugins.opMessagePlugin.lib.model
  */ 
-class Message extends BaseMessage
+class SendMessageData extends BaseSendMessageData
 {
   /**
    * メッセージが本人送信のものかどうか確認する

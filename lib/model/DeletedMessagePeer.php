@@ -84,7 +84,7 @@ class DeletedMessagePeer extends BaseDeletedMessagePeer
         }
         $deleted_message->setMessageSendListId($message_id);
       } else if ($object_name == 'Message') {
-        $message = MessagePeer::retrieveByPK($message_id);
+        $message = SendMessageDataPeer::retrieveByPK($message_id);
         $deleted_message = DeletedMessagePeer::getDeletedMessageByMessageId($member_id, $message_id);
         if (!$deleted_message) {
           $deleted_message = new DeletedMessage();
@@ -121,7 +121,7 @@ class DeletedMessagePeer extends BaseDeletedMessagePeer
     if ($deleted_message->getMessageSendListId() != null) {
         $message = MessageSendListPeer::retrieveByPK($deleted_message->getMessageSendListId());
     } else if ($deleted_message->getMessageId() != null) {
-        $message = MessagePeer::retrieveByPK($deleted_message->getMessageId());
+        $message = SendMessageDataPeer::retrieveByPK($deleted_message->getMessageId());
     }
     if (!$message) {
       return false;

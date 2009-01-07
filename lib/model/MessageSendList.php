@@ -23,7 +23,7 @@ class MessageSendList extends BaseMessageSendList
    */
   public function getIsHensin()
   {
-    $reply = MessagePeer::getHensinMassage($this->getMemberId(), $this->getMessageId());
+    $reply = SendMessageDataPeer::getHensinMassage($this->getMemberId(), $this->getMessageId());
     if ($reply) {
       return 1;
     } else {

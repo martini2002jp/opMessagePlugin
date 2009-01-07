@@ -80,8 +80,8 @@ switch ($message_type):
   case 'receive':
     $form_delete = $form["message_ids[".$message->getMessageId()."]"];
     $form_delete_error = $form["message_ids[".$message->getMessageId()."]"]->renderError();
-    $sender = $message->getMessage()->getMember()->getName();
-    $detail_title = $message->getMessage()->getSubject();
+    $sender = $message->getSendMessageData()->getMember()->getName();
+    $detail_title = $message->getSendMessageData()->getSubject();
     $detail_url = '@readMessage?id='.$message->getMessageId();
     break;
   case 'send':

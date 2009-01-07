@@ -18,6 +18,7 @@ propel:
     info: { type: longvarchar }
   #メッセージ本体（送信）
   message:
+    _attributes: { phpName: SendMessageData }
     id: ~
     #送信者
     member_id: { type: integer, foreignTable: member, foreignReference: id }

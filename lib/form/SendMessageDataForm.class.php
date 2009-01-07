@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This file is part of the OpenPNE package.
  * (c) OpenPNE Project (http://www.openpne.jp/)
@@ -9,14 +8,14 @@
  */
 
 /**
- * Message form.
+ * SendMessageData form.
  *
  * @package    ##PROJECT_NAME##
  * @subpackage form
  * @author     ##AUTHOR_NAME##
  * @version    SVN: $Id: sfPropelFormTemplate.php 10377 2008-07-21 07:10:32Z dwhittle $
  */
-class MessageForm extends BaseMessageForm
+class SendMessageDataForm extends BaseSendMessageDataForm
 {
   public function configure()
   {
@@ -56,19 +55,19 @@ class MessageForm extends BaseMessageForm
     return $object;
   }
 
-  public function saveSendList(Message $message)
+  public function saveSendList(SendMessageData $message)
   {
     $send_member_id = $this->getValue('send_member_id');
     $send = MessageSendListPeer::getMessageByReferences($send_member_id, $message->getId());
     if (!$send)
     {
       $send = new MessageSendList();
-      $send->setMessage($message);
+      $send->setSendMessageData($message);
       $send->setMemberId($send_member_id);
     }
   }
   
-  public function saveImageFiles(Message $message)
+  public function saveImageFiles(SendMessageData $message)
   {
     $imageKeys = array('image1', 'image2', 'image3');
     foreach ($imageKeys as $imageKey)
@@ -80,7 +79,7 @@ class MessageForm extends BaseMessageForm
         $file->setName('ms_'.$message->getId().'_'.$file->getName());
 
         $messageFile = new MessageFile();
-        $messageFile->setMessage($message);
+        $messageFile->setSendMessageData($message);
         $messageFile->setFile($file);
         $messageFile->save();
       }

@@ -27,10 +27,10 @@ class MessageSendListPeer extends BaseMessageSendListPeer
   public static function getReceiveMessagePager($member_id, $page = 1, $size = 20)
   {
     $c = new Criteria();
-    $c->addJoin(self::MESSAGE_ID, MessagePeer::ID);
+    $c->addJoin(self::MESSAGE_ID, SendMessageDataPeer::ID);
     $c->add(self::MEMBER_ID, $member_id);
     $c->add(self::IS_DELETED, 0);
-    $c->add(MessagePeer::IS_SEND, 1);
+    $c->add(SendMessageDataPeer::IS_SEND, 1);
     $c->addDescendingOrderByColumn(self::CREATED_AT);
 
     $pager = new sfPropelPager('MessageSendList', $size);
@@ -49,11 +49,11 @@ class MessageSendListPeer extends BaseMessageSendListPeer
   public static function countUnreadMessage($member_id)
   {
     $c = new Criteria();
-    $c->add(MessagePeer::IS_SEND, 1);
+    $c->add(SendMessageDataPeer::IS_SEND, 1);
     $c->add(self::MEMBER_ID, $member_id);
     $c->add(self::IS_DELETED, 0);
     $c->add(self::IS_READ, 0);
-    return self::doCountJoinMessage($c, $distinct = true);
+    return self::doCountJoinSendMessageData($c, $distinct = true);
   }
   
   /**

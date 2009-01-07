@@ -48,7 +48,7 @@ class opMessagePluginMessageActions extends sfActions
   */
   public function executeSendList($request)
   {
-    $this->pager = MessagePeer::getSendMessagePager($this->getUser()->getMemberId(),
+    $this->pager = SendMessageDataPeer::getSendMessagePager($this->getUser()->getMemberId(),
                                                                       $request->getParameter('page'),
                                                                       sfConfig::get ('app_message_pagenateSize'));
     $this->messageList($request, 'Message', 'message/sendList');
@@ -61,7 +61,7 @@ class opMessagePluginMessageActions extends sfActions
   */
   public function executeDraftList($request)
   {
-    $this->pager = MessagePeer::getDraftMessagePager($this->getUser()->getMemberId(),
+    $this->pager = SendMessageDataPeer::getDraftMessagePager($this->getUser()->getMemberId(),
                                                             $request->getParameter('page'),
                                                             sfConfig::get ('app_message_pagenateSize'));
     $this->messageList($request, 'Message', 'message/draftList');
@@ -87,7 +87,7 @@ class opMessagePluginMessageActions extends sfActions
   */
   public function executeShow($request)
   {
-    $this->message = MessagePeer::retrieveByPk($request->getParameter('id'));
+    $this->message = SendMessageDataPeer::retrieveByPk($request->getParameter('id'));
     $this->forward404unless($this->message);
     if ($this->message->getIsSender($this->getUser()->getMemberId()) == 0
         && $this->message->getIsReceiver($this->getUser()->getMemberId()) == 0) {
@@ -163,7 +163,7 @@ class opMessagePluginMessageActions extends sfActions
   {
     if ($request->getParameter('message')) {
       $send_member_id = $request->getParameter('message[send_member_id]');
-      $this->message = MessagePeer::retrieveByPk($request->getParameter('message[id]'));
+      $this->message = SendMessageDataPeer::retrieveByPk($request->getParameter('message[id]'));
     } else if ($request->getParameter('id')) {
       $send_member_id = $request->getParameter('id');
       $this->message = new Message();
@@ -192,7 +192,7 @@ class opMessagePluginMessageActions extends sfActions
   */
   public function executeEdit($request)
   {
-    $this->message = MessagePeer::retrieveByPk($request->getParameter('id'));
+    $this->message = SendMessageDataPeer::retrieveByPk($request->getParameter('id'));
     $this->forward404unless($this->message);
     if ($this->message->getMessageType() == MessageTypePeer::getMessageTypeIdByName('message')) {
       $send_list = $this->message->getSendList();
@@ -210,9 +210,9 @@ class opMessagePluginMessageActions extends sfActions
   */
   public function executeReply($request)
   {
-    $message = MessagePeer::retrieveByPk($request->getParameter('id'));
+    $message = SendMessageDataPeer::retrieveByPk($request->getParameter('id'));
     $this->forward404unless($message);
-    $this->message = new Message();
+    $this->message = new SendMessageData();
     $this->message->setMessageTypeId($message->getMessageTypeId());
     $this->message->setReturnMessageId($message->getId());
     if ($message->getThreadMessageId() != 0) {
