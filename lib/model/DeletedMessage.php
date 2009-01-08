@@ -29,7 +29,7 @@ class DeletedMessage extends BaseDeletedMessage
         $this->message = MessageSendListPeer::retrieveByPK($this->getMessageSendListId());
       }
       if ($this->message) {
-        return $this->message->getMessage()->getMember()->getName();
+        return $this->message->getSendMessageData()->getMember()->getName();
       }
     }
     return null;
@@ -53,7 +53,7 @@ class DeletedMessage extends BaseDeletedMessage
         $this->message = MessageSendListPeer::retrieveByPK($this->getMessageSendListId());
       }
       if ($this->message) {
-        return $this->message->getMessage()->getSubject();
+        return $this->message->getSendMessageData()->getSubject();
       }
     }
     return null;
