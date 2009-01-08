@@ -15,7 +15,7 @@
  * @subpackage message
  * @author     Maki TAKAHASHI <maki@jobweb.co.jp>
  */
-class opMessagePluginMessageActions extends sfActions
+class opMessagePluginMessageActions extends opMessagePluginActions
 {
  /**
   * Executes index action
@@ -194,6 +194,7 @@ class opMessagePluginMessageActions extends sfActions
   {
     $this->message = SendMessageDataPeer::retrieveByPk($request->getParameter('id'));
     $this->forward404unless($this->message);
+    $this->forward404Unless($this->isDraftOwner());
     if ($this->message->getMessageType() == MessageTypePeer::getMessageTypeIdByName('message')) {
       $send_list = $this->message->getSendList();
       $this->forward404Unless($send_list);
