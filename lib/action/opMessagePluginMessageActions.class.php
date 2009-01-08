@@ -166,7 +166,7 @@ class opMessagePluginMessageActions extends sfActions
       $this->message = SendMessageDataPeer::retrieveByPk($request->getParameter('message[id]'));
     } else if ($request->getParameter('id')) {
       $send_member_id = $request->getParameter('id');
-      $this->message = new Message();
+      $this->message = new SendMessageData();
     } else {
       $this->forward404();
     }
