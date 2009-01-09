@@ -156,6 +156,9 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     } else {
       $this->forward404();
     }
+    if ($send_member_id == $this->getUser()->getMemberId()) {
+      $this->forward404();
+    }
     sfConfig::set('sf_navi_type', 'friend');
     sfConfig::set('sf_navi_id', $send_member_id);
     $this->form = new SendMessageForm($this->message, array('send_member_id' => $send_member_id));
