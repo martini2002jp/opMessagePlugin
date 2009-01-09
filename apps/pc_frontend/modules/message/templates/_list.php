@@ -59,6 +59,7 @@ endswitch;
 </div>
 
 <form action="<?php echo url_for($page_url) ?>" method="post" name="delete_message">
+<?php echo $form['_csrf_token'] ?>
 <?php echo $form["object_name"] ?>
 <?php echo $form["object_name"]->renderError() ?>
 <table> 
