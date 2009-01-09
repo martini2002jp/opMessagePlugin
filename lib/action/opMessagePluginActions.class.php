@@ -33,4 +33,43 @@ class opMessagePluginActions extends sfActions
     }
     return true;
   }
+  
+  protected function isReadable($type)
+  {
+    if (!$this->message) {
+      return false;
+    }
+    if ($this->message->getIsSender($this->getUser()->getMemberId()) === 0
+        && $this->message->getIsReceiver($this->getUser()->getMemberId()) === 0) {
+        return false; 
+    }
+    switch ($type) {
+      case "receive":
+        if ($this->message->getIsReceiver($this->getUser()->getMemberId()) === 0) {
+          return false;
+        }
+        $read_message = MessageSendListPeer::getMessageByReferences(
+                                                  $this->getUser()->getMemberId(), $this->message->getId());
+        if (!$read_message) {
+          return false;
+        }
+        return $read_message;
+      case "send":
+        if ($this->message->getIsSender($this->getUser()->getMemberId()) === 0) {
+          return false;
+        }
+        return true;
+      case "dust":
+        $deleted_message = DeletedMessagePeer::getDeletedMessageByMessageId(
+                                                  $this->getUser()->getMemberId(), $this->message->getId());
+        if (!$deleted_message) {
+          $deleted_message = DeletedMessagePeer::getDeletedMessageByMessageSendListId(
+                                                  $this->getUser()->getMemberId(), $this->message->getId());
+        }
+        if (!$deleted_message) {
+          return false;
+        }
+        return $deleted_message;
+    }
+  }
 }

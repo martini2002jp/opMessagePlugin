@@ -88,32 +88,17 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   public function executeShow($request)
   {
     $this->message = SendMessageDataPeer::retrieveByPk($request->getParameter('id'));
-    $this->forward404unless($this->message);
-    if ($this->message->getIsSender($this->getUser()->getMemberId()) == 0
-        && $this->message->getIsReceiver($this->getUser()->getMemberId()) == 0) {
-        $this->forward404(); 
-    }
-    if ($this->message->getIsReceiver($this->getUser()->getMemberId()) == 1) {
-        $read_message = MessageSendListPeer::getMessageByReferences(
-                                                  $this->getUser()->getMemberId(), $this->message->getId());
-        $read_message->readMessage();
-    }
+    $this->forward404unless($message = $this->isReadable($request->getParameter('type')));
     switch ($request->getParameter('type')) {
       case "receive":
-        $this->deleteButton = '@deleteReceiveMessage?id='.$read_message->getId();
+        $this->deleteButton = '@deleteReceiveMessage?id='.$message->getId();
         break;
       case "send":
         $this->deleteButton = '@deleteSendMessage?id='.$this->message->getId();
         break;
       case "dust":
-        $deleted_message = DeletedMessagePeer::getDeletedMessageByMessageId(
-                                                  $this->getUser()->getMemberId(), $this->message->getId());
-        if (!$deleted_message) {
-          $deleted_message = DeletedMessagePeer::getDeletedMessageByMessageSendListId(
-                                                  $this->getUser()->getMemberId(), $this->message->getId());
-        }
-        $this->deleteButton = '@deleteDustMessage?id='.$deleted_message->getId();
-        $this->deletedId = $deleted_message->getId();
+        $this->deleteButton = '@deleteDustMessage?id='.$message->getId();
+        $this->deletedId = $message->getId();
     }
   }
   
