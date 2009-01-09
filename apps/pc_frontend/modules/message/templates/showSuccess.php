@@ -45,11 +45,11 @@ endif;
 <div class="block">
 <?php $images = $message->getMessageFiles() ?>
 <?php if (count($images)): ?>
-<ul class="photo">
 <?php foreach ($images as $image): ?>
-<li><?php echo image_tag_sf_image($image->getFile(), array('size' => '120x120')) ?></li>
+<span class="photo">
+<?php echo image_tag_sf_image($image->getFile(), array('size' => '120x120')) ?>
+</span>
 <?php endforeach; ?>
-</ul>
 <?php endif; ?>
 <p class="text"><?php echo nl2br($message->getBody()) ?></p>
 </div>
