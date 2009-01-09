@@ -164,6 +164,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     if ($request->getParameter('message')) {
       $send_member_id = $request->getParameter('message[send_member_id]');
       $this->message = SendMessageDataPeer::retrieveByPk($request->getParameter('message[id]'));
+      $this->forward404Unless($this->isDraftOwner());
     } else if ($request->getParameter('id')) {
       $send_member_id = $request->getParameter('id');
       $this->message = new SendMessageData();

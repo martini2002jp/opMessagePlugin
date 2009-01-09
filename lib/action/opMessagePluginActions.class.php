@@ -19,6 +19,9 @@ class opMessagePluginActions extends sfActions
 {
   protected function isDraftOwner()
   {
+    if (!$this->message) {
+      return true;
+    }
     if ($this->message->getMemberId() !== $this->getUser()->getMemberId()) {
       return false;
     }
