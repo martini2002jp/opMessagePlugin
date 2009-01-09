@@ -22,6 +22,9 @@ class opMessagePluginActions extends sfActions
     if ($this->message->getMemberId() !== $this->getUser()->getMemberId()) {
       return false;
     }
+    if ($this->message->getIsDeleted() === 1) {
+      return false;
+    }
     if ($this->message->getIsSend() === 1) {
       return false;
     }
