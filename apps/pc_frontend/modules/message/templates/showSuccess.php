@@ -1,4 +1,4 @@
-<?php use_helper('Date'); ?>
+<?php use_helper('Date', 'Text'); ?>
 <?php include_partial('message/sidemenu', array('list_type' => $sf_request->getParameter('type'))) ?>
 <div class="dparts messageDetailBox">
 <div class="parts">
@@ -51,7 +51,9 @@ endif;
 </span>
 <?php endforeach; ?>
 <?php endif; ?>
-<p class="text"><?php echo nl2br($message->getBody()) ?></p>
+<p class="text">
+<?php echo auto_link_text(nl2br($message->getBody()), 'urls', array('target' => '_blank'), true, 57) ?>
+</p>
 </div>
 
 <?php /* @todo 添付ファイル
