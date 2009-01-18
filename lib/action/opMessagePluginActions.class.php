@@ -53,6 +53,9 @@ class opMessagePluginActions extends sfActions
         if (!$read_message) {
           return false;
         }
+        if ($read_message->getIsRead() == 0) {
+          $read_message->readMessage();
+        }
         return $read_message;
       case "send":
         if ($this->message->getIsSender($this->getUser()->getMemberId()) === 0) {
