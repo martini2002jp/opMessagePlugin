@@ -1,5 +1,5 @@
 <?php slot('op_sidemenu') ?>
-<div class="item pageNav">
+<div class="parts pageNav">
 <ul>
 <?php if ($list_type == 'receive'): ?>
 <li class="current"><?php echo __('Inbox') ?></li>
