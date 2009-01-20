@@ -10,4 +10,9 @@
 
 class MessageFile extends BaseMessageFile
 {
+  public function delete(PropelPDO $con = null)
+  {
+    parent::delete($con);
+    $this->getFile()->delete();
+  }
 }

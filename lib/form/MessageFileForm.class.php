@@ -18,17 +18,4 @@
  */
 class MessageFileForm extends BaseMessageFileForm
 {
-  public function configure()
-  {
-    $this->setWidgets(array(
-      'image1' => new sfWidgetFormInputFile(),
-      'image2' => new sfWidgetFormInputFile(),
-      'image3' => new sfWidgetFormInputFile(),
-    ));
-    $this->setValidators(array(
-      'image1' => new opValidatorImageFile(array('required' => false)),
-      'image2' => new opValidatorImageFile(array('required' => false)),
-      'image3' => new opValidatorImageFile(array('required' => false)),
-    ));
-  }
 }

@@ -1,0 +1,3 @@
+all:
+  message_is_upload_images:   true
+  message_max_image_file_num: 3

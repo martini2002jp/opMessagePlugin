@@ -74,4 +74,18 @@ class SendMessageData extends BaseSendMessageData
     return $first;
   }
   
+  /**
+   * 添付ファイルを取得する（idの昇順）
+   * @return array
+   */
+  public function getMessageFiles($criteria = null, PropelPDO $con = null)
+  {
+    if (is_null($criteria))
+    {
+      $criteria = new Criteria();
+      $criteria->addAscendingOrderByColumn(MessageFilePeer::ID);
+    }
+    $files = parent::getMessageFiles($criteria, $con);
+    return $files;
+  }
 }
