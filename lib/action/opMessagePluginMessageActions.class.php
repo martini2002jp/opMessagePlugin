@@ -159,8 +159,8 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     if ($send_member_id == $this->getUser()->getMemberId()) {
       $this->forward404();
     }
-    sfConfig::set('sf_navi_type', 'friend');
-    sfConfig::set('sf_navi_id', $send_member_id);
+    sfConfig::set('sf_nav_type', 'friend');
+    sfConfig::set('sf_nav_id', $send_member_id);
     $this->form = new SendMessageForm($this->message, array('send_member_id' => $send_member_id));
     if ($request->isMethod('post'))
     {
@@ -189,8 +189,8 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     if ($this->message->getMessageType() == MessageTypePeer::getMessageTypeIdByName('message')) {
       $send_list = $this->message->getSendList();
       $this->forward404Unless($send_list);
-      sfConfig::set('sf_navi_type', 'friend');
-      sfConfig::set('sf_navi_id', $send_list[0]->getMember()->getId());
+      sfConfig::set('sf_nav_type', 'friend');
+      sfConfig::set('sf_nav_id', $send_list[0]->getMember()->getId());
       $this->form = new SendMessageForm($this->message, array('send_member_id' =>$send_list[0]->getMember()->getId()));
       $this->setTemplate('sendToFriend');
       return sfView::INPUT;
