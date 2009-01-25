@@ -36,8 +36,8 @@ propel:
   #メッセージ添付ファイル（画像など）
   message_file:
     id: ~
-    message_id: { type: integer, required: true, foreignTable: message, foreignReference: id, OnDelete: cascade }
-    file_id: { type: integer, required: true, foreignTable: file, foreignReference: id, OnDelete: cascade }
+    message_id: { type: integer, required: true, foreignTable: message, foreignReference: id, onDelete: cascade }
+    file_id: { type: integer, required: true, foreignTable: file, foreignReference: id, onDelete: cascade }
   #メッセージ送信先
   message_send_list:
     id: ~
