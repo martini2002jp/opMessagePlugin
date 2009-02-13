@@ -48,7 +48,7 @@ endswitch;
 <?php if ($message_type == 'receive'): ?>
 <p class="icons"> 
 <span>
-<?php echo image_tag('/plugins/opMessagePlugin/images/icon_mail_4.gif', array('alt' => __('Replied'))) ?>
+<?php echo image_tag('/opMessagePlugin/images/icon_mail_4.gif', array('alt' => __('Replied'))) ?>
 <?php echo __('Replied') ?>
 </span> 
 </p>
@@ -111,19 +111,19 @@ endswitch;
 <tr <?php if ($message_type == 'receive' && $message->getIsRead() == 0): ?>class="unread"<?php endif; ?>> 
 <td class="status"><span>
 <?php if ($message_type == 'send'): ?>
-<?php echo image_tag('/plugins/opMessagePlugin/images/icon_mail_3.gif') ?>
+<?php echo image_tag('/opMessagePlugin/images/icon_mail_3.gif') ?>
 <?php elseif ($message_type == 'draft'): ?>
-<?php echo image_tag('/plugins/opMessagePlugin/images/icon_mail_1.gif') ?>
+<?php echo image_tag('/opMessagePlugin/images/icon_mail_1.gif') ?>
 <?php elseif ($message_type == 'dust'): ?>
   <?php if ($message->getIcon() && $message->getIconAlt()): ?>
-  <?php echo image_tag('/plugins/opMessagePlugin/images/'.$message->getIcon(), array('alt' => $message->getIconAlt())) ?>
+  <?php echo image_tag('/opMessagePlugin/images/'.$message->getIcon(), array('alt' => $message->getIconAlt())) ?>
   <?php endif; ?>
 <?php elseif ($message->getIsHensin() == 1): ?>
-<?php echo image_tag('/plugins/opMessagePlugin/images/icon_mail_4.gif', array('alt' => __('Replied'))) ?>
+<?php echo image_tag('/opMessagePlugin/images/icon_mail_4.gif', array('alt' => __('Replied'))) ?>
 <?php elseif ($message->getIsRead() == 1): ?>
-<?php echo image_tag('/plugins/opMessagePlugin/images/icon_mail_2.gif', array('alt' => __('Open'))) ?>
+<?php echo image_tag('/opMessagePlugin/images/icon_mail_2.gif', array('alt' => __('Open'))) ?>
 <?php else: ?>
-<?php echo image_tag('/plugins/opMessagePlugin/images/icon_mail_1.gif', array('alt' => __('Unopened'))) ?>
+<?php echo image_tag('/opMessagePlugin/images/icon_mail_1.gif', array('alt' => __('Unopened'))) ?>
 <?php endif; ?>
 </span></td> 
 <td><span>
