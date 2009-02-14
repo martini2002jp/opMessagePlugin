@@ -69,11 +69,12 @@ endif;
 <li><?php echo button_to(__('Restore'), 'message/restore?id='.$deletedId)?></li>
 <?php endif; ?>
 <li><?php echo button_to(__('Delete'), $deleteButton) ?></li>
-</ul>
-
 <?php if ($sf_request->getParameter('type') != 'dust' && $message->getIsSender($sf_user->getMemberId()) == 0): ?>
-<ul class="moreInfo button">
 <li><?php echo button_to(__('Reply'), 'message/reply?id='.$message->getId()) ?></li>
 </ul>
+<?php else:?>
+</ul>
 <?php endif; ?>
-</div></div>
+</div>
+</div>
+</div>

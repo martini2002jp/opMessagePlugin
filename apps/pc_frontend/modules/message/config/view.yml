@@ -7,3 +7,4 @@ sendToFriendInput:
 all:
   has_layout:     on
   layout:         layoutB
+  stylesheets: [/opMessagePlugin/css/message]
