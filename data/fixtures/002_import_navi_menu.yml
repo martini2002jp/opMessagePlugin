@@ -1,13 +1,19 @@
 Navigation:
   default_navigation_message:
     type: "default"
-    uri: "message/index"
+    uri:  "message/index"
     sort_order: 11;
     
   friend_navigation_message:
     type: "friend"
-    uri: "message/sendToFriend"
+    uri:  "message/sendToFriend"
     sort_order: 22;
+
+  mobile_home_side_navigation_message:
+    type: "mobile_home_side"
+    uri:  "message/index"
+    sort_order: 20;
+  
 
 NavigationI18n:
   default_navigation_message_i18n_ja:
@@ -26,4 +32,14 @@ NavigationI18n:
   friend_navigation_message_i18n_en:
     id: friend_navigation_message
     caption: "Send Message"
+    culture: "en"
+
+  mobile_home_side_navigation_message_i18n_ja:
+    id: mobile_home_side_navigation_message
+    caption: "ﾒｯｾｰｼﾞ"
+    culture: "ja_JP"
+
+  mobile_home_side_navigation_message_i18n_en:
+    id: mobile_home_side_navigation_message
+    caption: "Message"
     culture: "en"

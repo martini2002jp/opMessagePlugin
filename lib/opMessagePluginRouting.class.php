@@ -19,6 +19,32 @@ class opMessagePluginRouting
   static public function listenToRoutingLoadConfigurationEvent(sfEvent $event)
   {
     $routing = $event->getSubject();
+    $routing->prependRoute('receiveList',
+      new sfRoute(
+        '/message/receiveList',
+        array('module' => 'message', 'action' => 'list', 'type' => 'receive')
+      )
+    );
+    $routing->prependRoute('sendList',
+      new sfRoute(
+        '/message/sendList',
+        array('module' => 'message', 'action' => 'list', 'type' => 'send')
+      )
+    );
+    $routing->prependRoute('draftList',
+      new sfRoute(
+        '/message/draftList',
+        array('module' => 'message', 'action' => 'list', 'type' => 'draft')
+      )
+    );
+    $routing->prependRoute('dustList',
+      new sfRoute(
+        '/message/dustList',
+        array('module' => 'message', 'action' => 'list', 'type' => 'dust')
+      )
+    );
+
+
     $routing->prependRoute('readMessage',
       new sfRoute(
         '/message/read/:id',

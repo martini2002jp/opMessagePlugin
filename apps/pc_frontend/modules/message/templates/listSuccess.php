@@ -1,4 +1,5 @@
 <?php use_helper('Date', 'JavascriptBase'); ?>
+<?php include_partial('message/sidemenu', array('list_type' => $sf_params->get('type'))); ?>
 <?php echo javascript_tag("
 function checkAll() {
     var sm = document.delete_message;
@@ -21,22 +22,22 @@ function clearAll() {
 switch ($message_type):
   case 'receive':
     $title = __('Inbox');
-    $page_url = "message/receiveList";
+    $page_url = "@receiveList";
     $sender_title = __('From');
     break;
   case 'send':
     $title = __('Sent Message');
-    $page_url = "message/sendList";
+    $page_url = "@sendList";
     $sender_title = __('To');
     break;
   case 'draft':
     $title = __('Drafts');
-    $page_url = "message/draftList";
+    $page_url = "@draftList";
     $sender_title = __('To');
     break;
   case 'dust':
     $title = __('Trash');
-    $page_url = "message/dustList";
+    $page_url = "@dustList";
     $sender_title = __('From/To');
     break;
 endswitch;

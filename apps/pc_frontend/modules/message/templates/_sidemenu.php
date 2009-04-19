@@ -4,22 +4,22 @@
 <?php if ($list_type == 'receive'): ?>
 <li class="current"><?php echo __('Inbox') ?></li>
 <?php else: ?>
-<li><?php echo link_to(__('Inbox'), 'message/receiveList') ?></li>
+<li><?php echo link_to(__('Inbox'), '@receiveList') ?></li>
 <?php endif; ?>
 <?php if ($list_type == 'send'): ?>
 <li class="current"><?php echo __('Sent Message') ?></li>
 <?php else: ?>
-<li><?php echo link_to(__('Sent Message'), 'message/sendList') ?></li>
+<li><?php echo link_to(__('Sent Message'), '@sendList') ?></li>
 <?php endif; ?>
 <?php if ($list_type == 'draft'): ?>
 <li class="current"><?php echo __('Drafts') ?></li>
 <?php else: ?>
-<li><?php echo link_to(__('Drafts'), 'message/draftList') ?></li>
+<li><?php echo link_to(__('Drafts'), '@draftList') ?></li>
 <?php endif; ?>
 <?php if ($list_type == 'dust'): ?>
 <li class="current"><?php echo __('Trash') ?></li>
 <?php else: ?>
-<li><?php echo link_to(__('Trash'), 'message/dustList') ?></li>
+<li><?php echo link_to(__('Trash'), '@dustList') ?></li>
 <?php endif; ?>
 </ul>
 </div>

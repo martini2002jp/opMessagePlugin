@@ -13,9 +13,9 @@ class DeletedMessage extends BaseDeletedMessage
   private $message = null;
   /**
    * 宛先/送信先を取得する
-   * @return str
+   * @return Member
    */
-  public function getSender()
+  public function getSendFromOrTo()
   {
     if ($this->getMessageId()) {
       if (!$this->message) {
@@ -29,7 +29,7 @@ class DeletedMessage extends BaseDeletedMessage
         $this->message = MessageSendListPeer::retrieveByPK($this->getMessageSendListId());
       }
       if ($this->message) {
-        return $this->message->getSendMessageData()->getMember()->getName();
+        return $this->message->getSendFrom();
       }
     }
     return null;

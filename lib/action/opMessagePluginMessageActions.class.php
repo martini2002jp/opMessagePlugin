@@ -24,60 +24,78 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeIndex($request)
   {
-    $this->forward('message', 'receiveList');
-    
-  }
-  
- /**
-  * Executes receiveList action
-  *
-  * @param sfRequest $request A request object
-  */
-  public function executeReceiveList($request)
-  {
-    $this->pager = MessageSendListPeer::getReceiveMessagePager($this->getUser()->getMemberId(),
-                                                                      $request->getParameter('page'),
-                                                                      sfConfig::get ('app_message_pagenateSize'));
-    $this->messageList($request, 'MessageSendList', 'message/index');
-  }
-  
- /**
-  * Executes sendList action
-  *
-  * @param sfRequest $request A request object
-  */
-  public function executeSendList($request)
-  {
-    $this->pager = SendMessageDataPeer::getSendMessagePager($this->getUser()->getMemberId(),
-                                                                      $request->getParameter('page'),
-                                                                      sfConfig::get ('app_message_pagenateSize'));
-    $this->messageList($request, 'Message', 'message/sendList');
-  }
-  
- /**
-  * Executes draftList action
-  *
-  * @param sfRequest $request A request object
-  */
-  public function executeDraftList($request)
-  {
-    $this->pager = SendMessageDataPeer::getDraftMessagePager($this->getUser()->getMemberId(),
-                                                            $request->getParameter('page'),
-                                                            sfConfig::get ('app_message_pagenateSize'));
-    $this->messageList($request, 'Message', 'message/draftList');
+    $request->setParameter('type', 'receive');
+    $this->forward('message', 'list');
   }
 
  /**
-  * Executes dustList action
+  * Execute list action
   *
-  * @param sfRequest $request A request object
+  * @param sfWebRequest $request A request object
   */
-  public function executeDustList($request)
+  public function executeList($request)
   {
-    $this->pager = DeletedMessagePeer::getDeletedMessagePager($this->getUser()->getMemberId(),
-                                                            $request->getParameter('page'),
-                                                            sfConfig::get ('app_message_pagenateSize'));
-    $this->messageList($request, 'DeletedMessage', 'message/dustList');
+    switch ($request->getParameter('type'))
+    {
+      case 'receive' :
+        $class = 'MessageSendListPeer';
+        $function = 'getReceiveMessagePager';
+        $objectName = 'MessageSendList';
+        $redirect = '@receiveList';
+        break;
+      case 'send' :
+        $class = 'SendMessageDataPeer';
+        $function = 'getSendMessagePager';
+        $objectName = 'Message';
+        $redirect = '@sendList';
+        break;
+      case 'draft' :
+        $class = 'SendMessageDataPeer';
+        $function = 'getDraftMessagePager';
+        $objectName = 'Message';
+        $redirect = '@draftList';
+        break;
+      case 'dust' :
+        $class = 'DeletedMessagePeer';
+        $function = 'getDeletedMessagePager';
+        $objectName = 'DeletedMessage';
+        $redirect = '@dustList';
+        break;
+      default :
+        throw new LogicException();
+    }
+    $this->message_type = $request->getParameter('type');
+
+    $this->pager = call_user_func(array($class, $function), 
+      $this->getUser()->getMemberId(), 
+      $request->getParameter('page', 1),
+      sfConfig::get('app_message_pagenatesize', 20)
+    );
+ 
+    if ($this->pager->getNbResults())
+    {
+      $deleteMessage = null;
+      foreach ($this->pager->getResults() as $message)
+      {
+        $deleteMessage[] = $message->getId();
+      }
+      $this->form = new MessageDeleteForm(null, array('message' => $deleteMessage, 'object_name' => $objectName));
+      if ($request->isMethod(sfWebRequest::POST))
+      {
+        $params = $request->getParameter('message');
+        $this->form->bind($params);
+        if ($this->form->isValid())
+        {
+          $this->message = $this->form->save();
+          $this->redirect($redirect);
+        }
+      }
+    }
+    else 
+    {
+      $this->form = null;
+    }
+    return sfView::SUCCESS;
   }
   
  /**
@@ -99,6 +117,9 @@ class opMessagePluginMessageActions extends opMessagePluginActions
       case "dust":
         $this->deleteButton = '@deleteDustMessage?id='.$message->getId();
         $this->deletedId = $message->getId();
+        break;
+      default :
+        throw new LogicException();
     }
   }
   
@@ -119,6 +140,8 @@ class opMessagePluginMessageActions extends opMessagePluginActions
       case "dustList":
         $object_name = 'DeletedMessage';
         break;
+      default :
+        throw new LogicException();
     }
     if ($object_name) {
       DeletedMessagePeer::deleteMessage(sfContext::getInstance()->getUser()->getMemberId(),
@@ -146,23 +169,33 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeSendToFriend($request)
   {
-    if ($request->getParameter('message')) {
-      $send_member_id = $request->getParameter('message[send_member_id]');
+    if ($request->getParameter('message'))
+    {
+      $sendMemberId = $request->getParameter('message[send_member_id]');
       $this->message = SendMessageDataPeer::retrieveByPk($request->getParameter('message[id]'));
       $this->forward404Unless($this->isDraftOwner());
-    } else if ($request->getParameter('id')) {
-      $send_member_id = $request->getParameter('id');
+    }
+    else if ($request->getParameter('id'))
+    {
+      $sendMemberId = $request->getParameter('id');
       $this->message = new SendMessageData();
-    } else {
+    }
+    else
+    {
       $this->forward404();
     }
-    if ($send_member_id == $this->getUser()->getMemberId()) {
+
+    if ($sendMemberId == $this->getUser()->getMemberId())
+    {
       $this->forward404();
     }
-    sfConfig::set('sf_nav_type', 'friend');
-    sfConfig::set('sf_nav_id', $send_member_id);
-    $this->form = new SendMessageForm($this->message, array('send_member_id' => $send_member_id));
-    if ($request->isMethod('post'))
+    
+    $this->form = new SendMessageForm($this->message, array(
+      'send_member_id' => $sendMemberId
+    ));
+    $this->sendMember = MemberPeer::retrieveByPk($sendMemberId);
+
+    if ($request->isMethod(sfWebRequest::POST))
     {
       $params = $request->getParameter('message');
       $this->form->bind($params, $request->getFiles('message'));
@@ -170,10 +203,19 @@ class opMessagePluginMessageActions extends opMessagePluginActions
       if ($this->form->isValid())
       {
         $this->message = $this->form->save();
-        return sfView::SUCCESS;
+        if ($this->message->getIsSend())
+        {
+          $this->getUser()->setFlash('notice', 'The message was sent successfully.');
+          $this->redirect('@sendList');
+        }
+        else
+        {
+          $this->getUser()->setFlash('notice', 'The message was saved successfully.');
+          $this->redirect('@draftList');
+        }
       }
     }
-    return sfView::INPUT;    
+    return sfView::INPUT;
   }
   
  /**
@@ -189,9 +231,11 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     if ($this->message->getMessageType() == MessageTypePeer::getMessageTypeIdByName('message')) {
       $send_list = $this->message->getSendList();
       $this->forward404Unless($send_list);
-      sfConfig::set('sf_nav_type', 'friend');
-      sfConfig::set('sf_nav_id', $send_list[0]->getMember()->getId());
-      $this->form = new SendMessageForm($this->message, array('send_member_id' =>$send_list[0]->getMember()->getId()));
+      $sendMemberId = $send_list[0]->getMember()->getId();
+      $this->form = new SendMessageForm($this->message, array(
+        'send_member_id' => $sendMemberId
+      ));
+      $this->sendMember = MemberPeer::retrieveByPk($sendMemberId);
       $this->setTemplate('sendToFriend');
       return sfView::INPUT;
     }
@@ -209,42 +253,20 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     $this->message = new SendMessageData();
     $this->message->setMessageTypeId($message->getMessageTypeId());
     $this->message->setReturnMessageId($message->getId());
-    if ($message->getThreadMessageId() != 0) {
+    if ($message->getThreadMessageId() != 0)
+    {
       $this->message->setThreadMessageId($message->getThreadMessageId());
-    } else {
+    }
+    else
+    {
       $this->message->setThreadMessageId($message->getId());
     }
-    $this->form = new SendMessageForm($this->message, array('send_member_id' =>$message->getMemberId()));
+    $sendMemberId = $message->getMemberId();
+    $this->form = new SendMessageForm($this->message, array(
+      'send_member_id' => $sendMemberId
+    ));
+    $this->sendMember = MemberPeer::retrieveByPk($sendMemberId);
     $this->setTemplate('sendToFriend');
     return sfView::INPUT;
-  }
-
-  /*
-   * messageList
-   * @param sfRequest $request A request object
-   * @param str       $object_name 
-   * @param str       $redirect delete->redirect
-   */
-  protected function messageList(sfRequest $request, $object_name, $redirect)
-  {
-    if ($this->pager->getNbResults()) {
-      $delete_message = null;
-      foreach ($this->pager->getResults() as $message) {
-        $delete_message[] = $message->getId();
-      }
-      $this->form = new MessageDeleteForm(null, array('message' => $delete_message, 'object_name' => $object_name));
-      if ($request->isMethod('post'))
-      {
-        $params = $request->getParameter('message');
-        $this->form->bind($params);
-        if ($this->form->isValid())
-        {
-          $this->message = $this->form->save();
-          $this->redirect($redirect);
-        }
-      }
-    } else {
-      $this->form = null;
-    }
   }
 }

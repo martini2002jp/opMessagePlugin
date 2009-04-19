@@ -40,4 +40,24 @@ class MessageSendList extends BaseMessageSendList
     $this->setIsRead(1);
     $this->save();
   }
+
+  /**
+   * get message send from
+   *
+   * @return Member
+   */
+  public function getSendFrom()
+  {
+    return $this->getSendMessageData()->getMember();
+  }
+
+  /**
+   * get message subject
+   *
+   * @return string
+   */
+  public function getSubject()
+  {
+    return $this->getSendMessageData()->getSubject();
+  }
 }

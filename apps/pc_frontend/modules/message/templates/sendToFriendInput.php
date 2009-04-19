@@ -6,4 +6,3 @@ $options['button'] = __('Send');
 $options['isMultipart'] = true;
 include_box('formMessage', $title, '', $options);
 ?>
-

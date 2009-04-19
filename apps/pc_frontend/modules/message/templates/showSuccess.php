@@ -16,14 +16,14 @@
 <table>
 <tr>
 <th>
-<?php if ($message->getIsSender($sf_user->getMemberId()) == 1): ?>
+<?php if ($message->getIsSender()): ?>
 <?php echo __('To') ?>
 <?php else: ?>
 <?php echo __('From') ?>
 <?php endif; ?></th>
 <td>
 <?php 
-if ($message->getIsSender($sf_user->getMemberId()) == 1):
+if ($message->getIsSender()):
     $sendLists = $message->getMessageSendLists();
     foreach ($sendLists as $sendTo): 
         echo link_to($sendTo->getMember()->getName(), '@member_profile?id='.$sendTo->getMemberId())."<br />";
@@ -69,7 +69,7 @@ endif;
 <li><?php echo button_to(__('Restore'), 'message/restore?id='.$deletedId)?></li>
 <?php endif; ?>
 <li><?php echo button_to(__('Delete'), $deleteButton) ?></li>
-<?php if ($sf_request->getParameter('type') != 'dust' && $message->getIsSender($sf_user->getMemberId()) == 0): ?>
+<?php if ($sf_request->getParameter('type') != 'dust' && !$message->getIsSender()): ?>
 <li><?php echo button_to(__('Reply'), 'message/reply?id='.$message->getId()) ?></li>
 </ul>
 <?php else:?>
