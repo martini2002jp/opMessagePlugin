@@ -2,7 +2,7 @@
 <?php echo link_to(__('Inbox'), '@receiveList') ?><br>
 <?php endif; ?>
 <?php if ($messageType !== 'send'): ?>
-<?php echo link_to(__('Send Message'), '@sendList') ?><br>
+<?php echo link_to(__('Sent Messages'), '@sendList') ?><br>
 <?php endif; ?>
 <?php if ($messageType !== 'draft'): ?>
 <?php echo link_to(__('Drafts'), '@draftList') ?><br>

@@ -34,7 +34,7 @@ class messageActions extends opMessagePluginMessageActions
       case 'receive' :
         return $this->title = 'Inbox';
       case 'send' :
-        return $this->title = 'Send Messages';
+        return $this->title = 'Sent Messages';
       case 'draft' :
         return $this->title = 'Drafts';
       case 'dust' :

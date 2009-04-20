@@ -1,4 +1,4 @@
-<?php op_mobile_page_title(__($title), 'Message') ?>
+<?php op_mobile_page_title(__($title), __('Message')) ?>
 <?php if ($message->getIsSender()): ?>
 <?php echo __('To') ?>：
 <?php foreach ($message->getMessageSendLists() as $sendTo): ?>
@@ -9,7 +9,7 @@
 <?php echo link_to($message->getMember()->getName(), 'member/profile?id='.$message->getMemberId()) ?><br>
 <?php endif; ?>
 
-<?php echo __('DateTime') ?>：
+<?php echo __('Created At') ?>：
 <?php echo op_format_date($message->getCreatedAt(), 'XDateTime'); ?><br>
 
 <?php echo __('Subject') ?>：
@@ -37,7 +37,7 @@
 <?php if ($sf_params->get('type') == 'receive'): ?>
 <?php echo link_to(__('Inbox'), '@receiveList') ?>
 <?php elseif ($sf_params->get('type') == 'send'): ?>
-<?php echo link_to(__('Send Message'), '@sendList') ?>
+<?php echo link_to(__('Sent Message'), '@sendList') ?>
 <?php else : ?>
 <?php echo link_to(__('Trash'), '@dustList') ?>
 <?php endif; ?>
