@@ -1,18 +1,17 @@
 <?php use_helper('Date', 'Text'); ?>
-<?php include_partial('message/sidemenu', array('list_type' => $sf_request->getParameter('type'))) ?>
+<?php include_partial('message/sidemenu', array('list_type' => $messageType)) ?>
 <div class="dparts messageDetailBox">
 <div class="parts">
 <div class="partsHeading"><h3><?php echo __('Message') ?></h3></div>
-<?php 
-/* @todo 前後のメッセージ
-({if $prev_c_message_id || $next_c_message_id})
+<?php /*
+TODO: Previous and Next 
+<?php if ($previousMessage || $nextMessage): ?>
 <div class="block prevNextLinkLine">
-({if $prev_c_message_id})<p class="prev"><a href="({t_url m=pc a=page_h_message})&amp;target_c_message_id=({$prev_c_message_id})&amp;({if $box == 'outbox'})box=({$box})({else})jyusin_c_message_id=({$prev_c_message_id})({/if})">«前を表示</a></p>({/if})
-({if $next_c_message_id})<p class="next"><a href="({t_url m=pc a=page_h_message})&amp;target_c_message_id=({$next_c_message_id})&amp;({if $box == 'outbox'})box=({$box})({else})jyusin_c_message_id=({$next_c_message_id})({/if})">次を表示»</a></p>({/if})
+<?php if ($previousMessage): ?><p class="prev"><?php echo link_to(__('Previous'), '@read'.ucfirst($messageType).'Message?id='.$previousMessage->getId()) ?></p><?php endif; ?>
+<?php if ($nextMessage): ?><p class="next"><?php echo link_to(__('Next'),'@read'.ucfirst($messageType).'Message?id='.$nextMessage->getId()) ?> </p><?php endif; ?>
 </div>
-({/if})
-*/
-?>
+<?php endif; ?>
+*/ ?>
 <table>
 <tr>
 <th>
@@ -65,11 +64,11 @@ endif;
 */ ?>
 <div class="operation">
 <ul class="moreInfo button">
-<?php if ($sf_request->getParameter('type') == 'dust'): ?>
+<?php if ($messageType == 'dust'): ?>
 <li><?php echo button_to(__('Restore'), 'message/restore?id='.$deletedId)?></li>
 <?php endif; ?>
 <li><?php echo button_to(__('Delete'), $deleteButton) ?></li>
-<?php if ($sf_request->getParameter('type') != 'dust' && !$message->getIsSender()): ?>
+<?php if ($messageType != 'dust' && !$message->getIsSender()): ?>
 <li><?php echo button_to(__('Reply'), 'message/reply?id='.$message->getId()) ?></li>
 </ul>
 <?php else:?>

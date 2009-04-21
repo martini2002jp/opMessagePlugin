@@ -1,0 +1,4 @@
+SnsConfig:
+  current_revision:
+    name: "opMessagePlugin_revision"
+    value: 2

@@ -18,19 +18,34 @@
 class MessageSendListPeer extends BaseMessageSendListPeer
 {
   /**
+   * add receive message criteria
+   *
+   * @param Criteria $criteria
+   * @param integer  $memberId
+   */
+  public static function addReceiveMessageCriteria($criteria, $memberId = null)
+  {
+    if (is_null($memberId))
+    {
+      $memberId = sfContext::getInstance()->getUser()->getMemberId();
+    }
+    $criteria->addJoin(self::MESSAGE_ID, SendMessageDataPeer::ID);
+    $criteria->add(self::MEMBER_ID, $memberId);
+    $criteria->add(self::IS_DELETED, false);
+    $criteria->add(SendMessageDataPeer::IS_SEND, true);
+  }
+
+  /**
    * 受信メッセージ一覧
-   * @param $member_id
+   * @param $memberId
    * @param $page
    * @param $size
    * @return MessageSendList object（の配列）
    */
-  public static function getReceiveMessagePager($member_id, $page = 1, $size = 20)
+  public static function getReceiveMessagePager($memberId = null, $page = 1, $size = 20)
   {
     $c = new Criteria();
-    $c->addJoin(self::MESSAGE_ID, SendMessageDataPeer::ID);
-    $c->add(self::MEMBER_ID, $member_id);
-    $c->add(self::IS_DELETED, 0);
-    $c->add(SendMessageDataPeer::IS_SEND, 1);
+    self::addReceiveMessageCriteria($c, $memberId);
     $c->addDescendingOrderByColumn(self::CREATED_AT);
 
     $pager = new sfPropelPager('MessageSendList', $size);

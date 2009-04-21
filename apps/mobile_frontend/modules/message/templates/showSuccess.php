@@ -21,22 +21,22 @@
 
 <hr>
 
-<?php if ($sf_params->get('type') == 'dust'): ?>
+<?php if ($messageType == 'dust'): ?>
 <?php echo link_to(__('Restore'), 'message/restore?id='.$deletedId) ?><br>
 <?php endif; ?>
 
 <?php echo link_to(__('Delete'), $deleteButton) ?>
 
-<?php if ($sf_params->get('type') != 'dust' && !$message->getIsSender()): ?>
+<?php if ($messageType != 'dust' && !$message->getIsSender()): ?>
 <br><?php echo link_to(__('Reply'), 'message/reply?id='.$message->getId()) ?>
 <?php endif; ?>
 
 <hr>
 
 
-<?php if ($sf_params->get('type') == 'receive'): ?>
+<?php if ($messageType == 'receive'): ?>
 <?php echo link_to(__('Inbox'), '@receiveList') ?>
-<?php elseif ($sf_params->get('type') == 'send'): ?>
+<?php elseif ($messageType == 'send'): ?>
 <?php echo link_to(__('Sent Message'), '@sendList') ?>
 <?php else : ?>
 <?php echo link_to(__('Trash'), '@dustList') ?>

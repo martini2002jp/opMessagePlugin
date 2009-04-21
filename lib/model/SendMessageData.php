@@ -16,6 +16,10 @@
  */ 
 class SendMessageData extends BaseSendMessageData
 {
+  protected 
+    $previous = null, 
+    $next = null;
+
   /**
    * メッセージが本人送信のものかどうか確認する
    * @param  $member_id

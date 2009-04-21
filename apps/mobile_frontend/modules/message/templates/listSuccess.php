@@ -4,22 +4,22 @@
 <?php if ($form->hasGlobalErrors()): ?>
 <font color="#FF0000"><?php echo $form->renderGlobalErrors() ?></font>
 <?php endif; ?>
-<form action="<?php echo url_for('@'.$message_type.'List') ?>" method="post">
+<form action="<?php echo url_for('@'.$messageType.'List') ?>" method="post">
 <?php echo $form->renderHiddenFields(); ?>
 <?php $_list = array() ?>
 <?php foreach ($pager->getResults() as $message): ?>
 <?php $_list[] = $form['message_ids['.$message->getId().']']->render().
-get_partial($message_type.'ListRecord', array('message' => $message)); ?>
+get_partial($messageType.'ListRecord', array('message' => $message)); ?>
 <?php endforeach; ?>
 <?php op_include_list('messageList', $_list, array()); ?>
-<?php if ($message_type == 'dust'): ?>
+<?php if ($messageType == 'dust'): ?>
 <input type="submit" name="restore" value="<?php echo __('Restore') ?>"><br>
 <?php endif; ?>
 <input type="submit" value="<?php echo __('Delete') ?>">
 </form>
-<center><?php op_include_pager_navigation($pager, '@'.$message_type.'List?page=%d', array('is_total' => false)) ?></center>
+<center><?php op_include_pager_navigation($pager, '@'.$messageType.'List?page=%d', array('is_total' => false)) ?></center>
 <?php else: ?>
 <?php echo __('There are no messages.') ?><br><br>
 <?php endif; ?>
 <hr>
-<?php include_partial('message/menu', array('messageType' => $message_type)) ?>
+<?php include_partial('message/menu', array('messageType' => $messageType)) ?>

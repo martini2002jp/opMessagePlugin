@@ -51,11 +51,11 @@ class MessageSendList extends BaseMessageSendList
     return $this->getSendMessageData()->getMember();
   }
 
-  /**
-   * get message subject
-   *
-   * @return string
-   */
+ /**
+  * get message subject
+  *
+  * @return string
+  */
   public function getSubject()
   {
     return $this->getSendMessageData()->getSubject();

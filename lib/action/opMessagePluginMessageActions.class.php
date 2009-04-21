@@ -20,7 +20,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
  /**
   * Executes index action
   *
-  * @param sfRequest $request A request object
+  * @param sfWebRequest $request A request object
   */
   public function executeIndex($request)
   {
@@ -33,9 +33,10 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   *
   * @param sfWebRequest $request A request object
   */
-  public function executeList($request)
+  public function executeList(sfWebRequest $request)
   {
-    switch ($request->getParameter('type'))
+    $this->messageType = $request->getParameter('type');
+    switch ($this->messageType)
     {
       case 'receive' :
         $class = 'MessageSendListPeer';
@@ -64,7 +65,6 @@ class opMessagePluginMessageActions extends opMessagePluginActions
       default :
         throw new LogicException();
     }
-    $this->message_type = $request->getParameter('type');
 
     $this->pager = call_user_func(array($class, $function), 
       $this->getUser()->getMemberId(), 
@@ -101,13 +101,14 @@ class opMessagePluginMessageActions extends opMessagePluginActions
  /**
   * Executes show action
   *
-  * @param sfRequest $request A request object
+  * @param sfWebRequest $request A request object
   */
-  public function executeShow($request)
+  public function executeShow(sfWebRequest $request)
   {
     $this->message = SendMessageDataPeer::retrieveByPk($request->getParameter('id'));
-    $this->forward404unless($message = $this->isReadable($request->getParameter('type')));
-    switch ($request->getParameter('type')) {
+    $this->messageType = $request->getParameter('type');
+    $this->forward404unless($message = $this->isReadable($this->messageType));
+    switch ($this->messageType) {
       case "receive":
         $this->deleteButton = '@deleteReceiveMessage?id='.$message->getId();
         break;
@@ -126,37 +127,37 @@ class opMessagePluginMessageActions extends opMessagePluginActions
  /**
   * Executes delete action
   *
-  * @param sfRequest $request A request object
+  * @param sfWebRequest $request A request object
   */
-  public function executeDelete($request)
+  public function executeDelete(sfWebRequest $request)
   {
-    switch ($request->getParameter('type')) {
-      case "receiveList":
-        $object_name = 'MessageSendList';
+    $messageType = $request->getParameter('type');
+    switch ($messageType) {
+      case "receive":
+        $objectName = 'MessageSendList';
         break;
-      case "sendList":
-        $object_name = 'Message';
+      case "send":
+        $objectName = 'Message';
         break;
-      case "dustList":
-        $object_name = 'DeletedMessage';
+      case "dust":
+        $objectName = 'DeletedMessage';
         break;
       default :
         throw new LogicException();
     }
-    if ($object_name) {
-      DeletedMessagePeer::deleteMessage(sfContext::getInstance()->getUser()->getMemberId(),
+    DeletedMessagePeer::deleteMessage(sfContext::getInstance()->getUser()->getMemberId(),
                                       $request->getParameter('id'), 
-                                      $object_name);
-    }
-    $this->redirect('message/'.$request->getParameter('type'));
+                                      $objectName);
+    
+    $this->redirect('@'.$messageType.'List');
   }
   
  /**
   * Executes restore action
   *
-  * @param sfRequest $request A request object
+  * @param sfWebRequest $request A request object
   */
-  public function executeRestore($request)
+  public function executeRestore(sfWebRequest $request)
   {
     DeletedMessagePeer::restoreMessage($request->getParameter('id'));
     $this->redirect('message/dustList');
@@ -165,9 +166,9 @@ class opMessagePluginMessageActions extends opMessagePluginActions
  /**
   * Executes sendMessage action
   *
-  * @param sfRequest $request A request object
+  * @param sfWebRequest $request A request object
   */
-  public function executeSendToFriend($request)
+  public function executeSendToFriend(sfWebRequest $request)
   {
     if ($request->getParameter('message'))
     {
@@ -185,10 +186,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
       $this->forward404();
     }
 
-    if ($sendMemberId == $this->getUser()->getMemberId())
-    {
-      $this->forward404();
-    }
+    $this->forward404If($sendMemberId == $this->getUser()->getMemberId());
     
     $this->form = new SendMessageForm($this->message, array(
       'send_member_id' => $sendMemberId
@@ -221,9 +219,9 @@ class opMessagePluginMessageActions extends opMessagePluginActions
  /**
   * Executes editMessage action
   * 
-  * @param sfRequest $request A request object
+  * @param sfWebRequest $request A request object
   */
-  public function executeEdit($request)
+  public function executeEdit(sfWebRequest $request)
   {
     $this->message = SendMessageDataPeer::retrieveByPk($request->getParameter('id'));
     $this->forward404unless($this->message);
@@ -244,9 +242,9 @@ class opMessagePluginMessageActions extends opMessagePluginActions
  /**
   * Executes replyMessage action
   * 
-  * @param sfRequest $request A request object
+  * @param sfWebRequest $request A request object
   */
-  public function executeReply($request)
+  public function executeReply(sfWebRequest $request)
   {
     $message = SendMessageDataPeer::retrieveByPk($request->getParameter('id'));
     $this->forward404unless($message);

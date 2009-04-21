@@ -10,18 +10,33 @@
 
 class DeletedMessagePeer extends BaseDeletedMessagePeer
 {
+ /**
+  * add delete message criteria
+  *
+  * @param Criteria $criteria
+  * @param integer  $memberId
+  */
+  public static function addDeleteMessageCriteria($criteria, $memberId = null)
+  {
+    if (is_null($memberId))
+    {
+      $memberId = sfContext::getInstance()->getUser()->getMemberId();
+    }
+    $criteria->add(self::MEMBER_ID, $memberId);
+    $criteria->add(self::IS_DELETED, false);
+  }
+
   /**
    * 削除済みメッセージ一覧
-   * @param $member_id
-   * @param $page
-   * @param $size
+   * @param integer $memberId
+   * @param integer $page
+   * @param integer $size
    * @return DeletedMessage object（の配列）
    */
-  public static function getDeletedMessagePager($member_id, $page = 1, $size = 20)
+  public static function getDeletedMessagePager($memberId = null, $page = 1, $size = 20)
   {
     $c = new Criteria();
-    $c->add(self::MEMBER_ID, $member_id);
-    $c->add(self::IS_DELETED, 0);
+    self::addDeleteMessageCriteria($c, $memberId);
     $c->addDescendingOrderByColumn(self::CREATED_AT);
     $pager = new sfPropelPager('DeletedMessage', $size);
     $pager->setCriteria($c);
