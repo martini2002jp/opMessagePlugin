@@ -38,10 +38,10 @@ endif;
 </td>
 </tr>
 <tr>
-<th>日付</th>
+<th><?php echo __('Created At') ?></th>
 <td><?php echo format_datetime($message->getCreatedAt(), 'f') ?></td>
 </tr><tr>
-<th>件名</th>
+<th><?php echo __('Subject') ?></th>
 <td><?php echo $message->getSubject() ?></td>
 </tr>
 </table>

@@ -42,25 +42,21 @@ class opMessagePluginMessageActions extends opMessagePluginActions
         $class = 'MessageSendListPeer';
         $function = 'getReceiveMessagePager';
         $objectName = 'MessageSendList';
-        $redirect = '@receiveList';
         break;
       case 'send' :
         $class = 'SendMessageDataPeer';
         $function = 'getSendMessagePager';
         $objectName = 'Message';
-        $redirect = '@sendList';
         break;
       case 'draft' :
         $class = 'SendMessageDataPeer';
         $function = 'getDraftMessagePager';
         $objectName = 'Message';
-        $redirect = '@draftList';
         break;
       case 'dust' :
         $class = 'DeletedMessagePeer';
         $function = 'getDeletedMessagePager';
         $objectName = 'DeletedMessage';
-        $redirect = '@dustList';
         break;
       default :
         throw new LogicException();
@@ -87,7 +83,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
         if ($this->form->isValid())
         {
           $this->message = $this->form->save();
-          $this->redirect($redirect);
+          $this->redirect('@'.$this->messageType.'List');
         }
       }
     }
@@ -160,7 +156,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   public function executeRestore(sfWebRequest $request)
   {
     DeletedMessagePeer::restoreMessage($request->getParameter('id'));
-    $this->redirect('message/dustList');
+    $this->redirect('@dustList');
   }
   
  /**
