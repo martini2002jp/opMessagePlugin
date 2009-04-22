@@ -118,6 +118,14 @@
         <source>remove the current file</source>
         <target>このファイルを削除する</target>
       </trans-unit>
+      <trans-unit id="30">
+        <source>The message was sent successfully.</source>
+        <target>メッセージの送信が完了しました。</target>
+      </trans-unit>
+      <trans-unit id="31">
+        <source>The message was saved successfully.</source>
+        <target>メッセージを保存しました。</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
