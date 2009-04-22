@@ -25,10 +25,14 @@ TODO: Previous and Next
 if ($message->getIsSender()):
     $sendLists = $message->getMessageSendLists();
     foreach ($sendLists as $sendTo): 
-        echo link_to($sendTo->getMember()->getName(), '@member_profile?id='.$sendTo->getMemberId())."<br />";
+        if ($sendTo->getMember()):
+          echo link_to($sendTo->getMember()->getName(), '@member_profile?id='.$sendTo->getMemberId())."<br />";
+        endif;
     endforeach;
 else:
-    echo link_to($message->getMember()->getName(), '@member_profile?id='.$message->getMemberId());
+    if ($message->getMember()):
+      echo link_to($message->getMember()->getName(), '@member_profile?id='.$message->getMemberId());
+    endif;
 endif;
 ?>
 </td>

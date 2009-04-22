@@ -131,7 +131,7 @@ endswitch;
 <?php echo $form_delete ?>
 <?php echo $form_delete_error ?>
 </span></td> 
-<td><span><?php echo $sender->getName() ?></span></td> 
+<td><span><?php if ($sender): ?><?php echo $sender->getName() ?><?php endif; ?></span></td> 
 <td><span><?php echo link_to($detail_title, $detail_url)?></span></td> 
 <td><span><?php echo format_datetime($message->getCreatedAt(), 'f') ?></span></td> 
 </tr> 

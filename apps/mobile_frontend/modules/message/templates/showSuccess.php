@@ -2,11 +2,15 @@
 <?php if ($message->getIsSender()): ?>
 <?php echo __('To') ?>：
 <?php foreach ($message->getMessageSendLists() as $sendTo): ?>
-<?php echo link_to($sendTo->getMember()->getName(), 'member/profile?id='.$sendTo->getMemberId()) ?><br>
+<?php if ($sendTo->getMember()): ?>
+<?php echo link_to($sendTo->getMember()->getName(), 'member/profile?id='.$sendTo->getMemberId()) ?>
+<?php endif; ?><br>
 <?php endforeach; ?>
 <?php else: ?>
 <?php echo __('From') ?>：
-<?php echo link_to($message->getMember()->getName(), 'member/profile?id='.$message->getMemberId()) ?><br>
+<?php if ($message->getMember()): ?>
+<?php echo link_to($message->getMember()->getName(), 'member/profile?id='.$message->getMemberId()) ?>
+<?php endif; ?><br>
 <?php endif; ?>
 
 <?php echo __('Created At') ?>：
@@ -37,7 +41,7 @@
 <?php if ($messageType == 'receive'): ?>
 <?php echo link_to(__('Inbox'), '@receiveList') ?>
 <?php elseif ($messageType == 'send'): ?>
-<?php echo link_to(__('Sent Message'), '@sendList') ?>
+<?php echo link_to(__('Sent Messages'), '@sendList') ?>
 <?php else : ?>
 <?php echo link_to(__('Trash'), '@dustList') ?>
 <?php endif; ?>
