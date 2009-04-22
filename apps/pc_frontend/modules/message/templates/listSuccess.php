@@ -1,5 +1,5 @@
 <?php use_helper('Date', 'JavascriptBase'); ?>
-<?php include_partial('message/sidemenu', array('list_type' => $messageType)); ?>
+<?php include_partial('message/sidemenu', array('listType' => $messageType, 'forceLink' => false)); ?>
 <?php echo javascript_tag("
 function checkAll() {
     var sm = document.delete_message;

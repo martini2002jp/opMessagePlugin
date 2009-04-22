@@ -1,5 +1,5 @@
 <?php use_helper('Date', 'Text'); ?>
-<?php include_partial('message/sidemenu', array('list_type' => $messageType)) ?>
+<?php include_partial('message/sidemenu', array('listType' => $messageType, 'forceLink' => true)) ?>
 <div class="dparts messageDetailBox">
 <div class="parts">
 <div class="partsHeading"><h3><?php echo __('Message') ?></h3></div>
