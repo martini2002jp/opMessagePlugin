@@ -1,4 +1,5 @@
 <?php use_helper('Date', 'JavascriptBase'); ?>
+<?php include_partial('message/sidemenu', array('listType' => $messageType, 'forceLink' => false)); ?>
 <?php echo javascript_tag("
 function checkAll() {
     var sm = document.delete_message;
@@ -18,25 +19,25 @@ function clearAll() {
 }
 ") ?>
 <?php 
-switch ($message_type):
+switch ($messageType):
   case 'receive':
     $title = __('Inbox');
-    $page_url = "message/receiveList";
+    $page_url = "@receiveList";
     $sender_title = __('From');
     break;
   case 'send':
     $title = __('Sent Message');
-    $page_url = "message/sendList";
+    $page_url = "@sendList";
     $sender_title = __('To');
     break;
   case 'draft':
     $title = __('Drafts');
-    $page_url = "message/draftList";
+    $page_url = "@draftList";
     $sender_title = __('To');
     break;
   case 'dust':
     $title = __('Trash');
-    $page_url = "message/dustList";
+    $page_url = "@dustList";
     $sender_title = __('From/To');
     break;
 endswitch;
@@ -45,7 +46,7 @@ endswitch;
 <div class="partsHeading"><h3><?php echo $title ?></h3></div>
 <?php if ($pager->getNbResults()): ?>
 <div class="pagerRelativeMulti">
-<?php if ($message_type == 'receive'): ?>
+<?php if ($messageType == 'receive'): ?>
 <p class="icons"> 
 <span>
 <?php echo image_tag('/opMessagePlugin/images/icon_mail_4.gif', array('alt' => __('Replied'))) ?>
@@ -76,14 +77,14 @@ endswitch;
 <th><?php echo __('Created At') ?></th> 
 </tr> 
 <?php foreach ($pager->getResults() as $message): ?>
-<?php 
-switch ($message_type):
+<?php
+switch ($messageType):
   case 'receive':
     $form_delete = $form["message_ids[".$message->getId()."]"];
     $form_delete_error = $form["message_ids[".$message->getId()."]"]->renderError();
-    $sender = $message->getSendMessageData()->getMember()->getName();
-    $detail_title = $message->getSendMessageData()->getSubject();
-    $detail_url = '@readMessage?id='.$message->getMessageId();
+    $sender = $message->getSendFrom();
+    $detail_title = $message->getSubject();
+    $detail_url = '@readReceiveMessage?id='.$message->getMessageId();
     break;
   case 'send':
     $form_delete = $form["message_ids[".$message->getId()."]"];
@@ -102,19 +103,19 @@ switch ($message_type):
   case 'dust':
     $form_delete = $form["message_ids[".$message->getId()."]"];
     $form_delete_error = $form["message_ids[".$message->getId()."]"]->renderError();
-    $sender = $message->getSender();
+    $sender = $message->getSendFromOrTo();
     $detail_title = $message->getSubject();
-    $detail_url = '@readDeletedMessage?id='.$message->getViewMessageId();
+    $detail_url = '@readDustMessage?id='.$message->getViewMessageId();
     break;
 endswitch;
 ?>
-<tr <?php if ($message_type == 'receive' && $message->getIsRead() == 0): ?>class="unread"<?php endif; ?>> 
+<tr <?php if ($messageType == 'receive' && $message->getIsRead() == 0): ?>class="unread"<?php endif; ?>> 
 <td class="status"><span>
-<?php if ($message_type == 'send'): ?>
+<?php if ($messageType == 'send'): ?>
 <?php echo image_tag('/opMessagePlugin/images/icon_mail_3.gif') ?>
-<?php elseif ($message_type == 'draft'): ?>
+<?php elseif ($messageType == 'draft'): ?>
 <?php echo image_tag('/opMessagePlugin/images/icon_mail_1.gif') ?>
-<?php elseif ($message_type == 'dust'): ?>
+<?php elseif ($messageType == 'dust'): ?>
   <?php if ($message->getIcon() && $message->getIconAlt()): ?>
   <?php echo image_tag('/opMessagePlugin/images/'.$message->getIcon(), array('alt' => $message->getIconAlt())) ?>
   <?php endif; ?>
@@ -130,7 +131,7 @@ endswitch;
 <?php echo $form_delete ?>
 <?php echo $form_delete_error ?>
 </span></td> 
-<td><span><?php echo $sender ?></span></td> 
+<td><span><?php if ($sender): ?><?php echo $sender->getName() ?><?php endif; ?></span></td> 
 <td><span><?php echo link_to($detail_title, $detail_url)?></span></td> 
 <td><span><?php echo format_datetime($message->getCreatedAt(), 'f') ?></span></td> 
 </tr> 
@@ -145,7 +146,7 @@ endswitch;
 <?php echo link_to_function('全てのチェックをはずす', "clearAll()", array('onkeypress' => 'clearAll();')) ?>
 </p> 
 <ul class="moreInfo button"> 
-<?php if ($message_type == 'dust'): ?>
+<?php if ($messageType == 'dust'): ?>
 <li>
 <input type="submit" class="input_submit" name="restore" value="<?php echo __('Restore') ?>" />
 </li>

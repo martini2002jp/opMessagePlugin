@@ -21,7 +21,7 @@ propel:
     _attributes: { phpName: SendMessageData }
     id: ~
     #送信者
-    member_id: { type: integer, foreignTable: member, foreignReference: id }
+    member_id: { type: integer, foreignTable: member, foreignReference: id, onDelete: setnull }
     subject: { type: longvarchar }
     body: { type: longvarchar }
     is_deleted: { type: boolean, required: true, default: 0 }
@@ -42,7 +42,7 @@ propel:
   message_send_list:
     id: ~
     #受信者
-    member_id: { type: integer, foreignTable: member, foreignReference: id }
+    member_id: { type: integer, foreignTable: member, foreignReference: id, onDelete: setnull }
     message_id: { type: integer, foreignTable: message, foreignReference: id }
     is_read: { type: boolean, required: true, default: 0 }
     is_deleted: { type: boolean, required: true, default: 0 }
@@ -52,7 +52,7 @@ propel:
   deleted_message:
     id: ~
     #削除者
-    member_id: { type: integer, foreignTable: member, foreignReference: id }
+    member_id: { type: integer, foreignTable: member, foreignReference: id, onDelete: cascade }
     message_id: { type: integer, required: true }
     message_send_list_id: { type: integer, required: true }
     #完全削除

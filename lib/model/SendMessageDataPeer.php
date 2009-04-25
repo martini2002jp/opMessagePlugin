@@ -16,6 +16,23 @@
  */ 
 class SendMessageDataPeer extends BaseSendMessageDataPeer
 {
+ /**
+  * add send message criteria
+  *
+  * @param Criteria $criteria
+  * @param integer  $memberId
+  */
+  public static function addSendMessageCriteria($criteria, $memberId = null)
+  {
+    if (is_null($memberId))
+    {
+      $memberId = sfContext::getInstance()->getUser()->getMemberId();
+    }
+    $criteria->add(self::MEMBER_ID, $memberId);
+    $criteria->add(self::IS_DELETED, 0);
+    $criteria->add(self::IS_SEND, true);
+  }
+
   public static function getHensinMassage($member_id, $message_id)
   {
     $c = new Criteria();
@@ -31,19 +48,16 @@ class SendMessageDataPeer extends BaseSendMessageDataPeer
   
   /**
    * 送信メッセージ一覧
-   * @param $member_id
+   * @param $memberId
    * @param $page
    * @param $size
    * @return Message object（の配列）
    */
-  public static function getSendMessagePager($member_id, $page = 1, $size = 20)
+  public static function getSendMessagePager($memberId = null, $page = 1, $size = 20)
   {
     $c = new Criteria();
-    $c->add(self::MEMBER_ID, $member_id);
-    $c->add(self::IS_DELETED, 0);
-    $c->add(SendMessageDataPeer::IS_SEND, 1);
+    self::addSendMessageCriteria($c, $memberId);
     $c->addDescendingOrderByColumn(self::CREATED_AT);
-
     $pager = new sfPropelPager('SendMessageData', $size);
     $pager->setCriteria($c);
     $pager->setPage($page);

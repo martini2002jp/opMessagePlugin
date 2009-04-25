@@ -16,17 +16,28 @@
  */ 
 class SendMessageData extends BaseSendMessageData
 {
+  protected 
+    $previous = null, 
+    $next = null;
+
   /**
    * メッセージが本人送信のものかどうか確認する
    * @param  $member_id
-   * @return int
+   * @return boolean
    */
-  public function getIsSender($member_id)
+  public function getIsSender($memberId = null)
   { 
-    if ($this->getMemberId() == $member_id) {
-      return 1;
-    } else {
-      return 0;
+    if (is_null($memberId))
+    {
+      $memberId = sfContext::getInstance()->getUser()->getMemberId();
+    }
+    if ($this->getMemberId() == $memberId)
+    {
+      return true;
+    }
+    else 
+    {
+      return false;
     }
   }  
   
@@ -58,8 +69,8 @@ class SendMessageData extends BaseSendMessageData
   }
 
   /**
-   * 宛先を取得する
-   * @return str
+   * 宛先(1件)を取得する
+   * @return Member
    */
   public function getSendTo()
   {
@@ -67,13 +78,9 @@ class SendMessageData extends BaseSendMessageData
     if ($cnt = count($objs) == 0) {
       return null;
     }
-    $first = $objs[0]->getMember()->getName();
-    if ($cnt > 1) {
-      $first = $first."...(".$cnt.")";
-    } 
-    return $first;
+    return $objs[0]->getMember();
   }
-  
+
   /**
    * 添付ファイルを取得する（idの昇順）
    * @return array

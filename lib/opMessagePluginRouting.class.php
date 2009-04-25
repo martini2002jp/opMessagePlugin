@@ -19,7 +19,34 @@ class opMessagePluginRouting
   static public function listenToRoutingLoadConfigurationEvent(sfEvent $event)
   {
     $routing = $event->getSubject();
-    $routing->prependRoute('readMessage',
+    // message list
+    $routing->prependRoute('receiveList',
+      new sfRoute(
+        '/message/receiveList',
+        array('module' => 'message', 'action' => 'list', 'type' => 'receive')
+      )
+    );
+    $routing->prependRoute('sendList',
+      new sfRoute(
+        '/message/sendList',
+        array('module' => 'message', 'action' => 'list', 'type' => 'send')
+      )
+    );
+    $routing->prependRoute('draftList',
+      new sfRoute(
+        '/message/draftList',
+        array('module' => 'message', 'action' => 'list', 'type' => 'draft')
+      )
+    );
+    $routing->prependRoute('dustList',
+      new sfRoute(
+        '/message/dustList',
+        array('module' => 'message', 'action' => 'list', 'type' => 'dust')
+      )
+    );
+
+    //show message
+    $routing->prependRoute('readReceiveMessage',
       new sfRoute(
         '/message/read/:id',
         array('module' => 'message', 'action' => 'show', 'type' => 'receive'),
@@ -33,31 +60,33 @@ class opMessagePluginRouting
         array('id' => '\d+')
       )
     );
-    $routing->prependRoute('readDeletedMessage',
+    $routing->prependRoute('readDustMessage',
       new sfRoute(
         '/message/checkDelete/:id',
         array('module' => 'message', 'action' => 'show', 'type' => 'dust'),
         array('id' => '\d+')
       )
     );
+
+    //delete message
     $routing->prependRoute('deleteReceiveMessage',
       new sfRoute(
         '/message/deleteReceiveMessage/:id',
-        array('module' => 'message', 'action' => 'delete', 'type' => 'receiveList'),
+        array('module' => 'message', 'action' => 'delete', 'type' => 'receive'),
         array('id' => '\d+')
       )
     );
     $routing->prependRoute('deleteSendMessage',
       new sfRoute(
         '/message/deleteSendMessage/:id',
-        array('module' => 'message', 'action' => 'delete', 'type' => 'sendList'),
+        array('module' => 'message', 'action' => 'delete', 'type' => 'send'),
         array('id' => '\d+')
       )
     );
     $routing->prependRoute('deleteDustMessage',
       new sfRoute(
         '/message/deleteComplete/:id',
-        array('module' => 'message', 'action' => 'delete', 'type' => 'dustList'),
+        array('module' => 'message', 'action' => 'delete', 'type' => 'dust'),
         array('id' => '\d+')
       )
     );

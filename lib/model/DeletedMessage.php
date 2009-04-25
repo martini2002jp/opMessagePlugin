@@ -10,12 +10,14 @@
 
 class DeletedMessage extends BaseDeletedMessage
 {
-  private $message = null;
+  protected 
+    $message = null;
+
   /**
    * 宛先/送信先を取得する
-   * @return str
+   * @return Member
    */
-  public function getSender()
+  public function getSendFromOrTo()
   {
     if ($this->getMessageId()) {
       if (!$this->message) {
@@ -29,7 +31,7 @@ class DeletedMessage extends BaseDeletedMessage
         $this->message = MessageSendListPeer::retrieveByPK($this->getMessageSendListId());
       }
       if ($this->message) {
-        return $this->message->getSendMessageData()->getMember()->getName();
+        return $this->message->getSendFrom();
       }
     }
     return null;
@@ -112,19 +114,25 @@ class DeletedMessage extends BaseDeletedMessage
   }
   
   /**
-   * メッセージID（表示用）を取得する
-   * @return int
+   * get the message's id to read message
+   *
+   * @return integer
    */
   public function getViewMessageId()
   {
-    if ($this->getMessageId()) {
-      if (!$this->message) {
+    if ($this->getMessageId())
+    {
+      if (!$this->message)
+      {
         $this->message = SendMessageDataPeer::retrieveByPK($this->getMessageId());
       }
-    } else if ($this->getMessageSendListId()) {
+    }
+    else if ($this->getMessageSendListId())
+    {
       $this->message = MessageSendListPeer::retrieveByPK($this->getMessageSendListId());
     }
-    if ($this->message) {
+    if ($this->message)
+    {
       return $this->message->getId();
     }
     return null;
