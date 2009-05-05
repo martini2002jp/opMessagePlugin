@@ -104,7 +104,8 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     $this->message = SendMessageDataPeer::retrieveByPk($request->getParameter('id'));
     $this->messageType = $request->getParameter('type');
     $this->forward404unless($message = $this->isReadable($this->messageType));
-    switch ($this->messageType) {
+    switch ($this->messageType)
+    {
       case "receive":
         $this->deleteButton = '@deleteReceiveMessage?id='.$message->getId();
         break;
@@ -118,6 +119,20 @@ class opMessagePluginMessageActions extends opMessagePluginActions
       default :
         throw new LogicException();
     }
+    $this->fromOrToMembers = array();
+    if ($this->message->getIsSender())
+    {
+      $messageSendLists = $this->message->getMessageSendLists();
+      foreach ($messageSendLists as $messageSendList)
+      {
+        $this->fromOrToMembers[] = $messageSendList->getMember();
+      }
+    }
+    else
+    {
+      $this->fromOrToMembers[] = $this->message->getMember();
+    }
+    
   }
   
  /**

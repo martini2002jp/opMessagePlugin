@@ -88,4 +88,75 @@ class SendMessageDataPeer extends BaseSendMessageDataPeer
 
     return $pager;
   }
+
+
+ /**
+  * send message from global template
+  *
+  * @see SendMessageDataPeer::sendMessage()
+  * @param mixed  $toMembers      a Member instance or array of Member instance
+  * @param string $subject        a subject of the message
+  * @param string $templateName   The message template name
+  * @param array  $templateParams The params for template
+  * @param array  $options        options
+  */
+  public static function sendMessageFromGlobalTemplate($toMembers, $subject, $templateName, $templateParams = array(), $options = array())
+  {
+    $templateName = '_'.$templateName;
+    $view = new opGlobalPartialView(sfContext::getInstance(), 'superGlobal', $templateName, '');
+    $view->setPartialVars($templateParams);
+    $body = $view->render();
+    return self::sendMessage($toMembers, $subject, $body, $options);
+  }
+
+ /**
+  * send message
+  *
+  * Available options:
+  *
+  *  * type      : The message type   (default: 'message')
+  *  * fromMember: The message sender (default: my member object)
+  *
+  * @param mixed   $toMembers  a Member instance or array of Member instance
+  * @param string  $subject    a subject of the message
+  * @param string  $body       a body of the message
+  * @param array   $options    options
+  * @return SendMessageData
+  */
+  public static function sendMessage($toMembers, $subject, $body, $options = array())
+  {
+    if ($toMembers instanceof Member)
+    {
+      $toMembers = array($toMembers);
+    }
+    elseif (!is_array($toMembers))
+    {
+      throw new InvalidArgumentException();
+    }
+
+    $sendMessageData = new SendMessageData();
+    if (!isset($options['fromMember']))
+    {
+      $options['fromMember'] = sfContext::getInstance()->getUser()->getMember();;
+    }
+    $sendMessageData->setMember($options['fromMember']);
+    $sendMessageData->setSubject($subject);
+    $sendMessageData->setBody($body);
+    if (!isset($options['type']))
+    {
+      $options['type'] = 'message';
+    }
+    $sendMessageData->setMessageType(MessageTypePeer::getMessageTypeIdByName($options['type']));
+    $sendMessageData->setIsSend(1);
+
+    foreach ($toMembers as $member)
+    {
+      $send = new MessageSendList();
+      $send->setSendMessageData($sendMessageData);
+      $send->setMember($member);
+      $send->save();
+    }
+
+    return $sendMessageData;
+  }
 }

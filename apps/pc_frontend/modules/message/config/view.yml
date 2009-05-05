@@ -1,4 +1,5 @@
 sendToFriendInput:
+  layout: layoutC
   customize:
     sendDraftButton:
       template: [message, sendDraftButton]
