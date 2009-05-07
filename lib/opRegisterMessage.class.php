@@ -29,12 +29,13 @@ class opRegisterMessage
       $fromMemberName  = $fromMember->getName();
 
       $param = $arguments['actionInstance']->getRequest()->getParameter('friend_link');
-    
-      $subject = 'フレンドリンク申請メッセージ';
-      SendMessageDataPeer::sendMessageFromGlobalTemplate($toMember, $subject, 'friendLinkMessage',
-      array('fromMember' => $fromMember, 'message' => $friendLinkParam['message']), 
-      array('type' => 'invite')
-    );
+
+      $sender = new opMessageSender();
+      $sender->setToMember($toMember)
+        ->setSubject('フレンドリンク申請メッセージ')
+        ->setBodyFromGlobalTemplate('friendLinkMessage', array('fromMember' => $fromMember, 'message' => $friendLinkParam['message']))
+        ->setMessageType('invite_friend')
+        ->send();
+    }
   }
-}
 }

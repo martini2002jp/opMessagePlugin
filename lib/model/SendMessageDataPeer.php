@@ -89,26 +89,6 @@ class SendMessageDataPeer extends BaseSendMessageDataPeer
     return $pager;
   }
 
-
- /**
-  * send message from global template
-  *
-  * @see SendMessageDataPeer::sendMessage()
-  * @param mixed  $toMembers      a Member instance or array of Member instance
-  * @param string $subject        a subject of the message
-  * @param string $templateName   The message template name
-  * @param array  $templateParams The params for template
-  * @param array  $options        options
-  */
-  public static function sendMessageFromGlobalTemplate($toMembers, $subject, $templateName, $templateParams = array(), $options = array())
-  {
-    $templateName = '_'.$templateName;
-    $view = new opGlobalPartialView(sfContext::getInstance(), 'superGlobal', $templateName, '');
-    $view->setPartialVars($templateParams);
-    $body = $view->render();
-    return self::sendMessage($toMembers, $subject, $body, $options);
-  }
-
  /**
   * send message
   *
