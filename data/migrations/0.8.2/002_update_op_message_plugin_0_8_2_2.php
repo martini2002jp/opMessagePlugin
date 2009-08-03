@@ -13,9 +13,9 @@ class updateOpMessagePlugin_0_8_2_2 extends opMigration
   public function up()
   {
     $criteria = new Criteria();
-    $criteria->add(NavigationPeer::TYPE, 'mobile_home_side');
-    $criteria->add(NavigationPeer::URI, 'message/index');
-    if (!NavigationPeer::doSelectOne($criteria))
+    $criteria->add(Doctrine::getTable('Navigation')->TYPE, 'mobile_home_side');
+    $criteria->add(Doctrine::getTable('Navigation')->URI, 'message/index');
+    if (!Doctrine::getTable('Navigation')->doSelectOne($criteria))
     {
       $navigation = new Navigation();
       $navigation->setType('mobile_home_side');

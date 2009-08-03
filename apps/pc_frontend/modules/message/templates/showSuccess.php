@@ -23,7 +23,7 @@ TODO: Previous and Next
 <td>
 <?php 
 if ($message->getIsSender()):
-    $sendLists = $message->getMessageSendLists();
+    $sendLists = $message->getMessageSendList();
     foreach ($sendLists as $sendTo): 
         if ($sendTo->getMember()):
           echo link_to($sendTo->getMember()->getName(), '@member_profile?id='.$sendTo->getMemberId())."<br />";
@@ -46,7 +46,7 @@ endif;
 </tr>
 </table>
 <div class="block">
-<?php $images = $message->getMessageFiles() ?>
+<?php $images = $message->getMessageFile() ?>
 <?php if (count($images)): ?>
 <ul class="photo">
 <?php foreach ($images as $image): ?>
@@ -70,11 +70,11 @@ endif;
 <div class="operation">
 <ul class="moreInfo button">
 <?php if ($messageType == 'dust'): ?>
-<li><?php echo button_to(__('Restore'), 'message/restore?id='.$deletedId)?></li>
+<li><?php echo button_to(__('Restore'), 'message/restore?id='.$deletedId, array('class'=>'input_submit'))?></li>
 <?php endif; ?>
-<li><?php echo button_to(__('Delete'), $deleteButton) ?></li>
+<li><?php echo button_to(__('Delete'), $deleteButton, array('class'=>'input_submit')) ?></li>
 <?php if ($messageType != 'dust' && !$message->getIsSender()): ?>
-<li><?php echo button_to(__('Reply'), 'message/reply?id='.$message->getId()) ?></li>
+<li><?php echo button_to(__('Reply'), 'message/reply?id='.$message->getId(), array('class'=>'input_submit')) ?></li>
 </ul>
 <?php else:?>
 </ul>
