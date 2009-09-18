@@ -113,7 +113,7 @@ class PluginDeletedMessageTable extends Doctrine_Table
     }
     elseif ($object_name == 'DeletedMessage')
     {
-      $message = DeletedMessagePeer::retrieveByPK($message_id);
+      $message = $this->find($message_id);
       $deleted_message = null;
     }
 
@@ -136,25 +136,26 @@ class PluginDeletedMessageTable extends Doctrine_Table
    * @param int $message_id
    * @return boolean 
    */
-/*
   public function restoreMessage($message_id)
   {
-    $deleted_message = DeletedMessagePeer::retrieveByPK($message_id);
+    $deleted_message = $this->find($message_id);
     if (!$deleted_message) {
       return false;
     }
     if ($deleted_message->getMessageSendListId() != null) {
-        $message = MessageSendListPeer::retrieveByPK($deleted_message->getMessageSendListId());
-    } else if ($deleted_message->getMessageId() != null) {
-        $message = SendMessageDataPeer::retrieveByPK($deleted_message->getMessageId());
+        $message = Doctrine::getTable('MessageSendList')->find($deleted_message->getMessageSendListId());
+        $message->setIsDeleted(0);
+        $message->save();
+    }
+    if ($deleted_message->getMessageId() != null) {
+        $message = Doctrine::getTable('SendMessageData')->find($deleted_message->getMessageId());
+        $message->setIsDeleted(0);
+        $message->save();
     }
     if (!$message) {
       return false;
     }
     $deleted_message->delete();
-    $message->setIsDeleted(0);
-    $message->save();
     return true;
   }
-*/
 }

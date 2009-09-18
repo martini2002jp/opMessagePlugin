@@ -92,4 +92,9 @@ abstract class PluginSendMessageData extends BaseSendMessageData
 
     return $files;
   }
+
+  public function getMessageSendLists()
+  {
+    return Doctrine::getTable('MessageSendList')->findByMessageId($this->getId());
+  }
 }

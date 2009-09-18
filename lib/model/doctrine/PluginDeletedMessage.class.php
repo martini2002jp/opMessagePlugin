@@ -138,29 +138,4 @@ abstract class PluginDeletedMessage extends BaseDeletedMessage
     }
     return null;
   }
-
-  /**
-   * restore message 
-   * @param int $message_id
-   * @return boolean 
-   */
-  public function restoreMessage($message_id)
-  {
-    $deleted_message = Doctrine::getTable('DeletedMessage')->find($message_id);
-    if (!$deleted_message) {
-      return false;
-    }
-    if ($deleted_message->getMessageSendListId() != null) {
-      $message = Doctrine::getTable('MessageSendList')->find($this->getMessageSendListId());
-    } else if ($deleted_message->getMessageId() != null) {
-      $message = Doctrine::getTable('SendMessageData')->find($this->getMessageId());
-    }
-    if (!$message) {
-      return false;
-    }
-    $deleted_message->delete();
-    $message->setIsDeleted(0);
-    $message->save();
-    return true;
-  }
 }
