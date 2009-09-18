@@ -19,7 +19,6 @@ class PluginSendMessageDataTable extends Doctrine_Table
     if ($isDraft) $isSend = false;
 
     $q = $this->createQuery()
-      ->from('SendMessageData')
       ->where('member_id = ?', $memberId)
       ->andwhere('is_deleted = ?', false)
       ->andwhere('is_send = ?', $isSend);
@@ -70,32 +69,9 @@ class PluginSendMessageDataTable extends Doctrine_Table
   public function getHensinMassage($memberId, $messageId)
   {
     $q = $this->createQuery()
-      ->from('SendMessageData')
       ->where('member_id = ?', $memberId)
       ->andwhere('is_send = ?', true)
       ->andwhere('return_message_id = ?', $messageId)
-      ->fetchOne();
-
-    if (!$q) return null;
-
-    return $q;
-  }
-
-  public function getSendMessageData($messageId)
-  {
-    $q = $this->createQuery()
-      ->from('SendMessageData sm')
-      ->leftJoin('sm.Member mm')
-      ->where('sm.id = ?', $messageId);
-
-    return $q->execute();
-  }
-
-  public function getSendMassageDataQueryById($messageId)
-  {
-    $q = Doctrine_Query::create()
-      ->from('SendMessageData')
-      ->where('id = ?', $messageId)
       ->fetchOne();
 
     if (!$q) return null;

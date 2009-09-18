@@ -21,7 +21,7 @@ abstract class PluginMessageFile extends BaseMessageFile
 
   protected function setFileNamePrefix()
   {
-    $prefix = 'ms_'.$this->getMessage()->getId().'_';
+    $prefix = 'ms_'.$this->getSendMessageData()->getId().'_';
 
     $file = $this->getFile();
     if ($file)

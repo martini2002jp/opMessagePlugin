@@ -42,13 +42,7 @@ abstract class PluginMessageSendList extends BaseMessageSendList
    */
   public function getSendFrom()
   {
-    $objs = Doctrine::getTable('SendMessageData')->getSendMessageData($this->getId());
-    if ($cnt = count($objs) == 0) {
-
-      return null;
-    }
-
-    return $objs[0]->getMember();
+    return $this->getSendMessageData()->getMember();
   }
 
  /**
@@ -58,12 +52,6 @@ abstract class PluginMessageSendList extends BaseMessageSendList
   */
   public function getSubject()
   {
-    $objs = Doctrine::getTable('SendMessageData')->getSendMessageData($this->getId());
-    if ($cnt = count($objs) == 0) {
-
-      return null;
-    }
-
-    return $objs[0]->getSubject();
+    return $this->getSendMessageData()->getSubject();
   }
 }

@@ -54,7 +54,7 @@ abstract class PluginSendMessageDataForm extends BaseSendMessageDataForm
         else
         {
           $image = new MessageFile();
-          $image->setMessage($this->getObject());
+          $image->setSendMessageData($this->getObject());
         }
 
         $imageForm = new MessageFileForm($image);
@@ -104,7 +104,7 @@ abstract class PluginSendMessageDataForm extends BaseSendMessageDataForm
 
     if (!$send) {
       $send = new MessageSendList();
-      $send->setMessage($message);
+      $send->setSendMessageData($message);
       $send->setMemberId($send_member_id);
       $send->save();
     }

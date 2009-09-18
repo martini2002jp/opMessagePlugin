@@ -9,12 +9,9 @@ class PluginMessageSendListTable extends Doctrine_Table
     }
 
     $q = $this->createQuery()
-      ->from('MessageSendList msl')
-      ->leftJoin('msl.Member mem')
-      ->leftJoin('msl.Message msd')
-      ->where('msl.member_id = ?', $memberId)
-      ->andwhere('msl.is_deleted = ?', false)
-      ->andwhere('msd.is_send = ?', true);
+      ->where('member_id = ?', $memberId)
+      ->andwhere('is_deleted = ?', false)
+      ->andwhere('SendMessageData.is_send = ?', true);
 
     return $q;
   }
@@ -47,12 +44,10 @@ class PluginMessageSendListTable extends Doctrine_Table
   public function countUnreadMessage($memberId)
   {
     $q = $this->createQuery()
-      ->from('MessageSendList msl')
-      ->leftJoin('msl.Message msd')
-      ->where('msl.member_id = ?', $memberId)
-      ->andwhere('msl.is_deleted = ?', false)
-      ->andwhere('msl.is_read = ?', false)
-      ->andwhere('msd.is_send = ?', true);
+      ->where('member_id = ?', $memberId)
+      ->andwhere('is_deleted = ?', false)
+      ->andwhere('is_read = ?', false)
+      ->andwhere('SendMessageData.is_send = ?', true);
 
     return $q->count();
   }
@@ -66,7 +61,6 @@ class PluginMessageSendListTable extends Doctrine_Table
   public function getMessageByReferences($memberId, $messageId)
   {
     $q = $this->createQuery()
-      ->from('MessageSendList')
       ->where('member_id = ?', $memberId)
       ->andwhere('message_id = ?', $messageId)
       ->fetchOne();
@@ -83,40 +77,8 @@ class PluginMessageSendListTable extends Doctrine_Table
   public function getMessageSendList($messageId)
   {
     $q = $this->createQuery()
-      ->from('MessageSendList ms')
-      ->leftJoin('ms.Member mm')
-      ->where('ms.message_id = ?', $messageId);
+      ->where('message_id = ?', $messageId);
 
     return $q->execute();
-  }
-
-  /**
-   * message_idからmessage_send_list_id を取得する
-   * @param $messageId
-   * @return int
-   */
-  public function getMessageSendListIdByMessageId($messageId)
-  {
-    $q = $this->createQuery()
-      ->select('id')
-      ->from('MessageSendList')
-      ->andwhere('message_id = ?', $messageId)
-      ->fetchOne();
-
-    if (!$q) return null;
-
-    return $q;
-  }
-
-  public function getMessageSendListQueryByMessageId($messageId)
-  {
-    $q = Doctrine_Query::create()
-      ->from('MessageSendList')
-      ->where('message_id = ?', $messageId)
-      ->fetchOne();
-
-    if (!$q) return null;
-
-    return $q;
   }
 }

@@ -11,7 +11,6 @@ class PluginMessageTypeTable extends Doctrine_Table
   public function getMessageTypeIdByName($typeName)
   {
     $q = $this->createQuery()
-      ->from('MessageType')
       ->where('type_name = ?', $typeName)
       ->andwhere('is_deleted = ?', false);
 

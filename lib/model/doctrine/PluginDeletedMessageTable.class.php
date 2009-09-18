@@ -14,7 +14,6 @@ class PluginDeletedMessageTable extends Doctrine_Table
     }
 
     $q = $this->createQuery()
-      ->from('DeletedMessage')
       ->where('member_id = ?', $memberId)
       ->andwhere('is_deleted = ?', false);
 
@@ -50,7 +49,6 @@ class PluginDeletedMessageTable extends Doctrine_Table
   public function getDeletedMessageByMessageId($member_id, $message_id)
   {
     $q = $this->createQuery()
-      ->from('DeletedMessage')
       ->where('member_id = ?', $member_id)
       ->addwhere('message_id = ?', $message_id);
     $obj = $q->fetchOne();
@@ -69,7 +67,6 @@ class PluginDeletedMessageTable extends Doctrine_Table
   public function getDeletedMessageByMessageSendListId($member_id, $message_send_list_id)
   {
     $q = $this->createQuery()
-      ->from('DeletedMessage')
       ->where('member_id = ?', $member_id)
       ->addwhere('message_send_list_id = ?', $message_send_list_id);
     $obj = $q->fetchOne();
@@ -90,26 +87,23 @@ class PluginDeletedMessageTable extends Doctrine_Table
   {
     if ($object_name == 'MessageSendList')
     {
-      $message = Doctrine::getTable('MessageSendList')->getMessageSendListQueryByMessageId($message_id);
+      $message = Doctrine::getTable('MessageSendList')->find($message_id);
       $deleted_message = $this->getDeletedMessageByMessageSendListId($member_id, $message_id);
       if (!$deleted_message)
       {
         $deleted_message = new DeletedMessage();
       }
-      $deleted_message->setMessageId($message_id);
       $deleted_message->setMessageSendListId($message_id);
     }
     elseif ($object_name == 'SendMessageData')
     {
-      $message = Doctrine::getTable('SendMessageData')->getSendMassageDataQueryById($message_id);
+      $message = Doctrine::getTable('SendMessageData')->find($message_id);
       $deleted_message = $this->getDeletedMessageByMessageId($member_id, $message_id);
       if (!$deleted_message)
       {
         $deleted_message = new DeletedMessage();
       }
       $deleted_message->setMessageId($message_id);
-      $message_send_list = Doctrine::getTable('MessageSendList')->getMessageSendListIdByMessageId($message_id);
-      $deleted_message->setMessageSendListId($message_send_list->getId());
     }
     elseif ($object_name == 'DeletedMessage')
     {
@@ -142,20 +136,17 @@ class PluginDeletedMessageTable extends Doctrine_Table
     if (!$deleted_message) {
       return false;
     }
-    if ($deleted_message->getMessageSendListId() != null) {
+    if ($deleted_message->getMessageSendListId() != 0) {
         $message = Doctrine::getTable('MessageSendList')->find($deleted_message->getMessageSendListId());
-        $message->setIsDeleted(0);
-        $message->save();
-    }
-    if ($deleted_message->getMessageId() != null) {
+     } else if ($deleted_message->getMessageId() != 0) {
         $message = Doctrine::getTable('SendMessageData')->find($deleted_message->getMessageId());
-        $message->setIsDeleted(0);
-        $message->save();
     }
     if (!$message) {
       return false;
     }
     $deleted_message->delete();
-    return true;
+    $message->setIsDeleted(0);
+    $message->save();
+   return true;
   }
 }

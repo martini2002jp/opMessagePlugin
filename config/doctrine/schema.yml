@@ -50,7 +50,7 @@ MessageFile:
     message_id: { type: integer(4), notnull: true }
     file_id: { type: integer(4), notnull: true }
   relations:
-    Message: { class: SendMessageData, local: message_id, foreign: id, onDelete: cascade }
+    SendMessageData: { class: SendMessageData, local: message_id, foreign: id, onDelete: cascade }
     File: { local: file_id, foreign: id, onDelete: cascade }
 #メッセージ送信先
 MessageSendList:
@@ -62,7 +62,7 @@ MessageSendList:
     is_deleted: { type: boolean, notnull: true, default: 0 }
   relations:
     Member: { local: member_id, foreign: id, onDelete: set null }
-    Message: { class: SendMessageData, local:message_id, foreign: id }
+    SendMessageData: { class: SendMessageData, local:message_id, foreign: id }
 #削除済み（DustBox）メッセージ
 DeletedMessage:
   columns:
