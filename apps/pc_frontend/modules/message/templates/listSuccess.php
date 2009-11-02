@@ -86,7 +86,6 @@ switch ($messageType):
     $detail_title = $message->getSubject();
     $detail_url = '@readReceiveMessage?id='.$message->getMessageId();
     break;
-
   case 'send':
     $form_delete = $form["message_ids[".$message->getId()."]"];
     $form_delete_error = $form["message_ids[".$message->getId()."]"]->renderError();
@@ -94,7 +93,6 @@ switch ($messageType):
     $detail_title = $message->getSubject();
     $detail_url = '@readSendMessage?id='.$message->getId();
     break;
-
   case 'draft':
     $form_delete = $form["message_ids[".$message->getId()."]"];
     $form_delete_error = $form["message_ids[".$message->getId()."]"]->renderError();
@@ -102,7 +100,6 @@ switch ($messageType):
     $detail_title = $message->getSubject();
     $detail_url = 'message/edit?id='.$message->getId();
     break;
-
   case 'dust':
     $form_delete = $form["message_ids[".$message->getId()."]"];
     $form_delete_error = $form["message_ids[".$message->getId()."]"]->renderError();
