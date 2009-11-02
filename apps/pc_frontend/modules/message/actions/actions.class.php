@@ -37,7 +37,6 @@ class messageActions extends opMessagePluginMessageActions
   {
     $result = parent::executeSendToFriend($request);
     $this->setFriendNav($this->sendMember->getId());
-
     return $result;
   }
 

@@ -202,13 +202,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     $this->sendMember = Doctrine::getTable('Member')->find($sendMemberId);
     if ($request->isMethod(sfWebRequest::POST))
     {
-
-      $this->form->getObject()->setMemberId($this->getUser()->getMemberId());
-//      $this->form->getObject()->setSendMemberId($sendMemberId);
-
-
       $params = $request->getParameter('message');
-//      $this->form->bind($params, $request->getFiles('message'));
       $this->form->bind(
         $request->getParameter($this->form->getName()),
         $request->getFiles($this->form->getName())
