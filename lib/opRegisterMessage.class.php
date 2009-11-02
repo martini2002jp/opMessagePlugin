@@ -24,7 +24,7 @@ class opRegisterMessage
       $request         = $arguments['actionInstance']->getRequest();
       $friendLinkParam = $request->getParameter('friend_link');
       $toMemberId      = $request->getParameter('id');
-      $toMember        = MemberPeer::retrieveByPk($toMemberId);
+      $toMember        = Doctrine::getTable('Member')->find($toMemberId);
       $fromMember      = sfContext::getInstance()->getUser()->getMember();
       $fromMemberName  = $fromMember->getName();
 
@@ -34,7 +34,7 @@ class opRegisterMessage
       $sender->setToMember($toMember)
         ->setSubject('フレンドリンク申請メッセージ')
         ->setBodyFromGlobalTemplate('friendLinkMessage', array('fromMember' => $fromMember, 'message' => $friendLinkParam['message']))
-        ->setMessageType('invite_friend')
+        ->setMessageType('friend_link')
         ->send();
     }
   }

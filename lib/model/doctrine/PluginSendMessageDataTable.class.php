@@ -120,7 +120,7 @@ class PluginSendMessageDataTable extends Doctrine_Table
     {
       $options['type'] = 'message';
     }
-    $sendMessageData->setMessageType(MessageTypePeer::getMessageTypeIdByName($options['type']));
+    $sendMessageData->setMessageType(Doctrine::getTable('MessageType')->getMessageTypeIdByName($options['type']));
     $sendMessageData->setIsSend(1);
 
     foreach ($toMembers as $member)

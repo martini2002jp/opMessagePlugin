@@ -129,6 +129,6 @@ class opMessageSender
   */
   public function send()
   {
-    SendMessageDataPeer::sendMessage($this->toMembers, $this->subject, $this->body, $this->options);
+    Doctrine::getTable('SendMessageData')->sendMessage($this->toMembers, $this->subject, $this->body, $this->options);
   }
 }
