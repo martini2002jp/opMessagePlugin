@@ -1,29 +1,44 @@
 <?php
+
 /**
+ * This file is part of the OpenPNE package.
+ * (c) OpenPNE Project (http://www.openpne.jp/)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file and the NOTICE file that were distributed with this source code.
  */
+
 class PluginSendMessageDataTable extends Doctrine_Table
 {
-
  /**
+  * add send message query
+  *
+  * @param Doctrine_Query $q
   * @param integer  $memberId
-  * @param bool     $isDraft
   */
-  public function addSendMessageQuery($memberId = null, $isDraft = false)
+  public function addSendMessageQuery($q, $memberId = null)
   {
     if (is_null($memberId))
     {
       $memberId = sfContext::getInstance()->getUser()->getMemberId();
     }
-
-    $isSend = true;
-    if ($isDraft) $isSend = false;
-
-    $q = $this->createQuery()
-      ->where('member_id = ?', $memberId)
-      ->andwhere('is_deleted = ?', false)
-      ->andwhere('is_send = ?', $isSend);
-
+    $q = $q->where('member_id = ?', $memberId)
+      ->andWhere('is_deleted = ?', false)
+      ->andWhere('is_send = ?', true);
     return $q;
+  }
+
+  public function getHensinMassage($memberId, $messageId)
+  {
+    $obj = $this->createQuery()
+      ->where('member_id = ?', $memberId)
+      ->andWhere('is_send = ?', true)
+      ->andWhere('return_message_id = ?', $messageId)
+      ->fetchOne();
+    if (!$obj) {
+      return null;
+    }
+    return $obj;
   }
 
   /**
@@ -35,9 +50,8 @@ class PluginSendMessageDataTable extends Doctrine_Table
    */
   public function getSendMessagePager($memberId = null, $page = 1, $size = 20)
   {
-    $q = $this->addSendMessageQuery($memberId);
+    $q = $this->addSendMessageQuery($this->createQuery(), $memberId);
     $q->orderBy('created_at DESC');
-
     $pager = new sfDoctrinePager('SendMessageData', $size);
     $pager->setQuery($q);
     $pager->setPage($page);
@@ -53,10 +67,13 @@ class PluginSendMessageDataTable extends Doctrine_Table
    * @param $size
    * @return Message object（の配列）
    */
-  public function getDraftMessagePager($memberId, $page = 1, $size = 20)
+  public function getDraftMessagePager($member_id, $page = 1, $size = 20)
   {
-    $q = $this->addSendMessageQuery($memberId, true);
-    $q->orderBy('created_at DESC');
+    $q = $this->createQuery()
+      ->andWhere('member_id = ?', $member_id)
+      ->andWhere('is_deleted = ?', false)
+      ->andWhere('is_send = ?', false)
+      ->orderBy('created_at DESC');
 
     $pager = new sfDoctrinePager('SendMessageData', $size);
     $pager->setQuery($q);
@@ -64,18 +81,5 @@ class PluginSendMessageDataTable extends Doctrine_Table
     $pager->init();
 
     return $pager;
-  }
-
-  public function getHensinMassage($memberId, $messageId)
-  {
-    $q = $this->createQuery()
-      ->where('member_id = ?', $memberId)
-      ->andwhere('is_send = ?', true)
-      ->andwhere('return_message_id = ?', $messageId)
-      ->fetchOne();
-
-    if (!$q) return null;
-
-    return $q;
   }
 }

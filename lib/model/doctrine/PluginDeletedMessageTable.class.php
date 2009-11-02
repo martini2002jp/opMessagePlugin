@@ -23,8 +23,7 @@ class PluginDeletedMessageTable extends Doctrine_Table
       $memberId = sfContext::getInstance()->getUser()->getMemberId();
     }
 
-    $q = $this->createQuery()
-      ->where('member_id = ?', $memberId)
+    $q = $q->where('member_id = ?', $memberId)
       ->andWhere('is_deleted = ?', false);
 
     return $q;
@@ -39,8 +38,7 @@ class PluginDeletedMessageTable extends Doctrine_Table
    */
   public function getDeletedMessagePager($memberId = null, $page = 1, $size = 20)
   {
-    $q = new Doctrine_Query();
-    $q = $this->addDeleteMessageQuery($q, $memberId);
+    $q = $this->addDeleteMessageQuery($this->createQuery(), $memberId);
     $q->orderBy('created_at DESC');
     $pager = new sfDoctrinePager('DeletedMessage', $size);
     $pager->setQuery($q);

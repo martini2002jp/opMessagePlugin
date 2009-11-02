@@ -39,8 +39,7 @@ class PluginMessageSendListTable extends Doctrine_Table
    */
   public function getReceiveMessagePager($memberId = null, $page = 1, $size = 20)
   {
-    $q = new Doctrine_Query();
-    $q = $this->addReceiveMessageQuery($q, $memberId);
+    $q = $this->addReceiveMessageQuery($this->createQuery(), $memberId);
     $q->orderBy('created_at DESC');
 
     $pager = new sfDoctrinePager('SendMessageData', $size);
