@@ -8,6 +8,14 @@
  * file and the NOTICE file that were distributed with this source code.
  */
 
+/**
+ * PluginSendMessageDataTable
+ *
+ * @package    opMessagePlugin
+ * @subpackage model
+ * @author     Maki Takahashi <maki@jobweb.jp>
+ * @author     Kousuke Ebihara <ebihara@tejimaya.com>
+ */
 class PluginSendMessageDataTable extends Doctrine_Table
 {
  /**
@@ -89,6 +97,7 @@ class PluginSendMessageDataTable extends Doctrine_Table
   * Available options:
   *
   *  * type      : The message type   (default: 'message')
+  *  * identifier: The identifier of foreign table (default: 0)
   *  * fromMember: The message sender (default: my member object)
   *
   * @param mixed   $toMembers  a Member instance or array of Member instance
@@ -99,6 +108,8 @@ class PluginSendMessageDataTable extends Doctrine_Table
   */
   public static function sendMessage($toMembers, $subject, $body, $options = array())
   {
+    $options = array_merge(array('type' => 'message', 'identifier' => 0), $options);
+
     if ($toMembers instanceof Member)
     {
       $toMembers = array($toMembers);
@@ -116,10 +127,7 @@ class PluginSendMessageDataTable extends Doctrine_Table
     $sendMessageData->setMember($options['fromMember']);
     $sendMessageData->setSubject($subject);
     $sendMessageData->setBody($body);
-    if (!isset($options['type']))
-    {
-      $options['type'] = 'message';
-    }
+    $sendMessageData->setForeignId($options['identifier']);
     $sendMessageData->setMessageType(Doctrine::getTable('MessageType')->getMessageTypeIdByName($options['type']));
     $sendMessageData->setIsSend(1);
 
@@ -132,5 +140,28 @@ class PluginSendMessageDataTable extends Doctrine_Table
     }
 
     return $sendMessageData;
+  }
+
+  public function getMessageByTypeAndIdentifier($memberIdFrom, $memberIdTo, $messageTypeName = 'message', $identifier = 0)
+  {
+    $type = Doctrine::getTable('MessageType')->getMessageTypeIdByName($messageTypeName);
+    if (!$type)
+    {
+      return false;
+    }
+
+    $q = $this->createQuery('m')
+      ->select('m.id')
+      ->where('m.message_type_id = ?')
+      ->andWhere('m.member_id = ?')
+      ->andWhere('m.foreign_id = ?');
+
+    $obj = Doctrine::getTable('MessageSendList')->createQuery('ms')
+      ->where('ms.member_id = ?', $memberIdTo)
+      ->andWhere('ms.message_id IN ('.$q->getDql().')', array($type->id, $memberIdFrom, $identifier))
+      ->orderBy('ms.created_at DESC')
+      ->fetchOne();
+
+    return $obj->getSendMessageData();
   }
 }

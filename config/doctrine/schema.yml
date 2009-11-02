@@ -38,6 +38,7 @@ SendMessageData:
     #返信元ID
     return_message_id: { type: integer(4), default: 0 }
     message_type_id: { type: integer(4) }
+    foreign_id: { type: integer(4), default: 0 }
   relations:
     Member: { local: member_id, foreign: id, onDelete: set null }
     MessageType: { local: message_type_id, foreign: id }
