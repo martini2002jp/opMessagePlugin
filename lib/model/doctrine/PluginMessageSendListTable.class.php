@@ -1,17 +1,31 @@
 <?php
+
+/**
+ * This file is part of the OpenPNE package.
+ * (c) OpenPNE Project (http://www.openpne.jp/)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file and the NOTICE file that were distributed with this source code.
+ */
+
 class PluginMessageSendListTable extends Doctrine_Table
 {
-  public function addReceiveMessageQuery($memberId = null)
+  /**
+   * add receive message query
+   *
+   * @param Doctrine_Query $q
+   * @param integer  $memberId
+   */
+  public function addReceiveMessageQuery(Doctrine_Query $q, $memberId = null)
   {
     if (is_null($memberId))
     {
       $memberId = sfContext::getInstance()->getUser()->getMemberId();
     }
 
-    $q = $this->createQuery()
-      ->where('member_id = ?', $memberId)
-      ->andwhere('is_deleted = ?', false)
-      ->andwhere('SendMessageData.is_send = ?', true);
+    $q = $q->where('member_id = ?', $memberId)
+      ->andWhere('is_deleted = ?', false)
+      ->andWhere('SendMessageData.is_send = ?', true);
 
     return $q;
   }
@@ -25,7 +39,8 @@ class PluginMessageSendListTable extends Doctrine_Table
    */
   public function getReceiveMessagePager($memberId = null, $page = 1, $size = 20)
   {
-    $q = $this->addReceiveMessageQuery($memberId);
+    $q = new Doctrine_Query();
+    $q = $this->addReceiveMessageQuery($q, $memberId);
     $q->orderBy('created_at DESC');
 
     $pager = new sfDoctrinePager('SendMessageData', $size);
@@ -41,14 +56,13 @@ class PluginMessageSendListTable extends Doctrine_Table
    * @param $member_id
    * @return int 
    */
-  public function countUnreadMessage($memberId)
+  public function countUnreadMessage($member_id)
   {
     $q = $this->createQuery()
-      ->where('member_id = ?', $memberId)
-      ->andwhere('is_deleted = ?', false)
-      ->andwhere('is_read = ?', false)
-      ->andwhere('SendMessageData.is_send = ?', true);
-
+      ->where('member_id = ?', $member_id)
+      ->andWhere('is_deleted = ?', false)
+      ->andWhere('is_read = ?', false)
+      ->andWhere('SendMessageData.is_send = ?', true);
     return $q->count();
   }
 
@@ -60,14 +74,14 @@ class PluginMessageSendListTable extends Doctrine_Table
    */
   public function getMessageByReferences($memberId, $messageId)
   {
-    $q = $this->createQuery()
+    $obj = $this->createQuery()
       ->where('member_id = ?', $memberId)
       ->andwhere('message_id = ?', $messageId)
       ->fetchOne();
-
-    if (!$q) return null;
-
-    return $q;
+    if (!$obj) {
+      return null;
+    }
+    return $obj;
   }
 
   /**
