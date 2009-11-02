@@ -1,12 +1,22 @@
 <?php
+
 /**
+ * This file is part of the OpenPNE package.
+ * (c) OpenPNE Project (http://www.openpne.jp/)
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file and the NOTICE file that were distributed with this source code.
  */
+
 class PluginDeletedMessageTable extends Doctrine_Table
 {
  /**
+  * add delete message query
+  *
+  * @param Doctrine_Query $q
   * @param integer $memberId
   */
-  public function addDeleteMessageQuery($memberId = null)
+  public function addDeleteMessageQuery(Doctrine_Query $q, $memberId = null)
   {
     if (is_null($memberId))
     {
@@ -15,7 +25,7 @@ class PluginDeletedMessageTable extends Doctrine_Table
 
     $q = $this->createQuery()
       ->where('member_id = ?', $memberId)
-      ->andwhere('is_deleted = ?', false);
+      ->andWhere('is_deleted = ?', false);
 
     return $q;
   }
@@ -29,9 +39,9 @@ class PluginDeletedMessageTable extends Doctrine_Table
    */
   public function getDeletedMessagePager($memberId = null, $page = 1, $size = 20)
   {
-    $q = $this->addDeleteMessageQuery($memberId);
+    $q = new Doctrine_Query();
+    $q = $this->addDeleteMessageQuery($q, $memberId);
     $q->orderBy('created_at DESC');
-
     $pager = new sfDoctrinePager('DeletedMessage', $size);
     $pager->setQuery($q);
     $pager->setPage($page);
@@ -53,8 +63,9 @@ class PluginDeletedMessageTable extends Doctrine_Table
       ->addwhere('message_id = ?', $message_id);
     $obj = $q->fetchOne();
 
-    if (!$obj) return null;
-
+    if (!$obj) {
+      return null;
+    }
     return $obj;
   }
 
@@ -71,8 +82,9 @@ class PluginDeletedMessageTable extends Doctrine_Table
       ->addwhere('message_send_list_id = ?', $message_send_list_id);
     $obj = $q->fetchOne();
 
-    if (!$obj) return null;
-
+    if (!$obj) {
+      return null;
+    }
     return $obj;
   }
 
@@ -85,44 +97,35 @@ class PluginDeletedMessageTable extends Doctrine_Table
    */
   public function deleteMessage($member_id, $message_id, $object_name)
   {
-    if ($object_name == 'MessageSendList')
-    {
-      $message = Doctrine::getTable('MessageSendList')->find($message_id);
-      $deleted_message = $this->getDeletedMessageByMessageSendListId($member_id, $message_id);
-      if (!$deleted_message)
-      {
-        $deleted_message = new DeletedMessage();
+    if ($object_name == 'MessageSendList') {
+        $message = Doctrine::getTable('MessageSendList')->find($message_id);
+        $deleted_message = $this->getDeletedMessageByMessageSendListId($member_id, $message_id);
+        if (!$deleted_message) {
+          $deleted_message = new DeletedMessage();
+        }
+        $deleted_message->setMessageSendListId($message_id);
+      } elseif ($object_name == 'SendMessageData') {
+        $message = Doctrine::getTable('SendMessageData')->find($message_id);
+        $deleted_message = $this->getDeletedMessageByMessageId($member_id, $message_id);
+        if (!$deleted_message) {
+          $deleted_message = new DeletedMessage();
+        }
+        $deleted_message->setMessageId($message_id);
+      } elseif ($object_name == 'DeletedMessage') {
+        $message = $this->find($message_id);
+        $deleted_message = null;
       }
-      $deleted_message->setMessageSendListId($message_id);
-    }
-    elseif ($object_name == 'SendMessageData')
-    {
-      $message = Doctrine::getTable('SendMessageData')->find($message_id);
-      $deleted_message = $this->getDeletedMessageByMessageId($member_id, $message_id);
-      if (!$deleted_message)
-      {
-        $deleted_message = new DeletedMessage();
+      if (!$message) {
+        return false;
       }
-      $deleted_message->setMessageId($message_id);
-    }
-    elseif ($object_name == 'DeletedMessage')
-    {
-      $message = $this->find($message_id);
-      $deleted_message = null;
-    }
-
-    if (!$message) return false;
-
-    if ($deleted_message)
-    {
-      $deleted_message->setMemberId($member_id);
-      $deleted_message->save();
-    }
-    $message->setIsDeleted(1);
-    /* @todo 完全削除の場合ファイルも削除すべきかも */
-    $message->save();
-
-    return true;
+      if ($deleted_message) {
+        $deleted_message->setMemberId($member_id);
+        $deleted_message->save();
+      }
+      $message->setIsDeleted(1);
+      /* @todo 完全削除の場合ファイルも削除すべきかも */
+      $message->save();
+      return true;
   }
 
   /**
