@@ -100,4 +100,20 @@ abstract class PluginSendMessageData extends BaseSendMessageData
   {
     return Doctrine::getTable('MessageSendList')->findByMessageId($this->getId());
   }
+
+  public function getDecoratedMessageBody()
+  {
+    $type = $this->getMessageType()->type_name;
+    if ($type === 'message')
+    {
+      return $this->body;
+    }
+
+    $methodName = 'decorate'.sfInflector::camelize($type).'Body';
+
+    // For calling magic method, must create instance. It is limitation of PHP 5.2.x
+    $instance = new opRegisterMessage();
+
+    return $instance->$methodName($this);
+  }
 }

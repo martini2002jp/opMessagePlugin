@@ -11,9 +11,10 @@
 /**
  * opMessageSender
  *
- * @package    OpenPNE
+ * @package    opMessagePlugin
  * @subpackage util
  * @author     Shogo Kawahara <kawahara@tejimaya.net>
+ * @author     Kousuke Ebihara <ebihara@tejimaya.com>
  */
 class opMessageSender
 {
@@ -96,20 +97,18 @@ class opMessageSender
     return $this;
   }
 
- /**
-  * set body from global template
-  *
-  * @param string $templateName
-  * @param array  $templateParams
-  * @return opMessageSender
-  */
-  public function setBodyFromGlobalTemplate($templateName, $templateParams = array())
+  public function setIdentifier($identifier)
+  {
+    $this->options['identifier'] = (int)$identifier;
+  }
+
+  public static function decorateBySpecifiedTemplate($templateName, $templateParams = array())
   {
     $templateName = '_'.$templateName;
     $view = new opGlobalPartialView(sfContext::getInstance(), 'superGlobal', $templateName, '');
     $view->setPartialVars($templateParams);
-    $this->body = $view->render();
-    return $this;
+
+    return $view->render();
   }
 
  /**

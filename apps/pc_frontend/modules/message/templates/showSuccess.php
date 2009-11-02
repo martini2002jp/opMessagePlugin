@@ -50,7 +50,7 @@ TODO: Previous and Next
 </ul>
 <?php endif; ?>
 <p class="text">
-<?php echo auto_link_text(nl2br($message->getBody()), 'urls', array('target' => '_blank'), true, 57) ?>
+<?php echo auto_link_text(nl2br($message->getDecoratedMessageBody()), 'urls', array('target' => '_blank'), true, 57) ?>
 </p>
 </div>
 
