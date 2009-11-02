@@ -70,11 +70,11 @@ endif;
 <div class="operation">
 <ul class="moreInfo button">
 <?php if ($messageType == 'dust'): ?>
-<li><?php echo button_to(__('Restore'), 'message/restore?id='.$deletedId, array('class'=>'input_submit'))?></li>
+<li><?php echo button_to(__('Restore'), 'message/restore?id='.$deletedId)?></li>
 <?php endif; ?>
-<li><?php echo button_to(__('Delete'), $deleteButton, array('class'=>'input_submit')) ?></li>
+<li><?php echo button_to(__('Delete'), $deleteButton) ?></li>
 <?php if ($messageType != 'dust' && !$message->getIsSender()): ?>
-<li><?php echo button_to(__('Reply'), 'message/reply?id='.$message->getId(), array('class'=>'input_submit')) ?></li>
+<li><?php echo button_to(__('Reply'), 'message/reply?id='.$message->getId()) ?></li>
 </ul>
 <?php else:?>
 </ul>
