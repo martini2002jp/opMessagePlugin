@@ -127,6 +127,20 @@ class opMessagePluginMessageActions extends opMessagePluginActions
       default :
         throw new LogicException();
     }
+    $this->fromOrToMembers = array();
+    if ($this->message->getIsSender())
+    {
+      $messageSendLists = $this->message->getMessageSendLists();
+      foreach ($messageSendLists as $messageSendList)
+      {
+        $this->fromOrToMembers[] = $messageSendList->getMember();
+      }
+    }
+    else
+    {
+      $this->fromOrToMembers[] = $this->message->getMember();
+    }
+    
   }
 
  /**

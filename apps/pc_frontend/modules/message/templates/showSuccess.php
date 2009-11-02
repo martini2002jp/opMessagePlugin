@@ -14,6 +14,9 @@ TODO: Previous and Next
 */ ?>
 <table>
 <tr>
+<?php if(count($fromOrToMembers) == 1): ?>
+<td class="photo" rowspan="3"><?php echo link_to(image_tag_sf_image($fromOrToMembers[0]->getImageFileName(), array('size' => '76x76')), 'member/profile?id='.$fromOrToMembers[0]->getId()) ?></td>
+<?php endif; ?>
 <th>
 <?php if ($message->getIsSender()): ?>
 <?php echo __('To') ?>
@@ -21,20 +24,11 @@ TODO: Previous and Next
 <?php echo __('From') ?>
 <?php endif; ?></th>
 <td>
-<?php 
-if ($message->getIsSender()):
-    $sendLists = $message->getMessageSendList();
-    foreach ($sendLists as $sendTo): 
-        if ($sendTo->getMember()):
-          echo link_to($sendTo->getMember()->getName(), '@member_profile?id='.$sendTo->getMemberId())."<br />";
-        endif;
-    endforeach;
-else:
-    if ($message->getMember()):
-      echo link_to($message->getMember()->getName(), '@member_profile?id='.$message->getMemberId());
-    endif;
-endif;
-?>
+<ul>
+<?php foreach ($fromOrToMembers as $member): ?>
+<li><?php echo link_to($member->getName(), '@member_profile?id='.$member->getId()) ?></li>
+<?php endforeach; ?>
+</ul>
 </td>
 </tr>
 <tr>
@@ -70,11 +64,11 @@ endif;
 <div class="operation">
 <ul class="moreInfo button">
 <?php if ($messageType == 'dust'): ?>
-<li><?php echo button_to(__('Restore'), 'message/restore?id='.$deletedId)?></li>
+<li><?php echo button_to(__('Restore'), 'message/restore?id='.$deletedId, array('class' => 'input_submit')) ?></li>
 <?php endif; ?>
-<li><?php echo button_to(__('Delete'), $deleteButton) ?></li>
+<li><?php echo button_to(__('Delete'), $deleteButton, array('class' => 'input_submit')) ?></li>
 <?php if ($messageType != 'dust' && !$message->getIsSender()): ?>
-<li><?php echo button_to(__('Reply'), 'message/reply?id='.$message->getId()) ?></li>
+<li><?php echo button_to(__('Reply'), 'message/reply?id='.$message->getId(), array('class' => 'input_submit')) ?></li>
 </ul>
 <?php else:?>
 </ul>
