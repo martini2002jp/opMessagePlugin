@@ -8,9 +8,6 @@ MessageType:
       fields: [caption, info, body, subject]
       length: 5
     Timestampable:
-      #body: デフォルト本文
-      #subject: メッセージデフォルトタイトル
-      #caption: 説明  
   columns:
     id: { type: integer(4), primary: true, autoincrement: true }
     #メッセージタイプ名（管理用）
@@ -18,15 +15,16 @@ MessageType:
     #外部テーブル名（プラグインインストール時に自動で登録／管理画面にて編集不可）
     foreign_table: { type: string }
     is_deleted: { type: boolean, notnull: ture, default: 0 }
+    #デフォルト本文
+    body: { type: string }
+    #メッセージデフォルトタイトル
+    subject: { type: string }
+    #説明
     caption: { type: string, notnull: true }
     info: { type: string }
-    body: { type: string }
-    subject: { type: string }
 #メッセージ本体（送信）
 SendMessageData:
   tableName: message
-#Message:
-#  _attributes: { phpName: SendMessageData }
   columns:
     id: { type: integer(4), primary: true, autoincrement: true }
     #送信者
@@ -55,6 +53,7 @@ MessageFile:
 #メッセージ送信先
 MessageSendList:
   columns:
+    id: { type: integer(4), primary: true, autoincrement: true }
     #受信者
     member_id: { type: integer(4) }
     message_id: { type: integer(4) }
