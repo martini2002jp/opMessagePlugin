@@ -36,8 +36,7 @@ class messageActions extends opMessagePluginMessageActions
   public function executeSendToFriend(sfWebRequest $request)
   {
     $result = parent::executeSendToFriend($request);
-    $this->setFriendNav($request->getParameter('id'));
-    //$this->setFriendNav($this->sendMember->getId());
+    $this->setFriendNav($this->sendMember->getId());
 
     return $result;
   }
