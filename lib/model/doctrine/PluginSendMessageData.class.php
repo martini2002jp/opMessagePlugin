@@ -112,7 +112,7 @@ abstract class PluginSendMessageData extends BaseSendMessageData
     $methodName = 'decorate'.sfInflector::camelize($type).'Body';
 
     // For calling magic method, must create instance. It is limitation of PHP 5.2.x
-    $instance = new opRegisterMessage();
+    $instance = new opMessagePluginFormatter();
 
     return $instance->$methodName($this);
   }

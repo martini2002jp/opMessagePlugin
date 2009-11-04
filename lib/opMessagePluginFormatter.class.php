@@ -9,14 +9,13 @@
  */
 
 /**
- * opRegisterMessage
+ * opMessagePluginFormatter
  *
  * @package    OpenPNE
  * @subpackage opMessagePlugin
- * @author     Shogo Kawahara <kawahara@tejimaya.net>
  * @author     Kousuke Ebihara <ebihara@tejimaya.com>
  */
-class opRegisterMessage
+class opMessagePluginFormatter
 {
   public function decorateCommunityTakingOverBody(SendMessageData $message)
   {
