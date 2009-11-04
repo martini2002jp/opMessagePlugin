@@ -162,6 +162,11 @@ class PluginSendMessageDataTable extends Doctrine_Table
       ->orderBy('ms.created_at DESC')
       ->fetchOne();
 
+    if (!$obj)
+    {
+      return false;
+    }
+
     return $obj->getSendMessageData();
   }
 }

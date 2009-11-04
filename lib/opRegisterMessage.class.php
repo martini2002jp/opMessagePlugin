@@ -33,7 +33,7 @@ class opRegisterMessage
 
       $sender = new opMessageSender();
       $sender->setToMember($toMember)
-        ->setSubject('フレンドリンク申請メッセージ')
+        ->setSubject(sfContext::getInstance()->getI18N()->__('%Friend% link request message'))
         ->setBody($friendLinkParam['message'])
         ->setMessageType('friend_link')
         ->send();
@@ -59,7 +59,7 @@ class opRegisterMessage
 
       $sender = new opMessageSender();
       $sender->setToMember($community->getAdminMember())
-        ->setSubject('コミュニティ参加申請メッセージ')
+        ->setSubject(sfContext::getInstance()->getI18N()->__('%Community% joining request message'))
         ->setBody($param['message'])
         ->setMessageType('community_joining_request')
         ->setIdentifier($communityMember->id)
@@ -79,7 +79,7 @@ class opRegisterMessage
 
       $sender = new opMessageSender();
       $sender->setToMember($member)
-        ->setSubject('コミュニティ管理者交代要請メッセージ')
+        ->setSubject(sfContext::getInstance()->getI18N()->__('%Community% taking over request message'))
         ->setBody($param['message'])
         ->setMessageType('community_taking_over')
         ->setIdentifier($community->id)

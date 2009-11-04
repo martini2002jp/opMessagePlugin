@@ -26,6 +26,10 @@ class opConfirmationMessageFilter
     foreach ($list as $k => $v)
     {
       $obj = Doctrine::getTable('SendMessageData')->getMessageByTypeAndIdentifier($v['id'], sfContext::getInstance()->getUser()->getMemberId(), 'friend_link');
+      if (!$obj)
+      {
+        continue;
+      }
 
       $list[$k]['list']['Message'] = array('text' => $obj->body);
     }
@@ -44,6 +48,10 @@ class opConfirmationMessageFilter
     {
       $communityMember = Doctrine::getTable('CommunityMember')->find($v['id']);
       $obj = Doctrine::getTable('SendMessageData')->getMessageByTypeAndIdentifier($communityMember->member_id, sfContext::getInstance()->getUser()->getMemberId(), 'community_joining_request', $v['id']);
+      if (!$obj)
+      {
+        continue;
+      }
 
       $list[$k]['list']['Message'] = array('text' => $obj->body);
     }
@@ -62,6 +70,10 @@ class opConfirmationMessageFilter
     {
       $community = Doctrine::getTable('Community')->find($v['id']);
       $obj = Doctrine::getTable('SendMessageData')->getMessageByTypeAndIdentifier($community->getAdminMember()->id, sfContext::getInstance()->getUser()->getMemberId(), 'community_taking_over', $v['id']);
+      if (!$obj)
+      {
+        continue;
+      }
 
       $list[$k]['list']['Message'] = array('text' => $obj->body);
     }
