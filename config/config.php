@@ -1,10 +1,8 @@
 <?php
 $this->dispatcher->connect('routing.load_configuration', array('opMessagePluginRouting', 'listenToRoutingLoadConfigurationEvent'));
 
-$this->dispatcher->connect('op_action.post_execute_friend_link', array('opRegisterMessage', 'listenToPostActionEventSendFriendLinkRequestMessage'));
-$this->dispatcher->connect('op_action.post_execute_community_join', array('opRegisterMessage', 'listenToPostActionEventSendCommunityJoiningRequestMessage'));
-$this->dispatcher->connect('op_action.post_execute_community_changeAdminRequest', array('opRegisterMessage', 'listenToPostActionEventSendTakeOverCommunityRequestMessage'));
+$this->dispatcher->connect('op_action.post_execute_friend_link', array('opMessagePluginObserver', 'listenToPostActionEventSendFriendLinkRequestMessage'));
+$this->dispatcher->connect('op_action.post_execute_community_join', array('opMessagePluginObserver', 'listenToPostActionEventSendCommunityJoiningRequestMessage'));
+$this->dispatcher->connect('op_action.post_execute_community_changeAdminRequest', array('opMessagePluginObserver', 'listenToPostActionEventSendTakeOverCommunityRequestMessage'));
 
-$this->dispatcher->connect('op_confirmation.list_filter', array('opConfirmationMessageFilter', 'filterFriendLink'));
-$this->dispatcher->connect('op_confirmation.list_filter', array('opConfirmationMessageFilter', 'filterCommunityJoiningRequest'));
-$this->dispatcher->connect('op_confirmation.list_filter', array('opConfirmationMessageFilter', 'filterCommunityTakingOver'));
+$this->dispatcher->connect('op_confirmation.list_filter', array('opMessagePluginObserver', 'filterConfirmation'));
