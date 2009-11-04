@@ -7,3 +7,4 @@
 
 
 この要請について承認待ちリストから認証また拒否を選択してください。
+<?php echo url_for('@confirmation_list?category=friend_confirm', true) ?>
