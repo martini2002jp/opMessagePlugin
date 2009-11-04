@@ -67,6 +67,40 @@ class opRegisterMessage
     }
   }
 
+  static public function listenToPostActionEventSendTakeOverCommunityRequestMessage($arguments)
+  {
+    if ($arguments['result'] == sfView::SUCCESS)
+    {
+      $community = $arguments['actionInstance']->community;
+      $member = $arguments['actionInstance']->member;
+
+      $request = $arguments['actionInstance']->getRequest();
+      $param = $request->getParameter('admin_request');
+
+      $sender = new opMessageSender();
+      $sender->setToMember($member)
+        ->setSubject('コミュニティ管理者交代要請メッセージ')
+        ->setBody($param['message'])
+        ->setMessageType('community_taking_over')
+        ->setIdentifier($community->id)
+        ->send();
+    }
+  }
+
+  public function decorateCommunityTakingOverBody(SendMessageData $message)
+  {
+    $id = $message->getForeignId();
+    $community = Doctrine::getTable('Community')->find($id);
+
+    $params = array(
+      'fromMember' => $message->getMember(),
+      'message'    => $message->body,
+      'community'  => $community,
+    );
+
+    return opMessageSender::decorateBySpecifiedTemplate('communityTakingOverMessage', $params);
+  }
+
   public function decorateCommunityJoiningRequestBody(SendMessageData $message)
   {
     $id = $message->getForeignId();

@@ -50,4 +50,22 @@ class opConfirmationMessageFilter
 
     return $list;
   }
+
+  static public function filterCommunityTakingOver(sfEvent $event, $list)
+  {
+    if ('community_admin_request' !== $event['category'])
+    {
+      return $list;
+    }
+
+    foreach ($list as $k => $v)
+    {
+      $community = Doctrine::getTable('Community')->find($v['id']);
+      $obj = Doctrine::getTable('SendMessageData')->getMessageByTypeAndIdentifier($community->getAdminMember()->id, sfContext::getInstance()->getUser()->getMemberId(), 'community_taking_over', $v['id']);
+
+      $list[$k]['list']['Message'] = array('text' => $obj->body);
+    }
+
+    return $list;
+  }
 }
