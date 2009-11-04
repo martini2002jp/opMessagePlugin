@@ -91,6 +91,10 @@ class opRegisterMessage
   {
     $id = $message->getForeignId();
     $community = Doctrine::getTable('Community')->find($id);
+    if (!$community)
+    {
+      return $this->body;
+    }
 
     $params = array(
       'fromMember' => $message->getMember(),
@@ -105,6 +109,10 @@ class opRegisterMessage
   {
     $id = $message->getForeignId();
     $communityMember = Doctrine::getTable('CommunityMember')->find($id);
+    if (!$communityMember)
+    {
+      return $message->body;
+    }
 
     $params = array(
       'fromMember' => $message->getMember(),
