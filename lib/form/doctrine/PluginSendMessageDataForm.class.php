@@ -20,7 +20,7 @@ abstract class PluginSendMessageDataForm extends BaseSendMessageDataForm
   public function setup()  {
     parent::setup();
 
-    unset($this['created_at'], $this['updated_at']);
+    unset($this['created_at'], $this['updated_at'], $this['foreign_id']);
     unset($this->widgetSchema['member_id'],
           $this->widgetSchema['is_deleted'],
           $this->widgetSchema['is_send'],
