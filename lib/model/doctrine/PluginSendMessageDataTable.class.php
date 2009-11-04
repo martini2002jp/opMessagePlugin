@@ -98,6 +98,7 @@ class PluginSendMessageDataTable extends Doctrine_Table
   *
   *  * type      : The message type   (default: 'message')
   *  * identifier: The identifier of foreign table (default: 0)
+  *  * is_read   : A default value of is_read flag (default: false)
   *  * fromMember: The message sender (default: my member object)
   *
   * @param mixed   $toMembers  a Member instance or array of Member instance
@@ -108,7 +109,11 @@ class PluginSendMessageDataTable extends Doctrine_Table
   */
   public static function sendMessage($toMembers, $subject, $body, $options = array())
   {
-    $options = array_merge(array('type' => 'message', 'identifier' => 0), $options);
+    $options = array_merge(array(
+      'type'       => 'message',
+      'identifier' => 0,
+      'is_read'    => false,
+    ), $options);
 
     if ($toMembers instanceof Member)
     {
@@ -136,6 +141,7 @@ class PluginSendMessageDataTable extends Doctrine_Table
       $send = new MessageSendList();
       $send->setSendMessageData($sendMessageData);
       $send->setMember($member);
+      $send->setIsRead($options['is_read']);
       $send->save();
     }
 

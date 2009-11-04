@@ -130,6 +130,9 @@ class opMessageSender
   */
   public function send()
   {
-    Doctrine::getTable('SendMessageData')->sendMessage($this->toMembers, $this->subject, $this->body, $this->options);
+    $options = $this->options;
+    $options['is_read'] = true;
+
+    Doctrine::getTable('SendMessageData')->sendMessage($this->toMembers, $this->subject, $this->body, $options);
   }
 }
