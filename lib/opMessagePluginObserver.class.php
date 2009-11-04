@@ -122,6 +122,8 @@ class opMessagePluginObserver
         ->send();
     }
   }
+
+  protected static function getCommunityAdminRequest(sfEvent $event, $params = array())
   {
     $currentMemberId = sfContext::getInstance()->getUser()->getMemberId();
     $community = Doctrine::getTable('Community')->find($params['id']);
