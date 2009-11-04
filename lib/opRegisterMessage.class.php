@@ -40,6 +40,47 @@ class opRegisterMessage
     }
   }
 
+  static public function listenToPostActionEventSendCommunityJoiningRequestMessage($arguments)
+  {
+    if ($arguments['result'] == sfView::SUCCESS)
+    {
+      $community = $arguments['actionInstance']->community;
+      if ('close' !== $community->getConfig('register_poricy'))
+      {
+        return false;
+      }
+
+      $request = $arguments['actionInstance']->getRequest();
+      $param = $request->getParameter('community_join');
+
+      $memberId = sfContext::getInstance()->getUser()->getMemberId();
+
+      $communityMember = Doctrine::getTable('CommunityMember')->findOneByMemberIdAndCommunityId($memberId, $community->id);
+
+      $sender = new opMessageSender();
+      $sender->setToMember($community->getAdminMember())
+        ->setSubject('コミュニティ参加申請メッセージ')
+        ->setBody($param['message'])
+        ->setMessageType('community_joining_request')
+        ->setIdentifier($communityMember->id)
+        ->send();
+    }
+  }
+
+  public function decorateCommunityJoiningRequestBody(SendMessageData $message)
+  {
+    $id = $message->getForeignId();
+    $communityMember = Doctrine::getTable('CommunityMember')->find($id);
+
+    $params = array(
+      'fromMember' => $message->getMember(),
+      'message'    => $message->body,
+      'community'  => $communityMember->getCommunity(),
+    );
+
+    return opMessageSender::decorateBySpecifiedTemplate('communityJoiningRequestMessage', $params);
+  }
+
   public function decorateFriendLinkBody(SendMessageData $message)
   {
     $params = array(
@@ -48,8 +89,6 @@ class opRegisterMessage
     );
 
     return opMessageSender::decorateBySpecifiedTemplate('friendLinkMessage', $params);
-
-    return $message->body;
   }
 
   public function __call($method, $arguments)

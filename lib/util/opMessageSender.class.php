@@ -100,6 +100,8 @@ class opMessageSender
   public function setIdentifier($identifier)
   {
     $this->options['identifier'] = (int)$identifier;
+
+    return $this;
   }
 
   public static function decorateBySpecifiedTemplate($templateName, $templateParams = array())
