@@ -56,7 +56,7 @@ endswitch;
 <?php endif; ?>
 </div>
 <div class="pagerRelative">
-<p class="number"><?php echo pager_navigation($pager, $page_url."?page=%d"); ?></p>
+<p class="number"><?php echo op_include_pager_navigation($pager, $page_url."?page=%d"); ?></p>
 </div>
 
 <form action="<?php echo url_for($page_url) ?>" method="post" name="delete_message">
@@ -138,7 +138,7 @@ endswitch;
 <?php endforeach; ?>
 </table> 
 <div class="pagerRelative">
-<p class="number"><?php echo pager_navigation($pager, $page_url.'?page=%d'); ?></p>
+<p class="number"><?php echo op_include_pager_navigation($pager, $page_url.'?page=%d'); ?></p>
 </div>
 <div class="operation"> 
 <p>
