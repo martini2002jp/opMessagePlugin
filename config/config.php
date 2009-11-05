@@ -6,3 +6,5 @@ $this->dispatcher->connect('op_action.post_execute_community_join', array('opMes
 $this->dispatcher->connect('op_action.post_execute_community_changeAdminRequest', array('opMessagePluginObserver', 'listenToPostActionEventSendTakeOverCommunityRequestMessage'));
 
 $this->dispatcher->connect('op_confirmation.list_filter', array('opMessagePluginObserver', 'filterConfirmation'));
+
+$this->dispatcher->connect('form.post_configure', array('opMessagePluginObserver', 'injectMessageFormField'));

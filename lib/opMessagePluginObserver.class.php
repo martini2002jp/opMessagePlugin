@@ -20,6 +20,19 @@ class opMessagePluginObserver
     'friend_confirm', 'community_confirm', 'community_admin_request',
   );
 
+  static function injectMessageFormField(sfEvent $event)
+  {
+    $form = $event->getSubject();
+    if (!($form instanceof FriendLinkForm) && !($form instanceof opChangeCommunityAdminRequestForm) && !($form instanceof opCommunityJoiningForm))
+    {
+      return null;
+    }
+
+    $form->setWidget('message', new sfWidgetFormTextarea());
+    $form->setValidator('message', new opValidatorString(array('rtrim' => true, 'required' => false)));
+    $form->getWidgetSchema()->setLabel('message', 'Message(Arbitrary)');
+  }
+
   public static function filterConfirmation(sfEvent $event, $list)
   {
     if (!in_array($event['category'], self::$targetCategories))
@@ -28,6 +41,11 @@ class opMessagePluginObserver
     }
 
     $getMessageCallback = array(__CLASS__, 'get'.sfInflector::camelize($event['category']).'Message');
+    if (!is_callable($getMessageCallback))
+    {
+      var_dump($getMessageCallback);
+      return $list;
+    }
 
     foreach ($list as $k => $v)
     {
@@ -101,6 +119,15 @@ class opMessagePluginObserver
         ->setIdentifier($communityMember->id)
         ->send();
     }
+    else
+    {
+      $community = $arguments['actionInstance']->community;
+      if ('close' !== $community->getConfig('register_poricy'))
+      {
+        // Injected message field is not useful in this community
+        unset($arguments['actionInstance']->form['message']);
+      }
+    }
   }
 
   static public function listenToPostActionEventSendTakeOverCommunityRequestMessage($arguments)
@@ -123,7 +150,7 @@ class opMessagePluginObserver
     }
   }
 
-  protected static function getCommunityAdminRequest(sfEvent $event, $params = array())
+  protected static function getCommunityAdminRequestMessage(sfEvent $event, $params = array())
   {
     $currentMemberId = sfContext::getInstance()->getUser()->getMemberId();
     $community = Doctrine::getTable('Community')->find($params['id']);
