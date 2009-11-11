@@ -3,15 +3,12 @@
 <div class="dparts messageDetailBox">
 <div class="parts">
 <div class="partsHeading"><h3><?php echo __('Message') ?></h3></div>
-<?php /*
-TODO: Previous and Next 
 <?php if ($previousMessage || $nextMessage): ?>
 <div class="block prevNextLinkLine">
-<?php if ($previousMessage): ?><p class="prev"><?php echo link_to(__('Previous'), '@read'.ucfirst($messageType).'Message?id='.$previousMessage->getId()) ?></p><?php endif; ?>
-<?php if ($nextMessage): ?><p class="next"><?php echo link_to(__('Next'),'@read'.ucfirst($messageType).'Message?id='.$nextMessage->getId()) ?> </p><?php endif; ?>
+<?php if ($previousMessage): ?><p class="prev"><?php echo link_to(__('Previous', array(), 'pager'), '@read'.ucfirst($messageType).'Message?id='.$previousMessage->getId()) ?></p><?php endif; ?>
+<?php if ($nextMessage): ?><p class="next"><?php echo link_to(__('Next', array(), 'pager'),'@read'.ucfirst($messageType).'Message?id='.$nextMessage->getId()) ?> </p><?php endif; ?>
 </div>
 <?php endif; ?>
-*/ ?>
 <table>
 <tr>
 <th>

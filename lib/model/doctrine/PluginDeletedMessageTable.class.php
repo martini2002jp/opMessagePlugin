@@ -150,4 +150,34 @@ class PluginDeletedMessageTable extends Doctrine_Table
     $message->save();
    return true;
   }
+
+  public function getPreviousSendMessageData(SendMessageData $message, $myMemberId)
+  {
+    $q = $this->addDeleteMessageQuery($this->createQuery(), $myMemberId);
+    $q->andWhere('message_id < ?', $message->id)
+      ->orderBy('message_id DESC');
+
+    $deleted = $q->fetchOne();
+    if ($deleted && $deleted->message_id)
+    {
+      return Doctrine::getTable('SendMessageData')->find($deleted->message_id);
+    }
+
+    return false;
+  }
+
+  public function getNextSendMessageData(SendMessageData $message, $myMemberId)
+  {
+    $q = $this->addDeleteMessageQuery($this->createQuery(), $myMemberId);
+    $q->andWhere('message_id > ?', $message->id)
+      ->orderBy('message_id ASC');
+
+    $deleted = $q->fetchOne();
+    if ($deleted && $deleted->message_id)
+    {
+      return Doctrine::getTable('SendMessageData')->find($deleted->message_id);
+    }
+
+    return false;
+  }
 }

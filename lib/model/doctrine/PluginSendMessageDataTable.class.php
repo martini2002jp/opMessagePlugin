@@ -82,4 +82,22 @@ class PluginSendMessageDataTable extends Doctrine_Table
 
     return $pager;
   }
+
+  public function getPreviousSendMessageData(SendMessageData $message, $myMemberId)
+  {
+    $q = $this->addSendMessageQuery($this->createQuery(), $myMemberId);
+    $q->andWhere('id < ?', $message->id)
+      ->orderBy('id DESC');
+
+    return $q->fetchOne();
+  }
+
+  public function getNextSendMessageData(SendMessageData $message, $myMemberId)
+  {
+    $q = $this->addSendMessageQuery($this->createQuery(), $myMemberId);
+    $q->andWhere('id > ?', $message->id)
+      ->orderBy('id ASC');
+
+    return $q->fetchOne();
+  }
 }

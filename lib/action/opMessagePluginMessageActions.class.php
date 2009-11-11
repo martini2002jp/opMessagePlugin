@@ -127,6 +127,9 @@ class opMessagePluginMessageActions extends opMessagePluginActions
       default :
         throw new LogicException();
     }
+
+    $this->previousMessage = $this->message->getPrevious($this->messageType, $this->getUser()->getMemberId());
+    $this->nextMessage = $this->message->getNext($this->messageType, $this->getUser()->getMemberId());
   }
 
  /**

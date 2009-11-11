@@ -18,7 +18,12 @@
  */
 abstract class PluginSendMessageData extends BaseSendMessageData
 {
-  protected 
+  const MESSAGE_TYPE_RECEIVE = 'receive';
+  const MESSAGE_TYPE_SEND = 'send';
+  const MESSAGE_TYPE_DRAFT = 'draft';
+  const MESSAGE_TYPE_DUST = 'dust';
+
+  protected
     $previous = null,
     $next = null;
 
@@ -99,5 +104,51 @@ abstract class PluginSendMessageData extends BaseSendMessageData
   public function getMessageSendLists()
   {
     return Doctrine::getTable('MessageSendList')->findByMessageId($this->getId());
+  }
+
+  public function getPrevious($type = self::MESSAGE_TYPE_RECEIVE, $myMemberId = null)
+  {
+    if (is_null($this->previous))
+    {
+      switch ($type)
+      {
+        case self::MESSAGE_TYPE_RECEIVE:
+          $this->previous = Doctrine::getTable('MessageSendList')->getPreviousSendMessageData($this, $myMemberId);
+          break;
+        case self::MESSAGE_TYPE_SEND:
+          $this->previous = Doctrine::getTable('SendMessageData')->getPreviousSendMessageData($this, $myMemberId);
+          break;
+        case self::MESSAGE_TYPE_DUST:
+          $this->previous = Doctrine::getTable('DeletedMessage')->getPreviousSendMessageData($this, $myMemberId);
+          break;
+        default:
+          throw new LogicException(sprintf('The specified message type "%" is not supported here.', $type));
+      }
+    }
+
+    return $this->previous;
+  }
+
+  public function getNext($type = self::MESSAGE_TYPE_RECEIVE, $myMemberId = null)
+  {
+    if (is_null($this->next))
+    {
+      switch ($type)
+      {
+        case self::MESSAGE_TYPE_RECEIVE:
+          $this->next = Doctrine::getTable('MessageSendList')->getNextSendMessageData($this, $myMemberId);
+          break;
+        case self::MESSAGE_TYPE_SEND:
+          $this->next = Doctrine::getTable('SendMessageData')->getNextSendMessageData($this, $myMemberId);
+          break;
+        case self::MESSAGE_TYPE_DUST:
+          $this->next = Doctrine::getTable('DeletedMessage')->getNextSendMessageData($this, $myMemberId);
+          break;
+        default:
+          throw new LogicException(sprintf('The specified message type "%" is not supported here.', $type));
+      }
+    }
+
+    return $this->next;
   }
 }
