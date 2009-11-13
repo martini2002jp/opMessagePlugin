@@ -48,7 +48,7 @@ class opMessagePluginActions extends sfActions
         if ($this->message->getIsReceiver($this->getUser()->getMemberId()) === 0) {
           return false;
         }
-        $read_message = MessageSendListPeer::getMessageByReferences(
+        $read_message = Doctrine::getTable('MessageSendList')->getMessageByReferences(
                                                   $this->getUser()->getMemberId(), $this->message->getId());
         if (!$read_message) {
           return false;
@@ -63,10 +63,10 @@ class opMessagePluginActions extends sfActions
         }
         return true;
       case "dust":
-        $deleted_message = DeletedMessagePeer::getDeletedMessageByMessageId(
+        $deleted_message = Doctrine::getTable('DeletedMessage')->getDeletedMessageByMessageId(
                                                   $this->getUser()->getMemberId(), $this->message->getId());
         if (!$deleted_message) {
-          $deleted_message = DeletedMessagePeer::getDeletedMessageByMessageSendListId(
+          $deleted_message = Doctrine::getTable('DeletedMessage')->getDeletedMessageByMessageSendListId(
                                                   $this->getUser()->getMemberId(), $this->message->getId());
         }
         if (!$deleted_message) {

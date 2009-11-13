@@ -9,14 +9,13 @@
  */
 
 /**
- * Send Message form.
+ * Plugin Send Message form.
  *
- * @package    ##PROJECT_NAME##
+ * @package   opMessagePlugin
  * @subpackage form
- * @author     ##AUTHOR_NAME##
- * @version    SVN: $Id: sfPropelFormTemplate.php 10377 2008-07-21 07:10:32Z dwhittle $
+ * @author     Shingo Yamada <s.yamada@tejimaya.com>
  */
-class SendMessageForm extends SendMessageDataForm
+class SendMessageForm extends PluginSendMessageDataForm
 {
   public function configure()
   {
@@ -25,11 +24,12 @@ class SendMessageForm extends SendMessageDataForm
     $this->setValidator("send_member_id", new sfValidatorInteger());
     $this->setDefault("send_member_id", $this->getOption('send_member_id'));
   }
-  
+
   public function updateObject($values = null)
   {
     $object = parent::updateObject($values);
-    $object->setMessageType(MessageTypePeer::getMessageTypeIdByName('message'));
+    $object->setMessageType(Doctrine::getTable('MessageType')->getMessageTypeIdByName('message'));
+
     return $object;
   }
 }

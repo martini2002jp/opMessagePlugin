@@ -39,35 +39,39 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     switch ($this->messageType)
     {
       case 'receive' :
-        $class = 'MessageSendListPeer';
+        $object = Doctrine::getTable('MessageSendList');
         $function = 'getReceiveMessagePager';
         $objectName = 'MessageSendList';
         break;
+
       case 'send' :
-        $class = 'SendMessageDataPeer';
+        $object = Doctrine::getTable('SendMessageData');
         $function = 'getSendMessagePager';
-        $objectName = 'Message';
+        $objectName = 'SendMessageData';
         break;
+
       case 'draft' :
-        $class = 'SendMessageDataPeer';
+        $object = Doctrine::getTable('SendMessageData');
         $function = 'getDraftMessagePager';
-        $objectName = 'Message';
+        $objectName = 'SendMessageData';
         break;
+
       case 'dust' :
-        $class = 'DeletedMessagePeer';
+        $object = Doctrine::getTable('DeletedMessage');
         $function = 'getDeletedMessagePager';
         $objectName = 'DeletedMessage';
         break;
+
       default :
         throw new LogicException();
     }
 
-    $this->pager = call_user_func(array($class, $function), 
+    $this->pager = call_user_func(array($object, $function),
       $this->getUser()->getMemberId(), 
       $request->getParameter('page', 1),
       sfConfig::get('app_message_pagenatesize', 20)
     );
- 
+
     if ($this->pager->getNbResults())
     {
       $deleteMessage = null;
@@ -87,10 +91,11 @@ class opMessagePluginMessageActions extends opMessagePluginActions
         }
       }
     }
-    else 
+    else
     {
       $this->form = null;
     }
+
     return sfView::SUCCESS;
   }
   
@@ -101,25 +106,32 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeShow(sfWebRequest $request)
   {
-    $this->message = SendMessageDataPeer::retrieveByPk($request->getParameter('id'));
+    $this->message = Doctrine::getTable('SendMessageData')->find($request->getParameter('id'));
     $this->messageType = $request->getParameter('type');
     $this->forward404unless($message = $this->isReadable($this->messageType));
+
     switch ($this->messageType) {
       case "receive":
         $this->deleteButton = '@deleteReceiveMessage?id='.$message->getId();
         break;
+
       case "send":
         $this->deleteButton = '@deleteSendMessage?id='.$this->message->getId();
         break;
+
       case "dust":
         $this->deleteButton = '@deleteDustMessage?id='.$message->getId();
         $this->deletedId = $message->getId();
         break;
+
       default :
         throw new LogicException();
     }
+
+    $this->previousMessage = $this->message->getPrevious($this->messageType, $this->getUser()->getMemberId());
+    $this->nextMessage = $this->message->getNext($this->messageType, $this->getUser()->getMemberId());
   }
-  
+
  /**
   * Executes delete action
   *
@@ -132,22 +144,26 @@ class opMessagePluginMessageActions extends opMessagePluginActions
       case "receive":
         $objectName = 'MessageSendList';
         break;
+
       case "send":
-        $objectName = 'Message';
+        $objectName = 'SendMessageData';
         break;
+
       case "dust":
         $objectName = 'DeletedMessage';
         break;
+
       default :
         throw new LogicException();
     }
-    DeletedMessagePeer::deleteMessage(sfContext::getInstance()->getUser()->getMemberId(),
-                                      $request->getParameter('id'), 
+    Doctrine::getTable('DeletedMessage')->deleteMessage(
+                                      sfContext::getInstance()->getUser()->getMemberId(),
+                                      $request->getParameter('id'),
                                       $objectName);
-    
+
     $this->redirect('@'.$messageType.'List');
   }
-  
+
  /**
   * Executes restore action
   *
@@ -155,7 +171,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeRestore(sfWebRequest $request)
   {
-    DeletedMessagePeer::restoreMessage($request->getParameter('id'));
+    Doctrine::getTable('DeletedMessage')->restoreMessage($request->getParameter('id'));
     $this->redirect('@dustList');
   }
   
@@ -169,7 +185,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     if ($request->getParameter('message'))
     {
       $sendMemberId = $request->getParameter('message[send_member_id]');
-      $this->message = SendMessageDataPeer::retrieveByPk($request->getParameter('message[id]'));
+      $this->message = Doctrine::getTable('SendMessageData')->find($request->getParameter('message[id]'));
       $this->forward404Unless($this->isDraftOwner());
     }
     else if ($request->getParameter('id'))
@@ -181,18 +197,19 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     {
       $this->forward404();
     }
-
     $this->forward404If($sendMemberId == $this->getUser()->getMemberId());
-    
     $this->form = new SendMessageForm($this->message, array(
       'send_member_id' => $sendMemberId
     ));
-    $this->sendMember = MemberPeer::retrieveByPk($sendMemberId);
 
+    $this->sendMember = Doctrine::getTable('Member')->find($sendMemberId);
     if ($request->isMethod(sfWebRequest::POST))
     {
       $params = $request->getParameter('message');
-      $this->form->bind($params, $request->getFiles('message'));
+      $this->form->bind(
+        $request->getParameter($this->form->getName()),
+        $request->getFiles($this->form->getName())
+      );
 
       if ($this->form->isValid())
       {
@@ -209,27 +226,29 @@ class opMessagePluginMessageActions extends opMessagePluginActions
         }
       }
     }
+
     return sfView::INPUT;
   }
   
  /**
   * Executes editMessage action
   * 
-  * @param sfWebRequest $request A request object
+ * @param sfWebRequest $request A request object
   */
   public function executeEdit(sfWebRequest $request)
   {
-    $this->message = SendMessageDataPeer::retrieveByPk($request->getParameter('id'));
+    $this->message = Doctrine::getTable('SendMessageData')->find($request->getParameter('id'));
     $this->forward404unless($this->message);
     $this->forward404Unless($this->isDraftOwner());
-    if ($this->message->getMessageType() == MessageTypePeer::getMessageTypeIdByName('message')) {
+    if ($this->message->getMessageType() == Doctrine::getTable('MessageType')->getMessageTypeIdByName('message'))
+    {
       $send_list = $this->message->getSendList();
       $this->forward404Unless($send_list);
       $sendMemberId = $send_list[0]->getMember()->getId();
       $this->form = new SendMessageForm($this->message, array(
         'send_member_id' => $sendMemberId
       ));
-      $this->sendMember = MemberPeer::retrieveByPk($sendMemberId);
+      $this->sendMember = Doctrine::getTable('Member')->find($sendMemberId);
       $this->setTemplate('sendToFriend');
       return sfView::INPUT;
     }
@@ -242,7 +261,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeReply(sfWebRequest $request)
   {
-    $message = SendMessageDataPeer::retrieveByPk($request->getParameter('id'));
+    $message = Doctrine::getTable('SendMessageData')->find($request->getParameter('id'));
     $this->forward404unless($message);
     $this->message = new SendMessageData();
     $this->message->setMessageTypeId($message->getMessageTypeId());
@@ -259,7 +278,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     $this->form = new SendMessageForm($this->message, array(
       'send_member_id' => $sendMemberId
     ));
-    $this->sendMember = MemberPeer::retrieveByPk($sendMemberId);
+    $this->sendMember = Doctrine::getTable('Member')->find($sendMemberId);
     $this->setTemplate('sendToFriend');
     return sfView::INPUT;
   }

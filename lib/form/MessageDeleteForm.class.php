@@ -31,7 +31,7 @@ class MessageDeleteForm extends sfForm
     $this->setWidget("object_name", new sfWidgetFormInputHidden());
     $this->setValidator("object_name", new sfValidatorChoice(array('choices' => array(
                                                                                       'MessageSendList',
-                                                                                      'Message',
+                                                                                      'SendMessageData',
                                                                                       'DeletedMessage'))));
     $this->setDefault("object_name", $this->getOption('object_name'));
     $this->widgetSchema->setNameFormat('message[%s]');
@@ -42,11 +42,11 @@ class MessageDeleteForm extends sfForm
     foreach ($this->getValue('message_ids') as $message_id)
     {
       if (sfContext::getInstance()->getRequest()->getParameter('restore')) {
-        DeletedMessagePeer::restoreMessage($message_id);
+        Doctrine::getTable('DeletedMessage')->restoreMessage($message_id);
       } else {
-        DeletedMessagePeer::deleteMessage(sfContext::getInstance()->getUser()->getMemberId(),
-                                        $message_id, 
-                                        $this->getOption('object_name'));
+        Doctrine::getTable('DeletedMessage')->deleteMessage(sfContext::getInstance()->getUser()->getMemberId(),
+                                                            $message_id,
+                                                            $this->getOption('object_name'));
       }
     }
   }

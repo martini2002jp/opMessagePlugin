@@ -19,6 +19,6 @@ class opMessagePluginMessageComponents extends sfComponents
 {
   public function executeUnreadMessage()
   {
-    $this->unreadMessageCount = MessageSendListPeer::countUnreadMessage($this->getUser()->getMemberId());
+    $this->unreadMessageCount = Doctrine::getTable('MessageSendList')->countUnreadMessage($this->getUser()->getMemberId());
   }
 }

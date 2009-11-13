@@ -3,15 +3,12 @@
 <div class="dparts messageDetailBox">
 <div class="parts">
 <div class="partsHeading"><h3><?php echo __('Message') ?></h3></div>
-<?php /*
-TODO: Previous and Next 
 <?php if ($previousMessage || $nextMessage): ?>
 <div class="block prevNextLinkLine">
-<?php if ($previousMessage): ?><p class="prev"><?php echo link_to(__('Previous'), '@read'.ucfirst($messageType).'Message?id='.$previousMessage->getId()) ?></p><?php endif; ?>
-<?php if ($nextMessage): ?><p class="next"><?php echo link_to(__('Next'),'@read'.ucfirst($messageType).'Message?id='.$nextMessage->getId()) ?> </p><?php endif; ?>
+<?php if ($previousMessage): ?><p class="prev"><?php echo link_to(__('Previous', array(), 'pager'), '@read'.ucfirst($messageType).'Message?id='.$previousMessage->getId()) ?></p><?php endif; ?>
+<?php if ($nextMessage): ?><p class="next"><?php echo link_to(__('Next', array(), 'pager'),'@read'.ucfirst($messageType).'Message?id='.$nextMessage->getId()) ?> </p><?php endif; ?>
 </div>
 <?php endif; ?>
-*/ ?>
 <table>
 <tr>
 <th>
@@ -23,7 +20,7 @@ TODO: Previous and Next
 <td>
 <?php 
 if ($message->getIsSender()):
-    $sendLists = $message->getMessageSendLists();
+    $sendLists = $message->getMessageSendList();
     foreach ($sendLists as $sendTo): 
         if ($sendTo->getMember()):
           echo link_to($sendTo->getMember()->getName(), '@member_profile?id='.$sendTo->getMemberId())."<br />";
@@ -46,7 +43,7 @@ endif;
 </tr>
 </table>
 <div class="block">
-<?php $images = $message->getMessageFiles() ?>
+<?php $images = $message->getMessageFile() ?>
 <?php if (count($images)): ?>
 <ul class="photo">
 <?php foreach ($images as $image): ?>
