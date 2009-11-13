@@ -133,6 +133,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
 
     $this->fromOrToMembers = array();
 
+    if ($this->message->getIsSender())
     {
       $messageSendLists = $this->message->getMessageSendLists();
       foreach ($messageSendLists as $messageSendList)
