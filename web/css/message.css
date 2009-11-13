@@ -19,11 +19,13 @@
   width: 54px;
   padding-left: 0;
   padding-right: 16px;
-  background: url(<?php echo getSkin('colon'); ?>) no-repeat 96% 50%;
   text-align: right;
 }
 #Body .messageDetailBox td {
   border-left: none;
+}
+#Body .messageDetailBox td.photo {
+  border-left: 1px solid #CCCCCC;
 }
 .messageDetailBox ul.photo {
   margin: 10px;
@@ -81,14 +83,12 @@
 }
 .messageList p.icons img {
   padding-right: 16px;
-  background: url(<?php echo getSkin('articleList_marker'); ?>) no-repeat 96% 6px;
   vertical-align: text-bottom;
 }
 .messageList tr {
   height: 20px;
 }
 .messageList tr.unread {
-  background: #<?php echo $colors[6]; ?>;
 }
 #Body .messageList th.delete {
   font-weight: normal;

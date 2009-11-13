@@ -130,6 +130,20 @@ class opMessagePluginMessageActions extends opMessagePluginActions
 
     $this->previousMessage = $this->message->getPrevious($this->messageType, $this->getUser()->getMemberId());
     $this->nextMessage = $this->message->getNext($this->messageType, $this->getUser()->getMemberId());
+
+    $this->fromOrToMembers = array();
+
+    {
+      $messageSendLists = $this->message->getMessageSendLists();
+      foreach ($messageSendLists as $messageSendList)
+      {
+        $this->fromOrToMembers[] = $messageSendList->getMember();
+      }
+    }
+    else
+    {
+      $this->fromOrToMembers[] = $this->message->getMember();
+    }
   }
 
  /**
