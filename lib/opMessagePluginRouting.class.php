@@ -71,23 +71,23 @@ class opMessagePluginRouting
     //delete message
     $routing->prependRoute('deleteReceiveMessage',
       new sfRoute(
-        '/message/deleteReceiveMessage/:id/:_csrf_token',
+        '/message/deleteReceiveMessage/:id',
         array('module' => 'message', 'action' => 'delete', 'type' => 'receive'),
-        array('id' => '\d+', '_csrf_token' => '\w+')
+        array('id' => '\d+')
       )
     );
     $routing->prependRoute('deleteSendMessage',
       new sfRoute(
-        '/message/deleteSendMessage/:id/:_csrf_token',
+        '/message/deleteSendMessage/:id',
         array('module' => 'message', 'action' => 'delete', 'type' => 'send'),
-        array('id' => '\d+', '_csrf_token' => '\w+')
+        array('id' => '\d+')
       )
     );
     $routing->prependRoute('deleteDustMessage',
       new sfRoute(
-        '/message/deleteComplete/:id/:_csrf_token',
+        '/message/deleteComplete/:id',
         array('module' => 'message', 'action' => 'delete', 'type' => 'dust'),
-        array('id' => '\d+', '_csrf_token' => '\w+')
+        array('id' => '\d+')
       )
     );
   }
