@@ -26,10 +26,10 @@
 <hr>
 
 <?php if ($messageType == 'dust'): ?>
-<?php echo link_to(__('Restore'), 'message/restore?id='.$deletedId) ?><br>
+<?php echo link_to(__('Restore'), 'message/restore?id='.$deletedId.'&_csrf_token='.$form->getCSRFToken()) ?><br>
 <?php endif; ?>
 
-<?php echo link_to(__('Delete'), $deleteButton) ?>
+<?php echo link_to(__('Delete'), $deleteButton.'&_csrf_token='.$form->getCSRFToken()) ?>
 
 <?php if ($messageType != 'dust' && !$message->getIsSender()): ?>
 <br><?php echo link_to(__('Reply'), 'message/reply?id='.$message->getId()) ?>

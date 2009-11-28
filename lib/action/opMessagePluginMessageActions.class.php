@@ -110,6 +110,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     $this->messageType = $request->getParameter('type');
     $this->forward404unless($message = $this->isReadable($this->messageType));
 
+    $this->form = new sfForm();
     switch ($this->messageType) {
       case "receive":
         $this->deleteButton = '@deleteReceiveMessage?id='.$message->getId();
@@ -154,6 +155,9 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeDelete(sfWebRequest $request)
   {
+    $form = new sfForm();
+    $this->forward404Unless($form->getCSRFToken() === $request->getParameter('_csrf_token'));
+
     $messageType = $request->getParameter('type');
     switch ($messageType) {
       case "receive":
@@ -186,6 +190,9 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeRestore(sfWebRequest $request)
   {
+    $form = new sfForm();
+    $this->forward404Unless($form->getCSRFToken() === $request->getParameter('_csrf_token'));
+
     Doctrine::getTable('DeletedMessage')->restoreMessage($request->getParameter('id'));
     $this->redirect('@dustList');
   }
