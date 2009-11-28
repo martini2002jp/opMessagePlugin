@@ -101,6 +101,8 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeShow(sfWebRequest $request)
   {
+    $this->form = new sfForm();
+
     $this->message = SendMessageDataPeer::retrieveByPk($request->getParameter('id'));
     $this->messageType = $request->getParameter('type');
     $this->forward404unless($message = $this->isReadable($this->messageType));
@@ -127,6 +129,8 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeDelete(sfWebRequest $request)
   {
+    $request->checkCSRFProtection();
+
     $messageType = $request->getParameter('type');
     switch ($messageType) {
       case "receive":
@@ -155,6 +159,8 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeRestore(sfWebRequest $request)
   {
+    $request->checkCSRFProtection();
+
     DeletedMessagePeer::restoreMessage($request->getParameter('id'));
     $this->redirect('@dustList');
   }

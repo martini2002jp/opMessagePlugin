@@ -67,12 +67,23 @@ endif;
 </ul></div>
 ({/if})
 */ ?>
+
 <div class="operation">
 <ul class="moreInfo button">
 <?php if ($messageType == 'dust'): ?>
-<li><?php echo button_to(__('Restore'), 'message/restore?id='.$deletedId)?></li>
+<li>
+<?php echo $form->renderFormTag(url_for('message/restore?id='.$deletedId)); ?>
+<?php echo $form ?>
+<input type="submit" value="<?php echo __('Restore') ?>" class="input_submit" />
+</form>
+</li>
 <?php endif; ?>
-<li><?php echo button_to(__('Delete'), $deleteButton) ?></li>
+<li>
+<?php echo $form->renderFormTag(url_for($deleteButton)); ?>
+<?php echo $form ?>
+<input type="submit" value="<?php echo __('Delete') ?>" class="input_submit" />
+</form>
+</li>
 <?php if ($messageType != 'dust' && !$message->getIsSender()): ?>
 <li><?php echo button_to(__('Reply'), 'message/reply?id='.$message->getId()) ?></li>
 </ul>

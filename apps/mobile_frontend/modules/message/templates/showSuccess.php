@@ -26,10 +26,16 @@
 <hr>
 
 <?php if ($messageType == 'dust'): ?>
-<?php echo link_to(__('Restore'), 'message/restore?id='.$deletedId) ?><br>
+<?php echo $form->renderFormTag(url_for('message/restore?id='.$deletedId)); ?>
+<?php echo $form ?>
+<input type="submit" value="<?php echo __('Restore') ?>" />
+</form>
 <?php endif; ?>
 
-<?php echo link_to(__('Delete'), $deleteButton) ?>
+<?php echo $form->renderFormTag(url_for($deleteButton)); ?>
+<?php echo $form ?>
+<input type="submit" value="<?php echo __('Delete') ?>"  />
+</form>
 
 <?php if ($messageType != 'dust' && !$message->getIsSender()): ?>
 <br><?php echo link_to(__('Reply'), 'message/reply?id='.$message->getId()) ?>
