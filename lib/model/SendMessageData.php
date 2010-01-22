@@ -33,11 +33,11 @@ class SendMessageData extends BaseSendMessageData
     }
     if ($this->getMemberId() == $memberId)
     {
-      return true;
+      return 1;
     }
     else 
     {
-      return false;
+      return 0;
     }
   }  
   

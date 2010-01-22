@@ -58,7 +58,10 @@ class opMessagePluginActions extends sfActions
         }
         return $read_message;
       case "send":
-          return $this->message->getIsSender($this->getUser()->getMemberId());
+        if ($this->message->getIsSender($this->getUser()->getMemberId()) === 0) {
+          return false;
+        }
+        return true;
       case "dust":
         $deleted_message = DeletedMessagePeer::getDeletedMessageByMessageId(
                                                   $this->getUser()->getMemberId(), $this->message->getId());
