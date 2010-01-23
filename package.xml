@@ -19,18 +19,18 @@
   <email />
   <active>yes</active>
  </lead>
- <date>2010-01-22</date>
- <time>22:28:28</time>
+ <date>2010-01-23</date>
+ <time>05:08:37</time>
  <version>
-  <release>0.8.2.1</release>
-  <api>0.8.2.1</api>
+  <release>0.8.2.2</release>
+  <api>0.8.2.2</api>
  </version>
  <stability>
   <release>beta</release>
   <api>beta</api>
  </stability>
  <license>apache</license>
- <notes>fixed for checking token on deleting, restoring</notes>
+ <notes>fixed security issue</notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <file baseinstalldir="/" md5sum="6b0911df445ce8125d146636cb7e7cb9" name="apps/mobile_frontend/config/app.yml" role="data" />
@@ -97,7 +97,7 @@
    <file baseinstalldir="/" md5sum="2f3a66386308e36bdafcd091d6e598c4" name="lib/model/MessageTypeI18n.php" role="data" />
    <file baseinstalldir="/" md5sum="1e5460722a4d1c00767f59179ae8357f" name="lib/model/MessageTypeI18nPeer.php" role="data" />
    <file baseinstalldir="/" md5sum="0a8c37c54b0f0de025c2a15945fe5d1c" name="lib/model/MessageTypePeer.php" role="data" />
-   <file baseinstalldir="/" md5sum="3af5c21329881e76a8f7aa17c0b64eb3" name="lib/model/SendMessageData.php" role="data" />
+   <file baseinstalldir="/" md5sum="62752668c38263693df9e38b52f10b5d" name="lib/model/SendMessageData.php" role="data" />
    <file baseinstalldir="/" md5sum="7e1762033d4bba50dade3cc05cf6a8db" name="lib/model/SendMessageDataPeer.php" role="data" />
    <file baseinstalldir="/" md5sum="dbcaecd7b48def2c76f04910e02f9e09" name="web/css/message.css" role="data" />
    <file baseinstalldir="/" md5sum="3d40a300272ec2812ae4ca958b7038d9" name="web/images/icon_mail_1.gif" role="data" />
@@ -162,6 +162,19 @@
    <date>2010-01-22</date>
    <license>apache</license>
    <notes>fixed for checking token on deleting, restoring</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.8.2.2</release>
+    <api>0.8.2.2</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2010-01-23</date>
+   <license>apache</license>
+   <notes>fixed security issue</notes>
   </release>
  </changelog>
 </package>
