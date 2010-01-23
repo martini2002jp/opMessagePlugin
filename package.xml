@@ -13,17 +13,17 @@
   <email />
   <active>yes</active>
  </lead>
- <contributor>
+ <lead>
   <name>Kousuke Ebihara</name>
   <user>ebihara</user>
   <email />
   <active>yes</active>
- </contributor>
- <date>2009-11-28</date>
- <time>20:00:33</time>
+ </lead>
+ <date>2010-01-23</date>
+ <time>13:32:19</time>
  <version>
-  <release>0.9.0.1</release>
-  <api>0.9.0.1</api>
+  <release>0.9.0.2</release>
+  <api>0.9.0.2</api>
  </version>
  <stability>
   <release>beta</release>
@@ -101,7 +101,7 @@
    <file baseinstalldir="/" md5sum="b942fd31ce23651a20537ff7674e562f" name="lib/model/doctrine/PluginMessageSendListTable.class.php" role="data" />
    <file baseinstalldir="/" md5sum="ab4f1af418ce7a4ec9058c85681c98cc" name="lib/model/doctrine/PluginMessageType.class.php" role="data" />
    <file baseinstalldir="/" md5sum="ee8e52be1f41daa2e62196765b930ff5" name="lib/model/doctrine/PluginMessageTypeTable.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="65f35ba12780aea4f0cdca355be24fa3" name="lib/model/doctrine/PluginSendMessageData.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="fe2361eb16e4ad400bedc0c06f2ae302" name="lib/model/doctrine/PluginSendMessageData.class.php" role="data" />
    <file baseinstalldir="/" md5sum="d225a6354ba9b27649f67fb4a8203590" name="lib/model/doctrine/PluginSendMessageDataTable.class.php" role="data" />
    <file baseinstalldir="/" md5sum="33788580fc6756ef6ecc0e1ca65250b8" name="lib/util/opMessageSender.class.php" role="data" />
    <file baseinstalldir="/" md5sum="eb142e641ca59009837a4e4ecd92b6bf" name="templates/_communityJoiningRequestMessage.php" role="data" />
@@ -181,6 +181,19 @@
     <api>beta</api>
    </stability>
    <date>2009-11-28</date>
+   <license>apache</license>
+   <notes>fixed security issue</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.9.0.2</release>
+    <api>0.9.0.2</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2010-01-23</date>
    <license>apache</license>
    <notes>fixed security issue</notes>
   </release>
