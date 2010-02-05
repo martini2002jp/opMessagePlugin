@@ -203,10 +203,10 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeSendToFriend(sfWebRequest $request)
   {
-    if ($request->getParameter('message'))
+    if ($params = $request->getParameter('message'))
     {
-      $sendMemberId = $request->getParameter('message[send_member_id]');
-      $this->message = Doctrine::getTable('SendMessageData')->find($request->getParameter('message[id]'));
+      $sendMemberId = $params['send_member_id'];
+      $this->message = Doctrine::getTable('SendMessageData')->find($params['id']);
       $this->forward404Unless($this->isDraftOwner());
     }
     else if ($request->getParameter('id'))
