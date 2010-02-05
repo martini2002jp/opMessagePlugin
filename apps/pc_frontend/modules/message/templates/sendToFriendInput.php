@@ -5,7 +5,7 @@
 <?php ob_end_clean() ?>
 <?php
 $options['title'] = __('Compose Message');
-$options['url'] = 'message/sendToFriend';
+$options['url'] = url_for('message/sendToFriend');
 $options['button'] = __('Send');
 $options['isMultipart'] = true;
 $options['firstRow'] = $firstRow;
