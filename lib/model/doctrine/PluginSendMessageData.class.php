@@ -49,14 +49,14 @@ abstract class PluginSendMessageData extends BaseSendMessageData
   }
 
   /**
-   * メッセージが本人宛かどうか確認する
+   * メッセージが本人宛で且つ送信済みかどうか確認する
    * @param  $member_id
    * @return int
    */
   public function getIsReceiver($member_id)
   { 
     $message = Doctrine::getTable('MessageSendList')->getMessageByReferences($member_id, $this->getId());
-    if ($message) {
+    if ($message && $this->getIsSend()) {
       return 1;
     } else {
       return 0;
