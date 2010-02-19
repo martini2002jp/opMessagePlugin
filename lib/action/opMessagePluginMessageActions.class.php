@@ -175,10 +175,13 @@ class opMessagePluginMessageActions extends opMessagePluginActions
       default :
         throw new LogicException();
     }
-    Doctrine::getTable('DeletedMessage')->deleteMessage(
-                                      sfContext::getInstance()->getUser()->getMemberId(),
-                                      $request->getParameter('id'),
-                                      $objectName);
+    $this->forward404Unless(
+      Doctrine::getTable('DeletedMessage')->deleteMessage(
+        sfContext::getInstance()->getUser()->getMemberId(),
+        $request->getParameter('id'),
+        $objectName
+      )
+    );
 
     $this->redirect('@'.$messageType.'List');
   }

@@ -96,21 +96,21 @@ class PluginDeletedMessageTable extends Doctrine_Table
   public function deleteMessage($member_id, $message_id, $object_name)
   {
     if ($object_name == 'MessageSendList') {
-        $message = Doctrine::getTable('MessageSendList')->find($message_id);
+        $message = Doctrine::getTable('MessageSendList')->findOneByIdAndMemberId($message_id, $member_id);
         $deleted_message = $this->getDeletedMessageByMessageSendListId($member_id, $message_id);
         if (!$deleted_message) {
           $deleted_message = new DeletedMessage();
         }
         $deleted_message->setMessageSendListId($message_id);
       } elseif ($object_name == 'SendMessageData') {
-        $message = Doctrine::getTable('SendMessageData')->find($message_id);
+        $message = Doctrine::getTable('SendMessageData')->findOneByIdAndMemberId($message_id, $member_id);
         $deleted_message = $this->getDeletedMessageByMessageId($member_id, $message_id);
         if (!$deleted_message) {
           $deleted_message = new DeletedMessage();
         }
         $deleted_message->setMessageId($message_id);
       } elseif ($object_name == 'DeletedMessage') {
-        $message = $this->find($message_id);
+        $message = $this->findOneByIdAndMemberId($message_id, $member_id);
         $deleted_message = null;
       }
       if (!$message) {
