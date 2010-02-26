@@ -26,10 +26,10 @@
   <active>yes</active>
  </lead>
  <date>2010-02-25</date>
- <time>14:19:28</time>
+ <time>14:37:40</time>
  <version>
-  <release>0.8.2.2</release>
-  <api>0.8.2.2</api>
+  <release>0.8.2.3</release>
+  <api>0.8.2.3</api>
  </version>
  <stability>
   <release>beta</release>
@@ -173,6 +173,19 @@
    <version>
     <release>0.8.2.2</release>
     <api>0.8.2.2</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2010-01-23</date>
+   <license>apache</license>
+   <notes>fixed security issue</notes>
+  </release>
+  <release>
+   <version>
+    <release>0.8.2.3</release>
+    <api>0.8.2.3</api>
    </version>
    <stability>
     <release>beta</release>
