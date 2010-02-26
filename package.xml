@@ -19,8 +19,14 @@
   <email />
   <active>yes</active>
  </lead>
- <date>2010-01-23</date>
- <time>05:08:37</time>
+ <lead>
+  <name />
+  <user>urabe</user>
+  <email />
+  <active>yes</active>
+ </lead>
+ <date>2010-02-25</date>
+ <time>14:19:28</time>
  <version>
   <release>0.8.2.2</release>
   <api>0.8.2.2</api>
@@ -71,7 +77,7 @@
    <file baseinstalldir="/" md5sum="79b37c16ef10469a59b542d969451b48" name="data/migrations/0.8.2/002_update_op_message_plugin_0_8_2_2.php" role="data" />
    <file baseinstalldir="/" md5sum="a946263e470b731e97242052c7ed5606" name="lib/opMessagePluginRouting.class.php" role="data" />
    <file baseinstalldir="/" md5sum="52315d976ac8e43abd484539ec0c5aa2" name="lib/action/opMessagePluginActions.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="78ef717a950dd542c3cfff0133f8cec2" name="lib/action/opMessagePluginMessageActions.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="e5608b6a21e04b1f0f3d38504aa828c8" name="lib/action/opMessagePluginMessageActions.class.php" role="data" />
    <file baseinstalldir="/" md5sum="6ff2e4bba832b599aa0703ea622f6f35" name="lib/action/opMessagePluginMessageComponents.class.php" role="data" />
    <file baseinstalldir="/" md5sum="01acf165592b2b199b70a581c1b528ba" name="lib/filter/DeletedMessageFormFilter.class.php" role="data" />
    <file baseinstalldir="/" md5sum="670441438beaa5e79312ab0c27bfefd7" name="lib/filter/MessageFileFormFilter.class.php" role="data" />
@@ -88,7 +94,7 @@
    <file baseinstalldir="/" md5sum="57987b6346cd189a013a156af5d1afdb" name="lib/form/SendMessageDataForm.class.php" role="data" />
    <file baseinstalldir="/" md5sum="9dc7539aec87ba92efc85f479b19e9dd" name="lib/form/SendMessageForm.class.php" role="data" />
    <file baseinstalldir="/" md5sum="f3d48556e7147111f83d8f122ef6bec0" name="lib/model/DeletedMessage.php" role="data" />
-   <file baseinstalldir="/" md5sum="47d7e0668715c5ce0b7ce9f32e831294" name="lib/model/DeletedMessagePeer.php" role="data" />
+   <file baseinstalldir="/" md5sum="bde9b38429e2a3d9506ef06441249808" name="lib/model/DeletedMessagePeer.php" role="data" />
    <file baseinstalldir="/" md5sum="e30bf5144fc609961a87d7857b0f04ca" name="lib/model/MessageFile.php" role="data" />
    <file baseinstalldir="/" md5sum="73fe6ba2a7a9d72c4e856fc5e428f77c" name="lib/model/MessageFilePeer.php" role="data" />
    <file baseinstalldir="/" md5sum="91b36c196aa730ceafd9bd415854d757" name="lib/model/MessageSendList.php" role="data" />
@@ -97,7 +103,7 @@
    <file baseinstalldir="/" md5sum="2f3a66386308e36bdafcd091d6e598c4" name="lib/model/MessageTypeI18n.php" role="data" />
    <file baseinstalldir="/" md5sum="1e5460722a4d1c00767f59179ae8357f" name="lib/model/MessageTypeI18nPeer.php" role="data" />
    <file baseinstalldir="/" md5sum="0a8c37c54b0f0de025c2a15945fe5d1c" name="lib/model/MessageTypePeer.php" role="data" />
-   <file baseinstalldir="/" md5sum="62752668c38263693df9e38b52f10b5d" name="lib/model/SendMessageData.php" role="data" />
+   <file baseinstalldir="/" md5sum="b3b25d9b16b32742498fcc9a916319b2" name="lib/model/SendMessageData.php" role="data" />
    <file baseinstalldir="/" md5sum="7e1762033d4bba50dade3cc05cf6a8db" name="lib/model/SendMessageDataPeer.php" role="data" />
    <file baseinstalldir="/" md5sum="dbcaecd7b48def2c76f04910e02f9e09" name="web/css/message.css" role="data" />
    <file baseinstalldir="/" md5sum="3d40a300272ec2812ae4ca958b7038d9" name="web/images/icon_mail_1.gif" role="data" />
@@ -172,7 +178,7 @@
     <release>beta</release>
     <api>beta</api>
    </stability>
-   <date>2010-01-23</date>
+   <date>2010-02-25</date>
    <license>apache</license>
    <notes>fixed security issue</notes>
   </release>
