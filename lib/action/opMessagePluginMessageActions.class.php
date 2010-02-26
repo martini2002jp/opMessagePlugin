@@ -252,7 +252,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   public function executeReply(sfWebRequest $request)
   {
     $message = SendMessageDataPeer::retrieveByPk($request->getParameter('id'));
-    $this->forward404unless($message);
+    $this->forward404unless($message && $message->getIsReceiver($this->getUser()->getMemberId()));
     $this->message = new SendMessageData();
     $this->message->setMessageTypeId($message->getMessageTypeId());
     $this->message->setReturnMessageId($message->getId());
