@@ -131,9 +131,10 @@ class PluginDeletedMessageTable extends Doctrine_Table
    * @param int $message_id
    * @return boolean 
    */
-  public function restoreMessage($message_id)
+  public function restoreMessage($message_id, $member_id = null)
   {
-    $deleted_message = $this->find($message_id);
+    $member_id = $member_id ? $member_id : sfContext::getInstance()->getUser()->getMemberId();
+    $deleted_message = $this->findOneByIdAndMemberId($message_id, $member_id);
     if (!$deleted_message) {
       return false;
     }

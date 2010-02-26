@@ -177,7 +177,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     }
     $this->forward404Unless(
       Doctrine::getTable('DeletedMessage')->deleteMessage(
-        sfContext::getInstance()->getUser()->getMemberId(),
+        $this->getUser()->getMemberId(),
         $request->getParameter('id'),
         $objectName
       )
@@ -195,7 +195,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   {
     $request->checkCSRFProtection();
 
-    Doctrine::getTable('DeletedMessage')->restoreMessage($request->getParameter('id'));
+    $this->forward404Unless(Doctrine::getTable('DeletedMessage')->restoreMessage($request->getParameter('id')));
     $this->redirect('@dustList');
   }
   
