@@ -91,22 +91,29 @@ class DeletedMessagePeer extends BaseDeletedMessagePeer
    */
   public static function deleteMessage($member_id, $message_id, $object_name)
   {
+    $criteria = new Criteria();
     if ($object_name == 'MessageSendList') {
-        $message = MessageSendListPeer::retrieveByPK($message_id);
+        $criteria->add(MessageSendListPeer::MEMBER_ID, $member_id);
+        $criteria->add(MessageSendListPeer::ID, $message_id);
+        $message = MessageSendListPeer::doSelectOne($criteria);
         $deleted_message = DeletedMessagePeer::getDeletedMessageByMessageSendListId($member_id, $message_id);
         if (!$deleted_message) {
           $deleted_message = new DeletedMessage();
         }
         $deleted_message->setMessageSendListId($message_id);
       } else if ($object_name == 'Message') {
-        $message = SendMessageDataPeer::retrieveByPK($message_id);
+        $criteria->add(SendMessageDataPeer::MEMBER_ID, $member_id);
+        $criteria->add(SendMessageDataPeer::ID, $message_id);
+        $message = SendMessageDataPeer::doSelectOne($criteria);
         $deleted_message = DeletedMessagePeer::getDeletedMessageByMessageId($member_id, $message_id);
         if (!$deleted_message) {
           $deleted_message = new DeletedMessage();
         }
         $deleted_message->setMessageId($message_id);
       } else if ($object_name == 'DeletedMessage') {
-        $message = DeletedMessagePeer::retrieveByPK($message_id);
+        $criteria->add(self::MEMBER_ID, $member_id);
+        $criteria->add(self::ID, $message_id);
+        $message = self::doSelectOne($criteria);
         $deleted_message = null;
       }
       if (!$message) {
@@ -127,9 +134,13 @@ class DeletedMessagePeer extends BaseDeletedMessagePeer
    * @param int $message_id
    * @return boolean 
    */
-  public static function restoreMessage($message_id)
+  public static function restoreMessage($message_id, $member_id = null)
   {
-    $deleted_message = DeletedMessagePeer::retrieveByPK($message_id);
+    $member_id = $member_id ? $member_id : sfContext::getInstance()->getUser()->getMemberId();
+    $criteria = new Criteria();
+    $criteria->add(self::MEMBER_ID, $member_id);
+    $criteria->add(self::ID, $message_id);
+    $deleted_message = self::doSelectOne($criteria);
     if (!$deleted_message) {
       return false;
     }
