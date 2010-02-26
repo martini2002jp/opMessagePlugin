@@ -49,7 +49,7 @@ class SendMessageData extends BaseSendMessageData
   public function getIsReceiver($member_id)
   { 
     $message = MessageSendListPeer::getMessageByReferences($member_id, $this->getId());
-    if ($message) {
+    if ($message && $this->getIsSend()) {
       return 1;
     } else {
       return 0;
