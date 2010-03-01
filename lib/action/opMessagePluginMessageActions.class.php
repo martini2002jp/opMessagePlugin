@@ -263,6 +263,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   {
     $this->message = Doctrine::getTable('SendMessageData')->find($request->getParameter('id'));
     $this->forward404unless($this->message);
+    $this->forward404If($this->message->getIsSend());
     $this->forward404Unless($this->isDraftOwner());
     if ($this->message->getMessageType() == Doctrine::getTable('MessageType')->getMessageTypeIdByName('message'))
     {
