@@ -56,9 +56,17 @@ class opMessagePluginActions extends sfActions
         if ($read_message->getIsRead() == 0) {
           $read_message->readMessage();
         }
+        if ($read_message->getIsDeleted())
+        {
+          return false;
+        }
         return $read_message;
       case "send":
         if ($this->message->getIsSender($this->getUser()->getMemberId()) === 0) {
+          return false;
+        }
+        if ($this->message->getIsDeleted())
+        {
           return false;
         }
         return true;
@@ -72,7 +80,10 @@ class opMessagePluginActions extends sfActions
         if (!$deleted_message) {
           return false;
         }
+        if ($deleted_message->getIsDeleted())
+        {
+          return false;
+        }
         return $deleted_message;
     }
-  }
 }
