@@ -65,11 +65,13 @@ class opMessagePluginFormatter
 
   public function __call($method, $arguments)
   {
+    $prefix = 'decorate';
+    $suffix = 'Body';
     if (substr($method, 0, strlen($prefix)) === $prefix
       && substr($method, -(strlen($suffix))) === $suffix)
     {
       $event = new sfEvent($this, 'op_message_plugin.decorate_body', array('method' => $method, 'arguments' => $arguments));
-      $this->dispatcher->notifyUntil($event);
+      $this->notifyUntil($event);
       if ($event->isProcessed())
       {
         return $event->getReturnValue();
@@ -77,5 +79,20 @@ class opMessagePluginFormatter
     }
 
     throw new sfException(sprintf('Call to undefined method %s::%s.', get_class($this), $method));
+  }
+
+  public function notifyUntil($event)
+  {
+    $dispatcher = sfContext::getInstance()->getEventDispatcher();
+    foreach ($dispatcher->getListeners($event->getName()) as $listener)
+    {
+      $message = call_user_func($listener, $event['arguments'][0]);
+      if ($message)
+      {
+        $event->setProcessed(true);
+        $event->setReturnValue($message);
+        break;
+      }
+    }
   }
 }
