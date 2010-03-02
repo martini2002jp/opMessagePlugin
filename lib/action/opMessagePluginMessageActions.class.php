@@ -74,7 +74,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
 
     if ($this->pager->getNbResults())
     {
-      $deleteMessage = null;
+      $deleteMessage = array();
       foreach ($this->pager->getResults() as $message)
       {
         $deleteMessage[] = $message->getId();
