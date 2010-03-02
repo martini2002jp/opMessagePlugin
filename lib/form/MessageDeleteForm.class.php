@@ -39,7 +39,7 @@ class MessageDeleteForm extends sfForm
 
   public function save()
   {
-    foreach ($this->getValue('message_ids') as $message_id)
+    foreach ($this->getValue('message_ids') ? $this->getValue('message_ids') : array() as $message_id)
     {
       if (sfContext::getInstance()->getRequest()->getParameter('restore')) {
         Doctrine::getTable('DeletedMessage')->restoreMessage($message_id);
