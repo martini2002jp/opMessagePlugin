@@ -22,6 +22,8 @@ class SendMessageForm extends PluginSendMessageDataForm
     parent::configure();
     $this->setWidget("send_member_id", new sfWidgetFormInputHidden());
     $this->setValidator("send_member_id", new sfValidatorInteger());
+    $this->setValidator("subject", new opValidatorString(array('rtrim' => true)));
+    $this->setValidator("body", new opValidatorString(array('rtrim' => true)));
     $this->setDefault("send_member_id", $this->getOption('send_member_id'));
   }
 
