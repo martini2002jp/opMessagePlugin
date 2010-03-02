@@ -43,7 +43,6 @@ abstract class PluginMessageFileForm extends BaseMessageFileForm
   {
     if ($values['image'] instanceof sfValidatedFile)
     {
-
       if (!$this->isNew())
       {
         unset($this->getObject()->File);
@@ -53,17 +52,15 @@ abstract class PluginMessageFileForm extends BaseMessageFileForm
       $file->setFromValidatedFile($values['image']);
 
       $this->getObject()->setFile($file);
+      return;
     }
-    else
-    {
-      if (!$this->isNew() && !empty($values['image_delete']))
-      {
-        $this->getObject()->getFile()->delete();
-      }
 
-      $this->getObject()->setFile(null);
+    if (!empty($values['image_delete']) && !$this->isNew())
+    {
+      $this->getObject()->getFile()->delete();
     }
-  } 
+    $this->object = null;
+  }
 
 /*
   public function updateObject($values = null)
