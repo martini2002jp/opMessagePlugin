@@ -61,7 +61,7 @@ class PluginMessageSendListTable extends Doctrine_Table
       ->where('member_id = ?', $member_id)
       ->andWhere('is_deleted = ?', false)
       ->andWhere('is_read = ?', false)
-      ->andWhere('SendMessageData.is_send = ?', true);
+      ->andWhere('message_id IN (SELECT m2.id FROM SendMessageData m2 WHERE m2.is_send = ?)', true);
     return $q->count();
   }
 
