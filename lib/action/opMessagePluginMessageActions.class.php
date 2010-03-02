@@ -227,6 +227,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     ));
 
     $this->sendMember = Doctrine::getTable('Member')->find($sendMemberId);
+    $this->forward404Unless($this->sendMember);
     if ($request->isMethod(sfWebRequest::POST))
     {
       $params = $request->getParameter('message');
@@ -274,6 +275,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
         'send_member_id' => $sendMemberId
       ));
       $this->sendMember = Doctrine::getTable('Member')->find($sendMemberId);
+      $this->forward404Unless($this->sendMember);
       $this->setTemplate('sendToFriend');
       return sfView::INPUT;
     }
@@ -304,6 +306,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
       'send_member_id' => $sendMemberId
     ));
     $this->sendMember = Doctrine::getTable('Member')->find($sendMemberId);
+    $this->forward404Unless($this->sendMember);
     $this->setTemplate('sendToFriend');
     return sfView::INPUT;
   }
