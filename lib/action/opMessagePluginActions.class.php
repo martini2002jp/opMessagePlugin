@@ -86,4 +86,5 @@ class opMessagePluginActions extends sfActions
         }
         return $deleted_message;
     }
+  }
 }
