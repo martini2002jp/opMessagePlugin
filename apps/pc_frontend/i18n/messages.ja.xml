@@ -130,6 +130,10 @@
         <source>Body</source>
         <target>本文</target>
       </trans-unit>
+      <trans-unit id="33">
+        <source>deleted</source>
+        <target>退会した</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

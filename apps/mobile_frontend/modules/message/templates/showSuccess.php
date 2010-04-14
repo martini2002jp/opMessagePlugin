@@ -2,14 +2,18 @@
 <?php if ($message->getIsSender()): ?>
 <?php echo __('To') ?>：
 <?php foreach ($message->getMessageSendLists() as $sendTo): ?>
-<?php if ($sendTo->getMember()): ?>
+<?php if ($sendTo->getMemberId()): ?>
 <?php echo link_to($sendTo->getMember()->getName(), 'member/profile?id='.$sendTo->getMemberId()) ?>
+<?php else: ?>
+<?php echo __('deleted'); $isDeletedMember = true; ?>
 <?php endif; ?><br>
 <?php endforeach; ?>
 <?php else: ?>
 <?php echo __('From') ?>：
-<?php if ($message->getMember()): ?>
+<?php if ($message->getMemberId()): ?>
 <?php echo link_to($message->getMember()->getName(), 'member/profile?id='.$message->getMemberId()) ?>
+<?php else: ?>
+<?php echo __('deleted'); $isDeletedMember = true; ?>
 <?php endif; ?><br>
 <?php endif; ?>
 
@@ -44,7 +48,7 @@
 <input type="submit" value="<?php echo __('Delete') ?>"  />
 </form>
 
-<?php if ($messageType != 'dust' && !$message->getIsSender()): ?>
+<?php if ($messageType != 'dust' && !$message->getIsSender() && !$isDeletedMember): ?>
 <br><?php echo link_to(__('Reply'), 'message/reply?id='.$message->getId()) ?>
 <?php endif; ?>
 

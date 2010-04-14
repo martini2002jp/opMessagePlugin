@@ -102,6 +102,10 @@
         <source>The message was saved successfully.</source>
         <target>ﾒｯｾｰｼﾞを保存しました。</target>
       </trans-unit>
+      <trans-unit id="">
+        <source>deleted</source>
+        <target>退会した</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

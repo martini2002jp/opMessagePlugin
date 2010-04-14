@@ -23,7 +23,11 @@
 <td>
 <ul>
 <?php foreach ($fromOrToMembers as $member): ?>
+<?php if ($member->getId()):?>
 <li><?php echo link_to($member->getName(), '@member_profile?id='.$member->getId()) ?></li>
+<?php else: ?>
+<li><?php echo __('deleted'); $isDeletedMember = true; ?></li>
+<?php endif; ?>
 <?php endforeach; ?>
 </ul>
 </td>
@@ -74,7 +78,7 @@
 <input type="submit" value="<?php echo __('Delete') ?>" class="input_submit" />
 </form>
 </li>
-<?php if ($messageType != 'dust' && !$message->getIsSender()): ?>
+<?php if ($messageType != 'dust' && !$message->getIsSender() && !$isDeletedMember): ?>
 <li><?php echo button_to(__('Reply'), 'message/reply?id='.$message->getId(), array('class' => 'input_submit')) ?></li>
 </ul>
 <?php else:?>
