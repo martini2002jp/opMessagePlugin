@@ -5,7 +5,7 @@
 <?php if ($sendTo->getMemberId()): ?>
 <?php echo link_to($sendTo->getMember()->getName(), 'member/profile?id='.$sendTo->getMemberId()) ?>
 <?php else: ?>
-<?php echo __('deleted'); $isDeletedMember = true; ?>
+<?php $isDeletedMember = true; ?>
 <?php endif; ?><br>
 <?php endforeach; ?>
 <?php else: ?>
@@ -13,7 +13,7 @@
 <?php if ($message->getMemberId()): ?>
 <?php echo link_to($message->getMember()->getName(), 'member/profile?id='.$message->getMemberId()) ?>
 <?php else: ?>
-<?php echo __('deleted'); $isDeletedMember = true; ?>
+<?php $isDeletedMember = true; ?>
 <?php endif; ?><br>
 <?php endif; ?>
 

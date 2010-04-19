@@ -26,7 +26,7 @@
 <?php if ($member->getId()):?>
 <li><?php echo link_to($member->getName(), '@member_profile?id='.$member->getId()) ?></li>
 <?php else: ?>
-<li><?php echo __('deleted'); $isDeletedMember = true; ?></li>
+<?php $isDeletedMember = true; ?>
 <?php endif; ?>
 <?php endforeach; ?>
 </ul>

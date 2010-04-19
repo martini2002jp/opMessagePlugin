@@ -8,5 +8,5 @@
 <?php endif; ?><br>
 <?php echo sprintf('%s (%s)',
   link_to(op_truncate($message->getSubject(), 28), '@readReceiveMessage?id='. $message->getId()),
-  ($message->getSendFrom()->getId()) ? $message->getSendFrom()->getName() : __('deleted')
+  ($message->getSendFrom()->getId()) ? $message->getSendFrom()->getName() : ''
 ); ?>

@@ -134,8 +134,6 @@ endswitch;
 <td><span>
 <?php if ($sender->getId()): ?>
 <?php echo $sender->getName() ?>
-<?php else: ?>
-<?php echo __('deleted') ?>
 <?php endif; ?>
 </span></td> 
 <td><span>
