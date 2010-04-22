@@ -17,6 +17,13 @@
  */
 class opMessagePluginActions extends sfActions
 {
+  public function initialize($context, $moduleName, $actionName)
+  {
+    parent::initialize($context, $moduleName, $actionName);
+
+    $this->security['all'] = array('is_secure' => true, 'credentials' => 'SNSMember');
+  }
+
   protected function isDraftOwner()
   {
     if (!$this->message) {
