@@ -21,10 +21,11 @@
 <?php echo op_format_date($message->getCreatedAt(), 'XDateTime'); ?><br>
 
 <?php echo __('Subject') ?>：
-<?php echo $message->getSubject() ?><br>
+<?php echo $message->getSubject() ?>
 
 <?php $images = $message->getMessageFile() ?>
 <?php if (count($images)): ?>
+<br>
 <?php foreach ($images as $image): ?>
 <?php echo link_to(__('View Image'), sf_image_path($image->getFile(), array('size' => '120x120', 'f' => 'jpg'))) ?><br>
 <?php endforeach; ?>
