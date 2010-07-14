@@ -17,9 +17,22 @@ class PluginMessageTypeTable extends Doctrine_Table
    */
   public function getMessageTypeIdByName($type_name)
   {
+    static $queryCacheHash;
+
     $q = $this->createQuery()
       ->where('type_name = ?', $type_name)
       ->andWhere('is_deleted = ?', false);
-    return $q->fetchOne();
+
+    if ($queryCacheHash)
+    {
+      $q->setCachedQueryCacheHash($queryCacheHash);
+
+      return $q->fetchOne();
+    }
+
+    $result = $q->fetchOne();
+    $queryCacheHash = $q->calculateQueryCacheHash();
+
+    return $result;
   }
 }
