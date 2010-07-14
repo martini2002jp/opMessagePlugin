@@ -42,7 +42,7 @@ class PluginMessageSendListTable extends Doctrine_Table
     $q = $this->addReceiveMessageQuery($this->createQuery(), $memberId);
     $q->orderBy('created_at DESC');
 
-    $pager = new sfDoctrinePager('SendMessageData', $size);
+    $pager = new opNonCountQueryPager('SendMessageData', $size);
     $pager->setQuery($q);
     $pager->setPage($page);
     $pager->init();
@@ -57,11 +57,11 @@ class PluginMessageSendListTable extends Doctrine_Table
    */
   public function countUnreadMessage($member_id)
   {
-    $q = $this->createQuery()
-      ->where('member_id = ?', $member_id)
-      ->andWhere('is_deleted = ?', false)
-      ->andWhere('is_read = ?', false)
-      ->andWhere('message_id IN (SELECT m2.id FROM SendMessageData m2 WHERE m2.is_send = ?)', true);
+    $q = $this->createQuery('m')
+      ->where('m.member_id = ?', $member_id)
+      ->andWhere('m.is_deleted = ?', false)
+      ->andWhere('m.is_read = ?', false)
+      ->andWhere('m.SendMessageData.is_send = ?', true);
     return $q->count();
   }
 

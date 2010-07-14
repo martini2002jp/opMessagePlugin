@@ -42,6 +42,15 @@ SendMessageData:
   relations:
     Member: { local: member_id, foreign: id, onDelete: set null }
     MessageType: { local: message_type_id, foreign: id }
+  indexes:
+    member_id:
+      fields: [member_id]
+    message_type_id:
+      fields: [message_type_id]
+    updated_at:
+      fields: [updated_at]
+    member_id_is_send_return_message_id:
+      fields: [member_id, is_send, return_message_id]
 #メッセージ添付ファイル（画像など）
 MessageFile:
   columns:
@@ -51,6 +60,11 @@ MessageFile:
   relations:
     SendMessageData: { class: SendMessageData, local: message_id, foreign: id, onDelete: cascade }
     File: { local: file_id, foreign: id, onDelete: cascade }
+  indexes:
+    message_id:
+      fields: [message_id]
+    file_id:
+      fields: [file_id]
 #メッセージ送信先
 MessageSendList:
   columns:
@@ -63,6 +77,13 @@ MessageSendList:
   relations:
     Member: { local: member_id, foreign: id, onDelete: set null }
     SendMessageData: { class: SendMessageData, local:message_id, foreign: id }
+  indexes:
+    message_id:
+      fields: [message_id]
+    member_id:
+      fields: [member_id]
+    created_at:
+      fields: [created_at]
 #削除済み（DustBox）メッセージ
 DeletedMessage:
   columns:
@@ -75,3 +96,6 @@ DeletedMessage:
     is_deleted: { type: boolean, notnull: true, default: 0 }
   relations:
     Member: { local: member_id, foreign: id, onDelete: cascade }
+  indexes:
+    member_id:
+      fields: [member_id]
