@@ -60,7 +60,7 @@ class PluginSendMessageDataTable extends Doctrine_Table
   {
     $q = $this->addSendMessageQuery($this->createQuery(), $memberId);
     $q->orderBy('created_at DESC');
-    $pager = new sfDoctrinePager('SendMessageData', $size);
+    $pager = new opNonCountQueryPager('SendMessageData', $size);
     $pager->setQuery($q);
     $pager->setPage($page);
     $pager->init();
