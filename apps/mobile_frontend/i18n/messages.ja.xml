@@ -102,6 +102,10 @@
         <source>The message was saved successfully.</source>
         <target>ﾒｯｾｰｼﾞを保存しました。</target>
       </trans-unit>
+      <trans-unit id="">
+        <source>Cannot send the message.</source>
+        <target>ﾒｯｾｰｼﾞを送信できませんでした。</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

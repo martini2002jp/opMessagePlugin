@@ -200,6 +200,15 @@ class opMessagePluginMessageActions extends opMessagePluginActions
 
     if ($request->isMethod(sfWebRequest::POST))
     {
+      if (!$request->getParameter('is_draft'))
+      {
+        $relation = MemberRelationshipPeer::retrieveByFromAndTo($this->getUser()->getMemberId(), $sendMemberId);
+        if ($relation && $relation->isAccessBlocked())
+        {
+          $this->getUser()->setFlash('error', 'Cannot send the message.');
+          $this->redirect('@sendList');
+        }
+      }
       $params = $request->getParameter('message');
       $this->form->bind($params, $request->getFiles('message'));
 
