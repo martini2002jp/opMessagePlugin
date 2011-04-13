@@ -130,6 +130,10 @@
         <source>Body</source>
         <target>本文</target>
       </trans-unit>
+      <trans-unit id="">
+        <source>Cannot send the message.</source>
+        <target>メッセージを送信できませんでした。</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
