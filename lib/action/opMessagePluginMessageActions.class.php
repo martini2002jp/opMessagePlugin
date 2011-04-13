@@ -202,8 +202,8 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     {
       if (!$request->getParameter('is_draft'))
       {
-        $relation = MemberRelationshipPeer::retrieveByFromAndTo($this->getUser()->getMemberId(), $sendMemberId);
-        if ($relation && $relation->isAccessBlocked())
+        $relation = MemberRelationshipPeer::retrieveByFromAndTo($sendMemberId, $this->getUser()->getMemberId());
+        if ($relation && $relation->getIsAccessBlock())
         {
           $this->getUser()->setFlash('error', 'Cannot send the message.');
           $this->redirect('@sendList');
