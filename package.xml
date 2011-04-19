@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package packagerversion="1.7.2" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+<package packagerversion="1.9.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
     http://pear.php.net/dtd/tasks-1.0.xsd
     http://pear.php.net/dtd/package-2.0
     http://pear.php.net/dtd/package-2.0.xsd">
@@ -20,27 +20,35 @@
   <active>yes</active>
  </lead>
  <lead>
-  <name />
+  <name>Shinichi Urabe</name>
   <user>urabe</user>
   <email />
   <active>yes</active>
  </lead>
- <date>2010-02-25</date>
- <time>14:37:40</time>
+ <developer>
+  <name>kashiwasan</name>
+  <user>kashiwasan</user>
+  <email />
+  <active>yes</active>
+ </developer>
+ <date>2011-04-19</date>
+ <time>21:06:59</time>
  <version>
-  <release>0.8.2.3</release>
-  <api>0.8.2.3</api>
+  <release>0.8.2.4</release>
+  <api>0.8.2.4</api>
  </version>
  <stability>
   <release>beta</release>
   <api>beta</api>
  </stability>
  <license>apache</license>
- <notes>fixed security issue</notes>
+ <notes>
+fixed sending message that allows from access-blocked member
+ </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <file baseinstalldir="/" md5sum="6b0911df445ce8125d146636cb7e7cb9" name="apps/mobile_frontend/config/app.yml" role="data" />
-   <file baseinstalldir="/" md5sum="fa84ac2813f0aea510ab3eb1dc7f2436" name="apps/mobile_frontend/i18n/messages.ja.xml" role="data" />
+   <file baseinstalldir="/" md5sum="f63d0b782a19d4e166562cf68e33d17e" name="apps/mobile_frontend/i18n/messages.ja.xml" role="data" />
    <file baseinstalldir="/" md5sum="145222fd08462df75f7cbf2284f34bb4" name="apps/mobile_frontend/modules/member/config/view.yml" role="data" />
    <file baseinstalldir="/" md5sum="de3c588edd78c80e2e39d6c36988275a" name="apps/mobile_frontend/modules/message/actions/actions.class.php" role="data" />
    <file baseinstalldir="/" md5sum="b0d20c3e0d33da637d77b444a4454a00" name="apps/mobile_frontend/modules/message/actions/components.class.php" role="data" />
@@ -55,7 +63,7 @@
    <file baseinstalldir="/" md5sum="2da07fdc124fbe6441377316ada08046" name="apps/mobile_frontend/modules/message/templates/_sendMessageLink.php" role="data" />
    <file baseinstalldir="/" md5sum="1f8245629e934360c7992055ed901cc3" name="apps/mobile_frontend/modules/message/templates/_unreadMessage.php" role="data" />
    <file baseinstalldir="/" md5sum="ab54ad3747fbc31d87ebc84d59e79022" name="apps/pc_frontend/config/app.yml" role="data" />
-   <file baseinstalldir="/" md5sum="dca590a70be661b0a7d3136a767337f5" name="apps/pc_frontend/i18n/messages.ja.xml" role="data" />
+   <file baseinstalldir="/" md5sum="467f847731f932a00077efb62e5477b3" name="apps/pc_frontend/i18n/messages.ja.xml" role="data" />
    <file baseinstalldir="/" md5sum="5bb99e9de0810b4e5de0ad02c0056004" name="apps/pc_frontend/modules/member/config/view.yml" role="data" />
    <file baseinstalldir="/" md5sum="3646a3c9a0967f163272ec8b0e7350f8" name="apps/pc_frontend/modules/message/actions/actions.class.php" role="data" />
    <file baseinstalldir="/" md5sum="b446569e3cbab0460a77cd95c91d26d3" name="apps/pc_frontend/modules/message/actions/components.class.php" role="data" />
@@ -77,7 +85,7 @@
    <file baseinstalldir="/" md5sum="79b37c16ef10469a59b542d969451b48" name="data/migrations/0.8.2/002_update_op_message_plugin_0_8_2_2.php" role="data" />
    <file baseinstalldir="/" md5sum="a946263e470b731e97242052c7ed5606" name="lib/opMessagePluginRouting.class.php" role="data" />
    <file baseinstalldir="/" md5sum="52315d976ac8e43abd484539ec0c5aa2" name="lib/action/opMessagePluginActions.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="e5608b6a21e04b1f0f3d38504aa828c8" name="lib/action/opMessagePluginMessageActions.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="d2279798cb4dbd02b7685d3e6660645e" name="lib/action/opMessagePluginMessageActions.class.php" role="data" />
    <file baseinstalldir="/" md5sum="6ff2e4bba832b599aa0703ea622f6f35" name="lib/action/opMessagePluginMessageComponents.class.php" role="data" />
    <file baseinstalldir="/" md5sum="01acf165592b2b199b70a581c1b528ba" name="lib/filter/DeletedMessageFormFilter.class.php" role="data" />
    <file baseinstalldir="/" md5sum="670441438beaa5e79312ab0c27bfefd7" name="lib/filter/MessageFileFormFilter.class.php" role="data" />
@@ -121,11 +129,6 @@
    <pearinstaller>
     <min>1.4.0</min>
    </pearinstaller>
-   <package>
-    <name>symfony</name>
-    <channel>pear.symfony-project.com</channel>
-    <min>1.2.0</min>
-   </package>
   </required>
  </dependencies>
  <phprelease />
@@ -141,7 +144,9 @@
    </stability>
    <date>2009-02-14</date>
    <license>Apache</license>
-   <notes>This is a bug fix release #3571 #3568 #3612</notes>
+   <notes>
+This is a bug fix release #3571 #3568 #3612
+   </notes>
   </release>
   <release>
    <version>
@@ -154,7 +159,9 @@
    </stability>
    <date>2009-04-25</date>
    <license>apache</license>
-   <notes>Mobile add &amp; Some bug fix</notes>
+   <notes>
+Mobile add &amp; Some bug fix
+   </notes>
   </release>
   <release>
    <version>
@@ -167,7 +174,9 @@
    </stability>
    <date>2010-01-22</date>
    <license>apache</license>
-   <notes>fixed for checking token on deleting, restoring</notes>
+   <notes>
+fixed for checking token on deleting, restoring
+   </notes>
   </release>
   <release>
    <version>
@@ -180,7 +189,9 @@
    </stability>
    <date>2010-01-23</date>
    <license>apache</license>
-   <notes>fixed security issue</notes>
+   <notes>
+fixed security issue
+   </notes>
   </release>
   <release>
    <version>
@@ -193,7 +204,24 @@
    </stability>
    <date>2010-02-25</date>
    <license>apache</license>
-   <notes>fixed security issue</notes>
+   <notes>
+fixed security issue
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.8.2.4</release>
+    <api>0.8.2.4</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2011-04-19</date>
+   <license>apache</license>
+   <notes>
+fixed sending message that allows from access-blocked member
+   </notes>
   </release>
  </changelog>
 </package>
