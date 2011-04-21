@@ -230,6 +230,15 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     $this->forward404Unless($this->sendMember);
     if ($request->isMethod(sfWebRequest::POST))
     {
+      if (!$request->getParameter('is_draft'))
+      {
+        $relation = Doctrine::getTable('MemberRelationship')->retrieveByFromAndTo($sendMemberId, $this->getUser()->getMemberId());
+        if ($relation && $relation->getIsAccessBlock())
+        {
+          $this->getUser()->setFlash('error', 'Cannot send the message.');
+          $this->redirect('@sendList');
+        }
+      }
       $params = $request->getParameter('message');
       $this->form->bind(
         $request->getParameter($this->form->getName()),
