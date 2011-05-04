@@ -74,8 +74,10 @@ class opMessagePluginActions extends sfActions
         $deleted_message = Doctrine::getTable('DeletedMessage')->getDeletedMessageByMessageId(
                                                   $this->getUser()->getMemberId(), $this->message->getId());
         if (!$deleted_message) {
-          $deleted_message = Doctrine::getTable('DeletedMessage')->getDeletedMessageByMessageSendListId(
+          $send_list = Doctrine::getTable('MessageSendList')->getMessageByReferences(
                                                   $this->getUser()->getMemberId(), $this->message->getId());
+          $deleted_message = Doctrine::getTable('DeletedMessage')->getDeletedMessageByMessageSendListId(
+                                                  $this->getUser()->getMemberId(), $send_list->getId());
         }
         if (!$deleted_message) {
           return false;
