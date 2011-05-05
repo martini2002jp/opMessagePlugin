@@ -66,8 +66,10 @@ class opMessagePluginActions extends sfActions
         $deleted_message = DeletedMessagePeer::getDeletedMessageByMessageId(
                                                   $this->getUser()->getMemberId(), $this->message->getId());
         if (!$deleted_message) {
-          $deleted_message = DeletedMessagePeer::getDeletedMessageByMessageSendListId(
+          $send_list = MessageSendListPeer::getMessageByReferences(
                                                   $this->getUser()->getMemberId(), $this->message->getId());
+          $deleted_message = DeletedMessagePeer::getDeletedMessageByMessageSendListId(
+                                                  $this->getUser()->getMemberId(), $send_list->getId());
         }
         if (!$deleted_message) {
           return false;

@@ -133,7 +133,14 @@ class DeletedMessage extends BaseDeletedMessage
     }
     if ($this->message)
     {
-      return $this->message->getId();
+      if ($this->getMessageId())
+      {
+        return $this->message->getId();
+      }
+      else if ($this->getMessageSendListId())
+      {
+        return $this->message->getMessageId();
+      }
     }
     return null;
   }

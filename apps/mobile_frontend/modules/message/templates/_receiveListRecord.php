@@ -7,6 +7,6 @@
 <font color="#FF0000">(<?php echo __('Unopened') ?>)</font>
 <?php endif; ?><br>
 <?php echo sprintf('%s (%s)',
-  link_to(op_truncate($message->getSubject(), 28), '@readReceiveMessage?id='. $message->getId()),
+  link_to(op_truncate($message->getSubject(), 28), '@readReceiveMessage?id='. $message->getMessageId()),
   ($message->getSendFrom()) ? $message->getSendFrom()->getName() : ''
 ); ?>
