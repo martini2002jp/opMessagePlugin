@@ -86,6 +86,11 @@ class opMessagePluginMessageActions extends opMessagePluginActions
         $this->form->bind($params);
         if ($this->form->isValid())
         {
+          if ($this->messageType == "dust" && (!$request->getParameter('restore')) && $request->getParameter('only_hidden') != true)
+          {
+            $this->setTemplate("deleteListConfirm");
+            return sfView::SUCCESS;
+          }
           $this->message = $this->form->save();
           $this->redirect('@'.$this->messageType.'List');
         }
@@ -122,7 +127,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
         break;
 
       case "dust":
-        $this->deleteButton = '@deleteDustMessage?id='.$message->getId();
+        $this->deleteButton = '@deleteConfirmDustMessage?id='.$this->message->getId();
         $this->deletedId = $message->getId();
         break;
 
@@ -147,6 +152,32 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     {
       $this->fromOrToMembers[] = $this->message->getMember();
     }
+  }
+
+  /**
+   * Executes deleteconfirm action
+   *
+   * @param sfWebRequest $request A request object
+   */
+  public function executeDeleteConfirm(sfWebRequest $request)
+  {
+    $this->message = Doctrine::getTable('SendMessageData')->find($request->getParameter('id'));
+    $this->messageType = $request->getParameter('type');
+    $this->forward404unless($message = $this->isReadable($this->messageType));
+
+    $this->form = new sfForm();
+
+    if ("dust" == $this->messageType)
+    {
+      $this->deleteButton = '@deleteDustMessage?id='.$message->getId();
+      $this->deletedId = $message->getId();
+    }
+    else
+    {
+      throw new LogicException();
+    }
+
+    $this->setTemplate("deleteConfirm");
   }
 
  /**

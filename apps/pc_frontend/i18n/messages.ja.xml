@@ -134,6 +134,14 @@
         <source>Cannot send the message.</source>
         <target>メッセージを送信できませんでした。</target>
       </trans-unit>
+      <trans-unit id="">
+        <source>Delete this message</source>
+        <target>このメッセージを削除する</target>
+      </trans-unit>
+      <trans-unit id="">
+        <source>Delete messages</source>
+        <target>メッセージを削除する</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
