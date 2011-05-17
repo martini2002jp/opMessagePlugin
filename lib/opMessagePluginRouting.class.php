@@ -90,5 +90,14 @@ class opMessagePluginRouting
         array('id' => '\d+')
       )
     );
+    
+    //delete message confirm
+    $routing->prependRoute('deleteConfirmDustMessage',
+      new sfRoute(
+        '/message/deleteConfirm/:id',
+        array('module' => 'message', 'action' => 'deleteConfirm', 'type' => 'dust'),
+        array('id' => '\d+')
+      )
+    );
   }
 }
