@@ -132,9 +132,7 @@ endswitch;
 <?php echo $form_delete_error ?>
 </span></td> 
 <td><span>
-<?php if ($sender->getId()): ?>
-<?php echo $sender->getName() ?>
-<?php endif; ?>
+<?php echo op_link_to_member($sender) ?>
 </span></td> 
 <td><span>
 <?php if ($messageType == 'draft' && !$sender->getId()):?>

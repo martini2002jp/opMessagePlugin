@@ -23,9 +23,8 @@
 <td>
 <ul>
 <?php foreach ($fromOrToMembers as $member): ?>
-<?php if ($member->getId()):?>
-<li><?php echo link_to($member->getName(), '@member_profile?id='.$member->getId()) ?></li>
-<?php else: ?>
+  <li><?php echo op_link_to_member($member) ?></li>
+<?php if (!$member->getId()): ?>
 <?php $isDeletedMember = true; ?>
 <?php endif; ?>
 <?php endforeach; ?>

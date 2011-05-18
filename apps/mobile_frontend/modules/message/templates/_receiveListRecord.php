@@ -8,5 +8,5 @@
 <?php endif; ?><br>
 <?php echo sprintf('%s (%s)',
   link_to(op_truncate($message->getSubject(), 28), '@readReceiveMessage?id='. $message->getMessageId()),
-  ($message->getSendFrom()->getId()) ? $message->getSendFrom()->getName() : ''
+  op_link_to_member($message->getSendFrom())
 ); ?>

@@ -2,17 +2,15 @@
 <?php if ($message->getIsSender()): ?>
 <?php echo __('To') ?>：
 <?php foreach ($message->getMessageSendLists() as $sendTo): ?>
-<?php if ($sendTo->getMemberId()): ?>
-<?php echo link_to($sendTo->getMember()->getName(), 'member/profile?id='.$sendTo->getMemberId()) ?>
-<?php else: ?>
+<?php echo op_link_to_member($sendTo->getMember()) ?>
+<?php if (!$sendTo->getMemberId()): ?>
 <?php $isDeletedMember = true; ?>
 <?php endif; ?><br>
 <?php endforeach; ?>
 <?php else: ?>
 <?php echo __('From') ?>：
-<?php if ($message->getMemberId()): ?>
-<?php echo link_to($message->getMember()->getName(), 'member/profile?id='.$message->getMemberId()) ?>
-<?php else: ?>
+<?php echo op_link_to_member($message->getMember()) ?>
+<?php if (!$message->getMemberId()): ?>
 <?php $isDeletedMember = true; ?>
 <?php endif; ?><br>
 <?php endif; ?>
