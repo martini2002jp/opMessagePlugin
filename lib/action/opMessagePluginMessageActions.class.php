@@ -86,7 +86,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
         $this->form->bind($params);
         if ($this->form->isValid())
         {
-          if ($this->messageType == "dust" && (!$request->getParameter('restore')) && $request->getParameter('only_hidden') != true)
+          if ("dust" === $this->messageType && (!$request->getParameter('restore')) && true != $request->getParameter('only_hidden'))
           {
             $this->setTemplate("deleteListConfirm");
             return sfView::SUCCESS;
@@ -167,7 +167,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
 
     $this->form = new sfForm();
 
-    if ("dust" == $this->messageType)
+    if ("dust" === $this->messageType)
     {
       $this->deleteButton = '@deleteDustMessage?id='.$message->getId();
       $this->deletedId = $message->getId();
