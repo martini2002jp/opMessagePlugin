@@ -86,9 +86,9 @@ class opMessagePluginMessageActions extends opMessagePluginActions
         $this->form->bind($params);
         if ($this->form->isValid())
         {
-          if ("dust" === $this->messageType && (!$request->getParameter('restore')) && true != $request->getParameter('only_hidden'))
+          if ('dust' === $this->messageType && (!$request->getParameter('restore')) && true != $request->getParameter('only_hidden'))
           {
-            $this->setTemplate("deleteListConfirm");
+            $this->setTemplate('deleteListConfirm');
             return sfView::SUCCESS;
           }
           $this->message = $this->form->save();
@@ -118,15 +118,15 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     $this->form = new sfForm();
 
     switch ($this->messageType) {
-      case "receive":
+      case 'receive':
         $this->deleteButton = '@deleteReceiveMessage?id='.$message->getId();
         break;
 
-      case "send":
+      case 'send':
         $this->deleteButton = '@deleteSendMessage?id='.$this->message->getId();
         break;
 
-      case "dust":
+      case 'dust':
         $this->deleteButton = '@deleteConfirmDustMessage?id='.$this->message->getId();
         $this->deletedId = $message->getId();
         break;
@@ -167,7 +167,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
 
     $this->form = new sfForm();
 
-    if ("dust" === $this->messageType)
+    if ('dust' === $this->messageType)
     {
       $this->deleteButton = '@deleteDustMessage?id='.$message->getId();
       $this->deletedId = $message->getId();
@@ -177,7 +177,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
       throw new LogicException();
     }
 
-    $this->setTemplate("deleteConfirm");
+    $this->setTemplate('deleteConfirm');
   }
 
  /**
@@ -191,15 +191,15 @@ class opMessagePluginMessageActions extends opMessagePluginActions
 
     $messageType = $request->getParameter('type');
     switch ($messageType) {
-      case "receive":
+      case 'receive':
         $objectName = 'MessageSendList';
         break;
 
-      case "send":
+      case 'send':
         $objectName = 'SendMessageData';
         break;
 
-      case "dust":
+      case 'dust':
         $objectName = 'DeletedMessage';
         break;
 
