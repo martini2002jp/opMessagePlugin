@@ -67,7 +67,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
       $request->getParameter('page', 1),
       sfConfig::get('app_message_pagenatesize', 20)
     );
- 
+
     if ($this->pager->getNbResults())
     {
       $deleteMessage = null;
@@ -82,9 +82,9 @@ class opMessagePluginMessageActions extends opMessagePluginActions
         $this->form->bind($params);
         if ($this->form->isValid())
         {
-          if ($this->messageType == "dust" && (!$request->getParameter('restore')) && $request->getParameter('only_hidden') != true)
+          if ('dust' === $this->messageType && (!$request->getParameter('restore')) && true != $request->getParameter('only_hidden'))
           {
-            $this->setTemplate("deleteListConfirm");
+            $this->setTemplate('deleteListConfirm');
             return sfView::SUCCESS;
           }
           $this->message = $this->form->save();
@@ -98,7 +98,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     }
     return sfView::SUCCESS;
   }
-  
+
  /**
   * Executes show action
   *
@@ -112,13 +112,13 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     $this->messageType = $request->getParameter('type');
     $this->forward404unless($message = $this->isReadable($this->messageType));
     switch ($this->messageType) {
-      case "receive":
+      case 'receive':
         $this->deleteButton = '@deleteReceiveMessage?id='.$message->getId();
         break;
-      case "send":
+      case 'send':
         $this->deleteButton = '@deleteSendMessage?id='.$this->message->getId();
         break;
-      case "dust":
+      case 'dust':
         $this->deleteButton = '@deleteConfirmDustMessage?id='.$this->message->getId();
         $this->deletedId = $message->getId();
         break;
@@ -140,7 +140,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
 
     $this->form = new sfForm();
 
-    if ("dust" == $this->messageType)
+    if ('dust' === $this->messageType)
     {
       $this->deleteButton = '@deleteDustMessage?id='.$message->getId();
       $this->deletedId = $message->getId();
@@ -150,9 +150,9 @@ class opMessagePluginMessageActions extends opMessagePluginActions
       throw new LogicException();
     }
 
-    $this->setTemplate("deleteConfirm");
+    $this->setTemplate('deleteConfirm');
   }
-  
+
  /**
   * Executes delete action
   *
@@ -164,13 +164,13 @@ class opMessagePluginMessageActions extends opMessagePluginActions
 
     $messageType = $request->getParameter('type');
     switch ($messageType) {
-      case "receive":
+      case 'receive':
         $objectName = 'MessageSendList';
         break;
-      case "send":
+      case 'send':
         $objectName = 'Message';
         break;
-      case "dust":
+      case 'dust':
         $objectName = 'DeletedMessage';
         break;
       default :
@@ -182,10 +182,10 @@ class opMessagePluginMessageActions extends opMessagePluginActions
         $objectName
       )
     );
-    
+
     $this->redirect('@'.$messageType.'List');
   }
-  
+
  /**
   * Executes restore action
   *
@@ -198,7 +198,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     $this->forward404Unless(DeletedMessagePeer::restoreMessage($request->getParameter('id')));
     $this->redirect('@dustList');
   }
-  
+
  /**
   * Executes sendMessage action
   *
@@ -260,7 +260,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
     }
     return sfView::INPUT;
   }
-  
+
  /**
   * Executes editMessage action
   * 
@@ -283,7 +283,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
       return sfView::INPUT;
     }
   }
-  
+
  /**
   * Executes replyMessage action
   * 
