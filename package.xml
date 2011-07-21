@@ -31,11 +31,11 @@
   <email />
   <active>yes</active>
  </developer>
- <date>2011-04-19</date>
- <time>21:09:36</time>
+ <date>2011-07-21</date>
+ <time>20:08:23</time>
  <version>
-  <release>0.9.1.1</release>
-  <api>0.9.1.1</api>
+  <release>0.9.2</release>
+  <api>0.9.2</api>
  </version>
  <stability>
   <release>beta</release>
@@ -43,36 +43,40 @@
  </stability>
  <license>apache</license>
  <notes>
-fixed sending message that allows from access-blocked member
+Some bug fix
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
    <file baseinstalldir="/" md5sum="6b0911df445ce8125d146636cb7e7cb9" name="apps/mobile_frontend/config/app.yml" role="data" />
-   <file baseinstalldir="/" md5sum="f63d0b782a19d4e166562cf68e33d17e" name="apps/mobile_frontend/i18n/messages.ja.xml" role="data" />
+   <file baseinstalldir="/" md5sum="b5a98080eed234cd71c8a1aa99eb1516" name="apps/mobile_frontend/i18n/messages.ja.xml" role="data" />
    <file baseinstalldir="/" md5sum="145222fd08462df75f7cbf2284f34bb4" name="apps/mobile_frontend/modules/member/config/view.yml" role="data" />
    <file baseinstalldir="/" md5sum="de3c588edd78c80e2e39d6c36988275a" name="apps/mobile_frontend/modules/message/actions/actions.class.php" role="data" />
    <file baseinstalldir="/" md5sum="b0d20c3e0d33da637d77b444a4454a00" name="apps/mobile_frontend/modules/message/actions/components.class.php" role="data" />
    <file baseinstalldir="/" md5sum="23a85a877ba78a09b520b19d03c3650c" name="apps/mobile_frontend/modules/message/config/security.yml" role="data" />
+   <file baseinstalldir="/" md5sum="b2aea7ed25ba55be44dd73831ca14efc" name="apps/mobile_frontend/modules/message/templates/deleteConfirmSuccess.php" role="data" />
+   <file baseinstalldir="/" md5sum="bfccd76ab9b5394e10a306727bfcfdf5" name="apps/mobile_frontend/modules/message/templates/deleteListConfirmSuccess.php" role="data" />
    <file baseinstalldir="/" md5sum="7ba615e95fe1b6d3abc21491709f04a1" name="apps/mobile_frontend/modules/message/templates/listSuccess.php" role="data" />
    <file baseinstalldir="/" md5sum="300f9b14d458b2b982a00f8ca254fd5f" name="apps/mobile_frontend/modules/message/templates/sendToFriendInput.php" role="data" />
-   <file baseinstalldir="/" md5sum="6b77bd186277dfc2d8a2e1e17a8409da" name="apps/mobile_frontend/modules/message/templates/showSuccess.php" role="data" />
-   <file baseinstalldir="/" md5sum="54f6034afc30333f765933e941463d57" name="apps/mobile_frontend/modules/message/templates/_draftListRecord.php" role="data" />
-   <file baseinstalldir="/" md5sum="227a28e6bd44ec922c1500567f794b24" name="apps/mobile_frontend/modules/message/templates/_dustListRecord.php" role="data" />
+   <file baseinstalldir="/" md5sum="fd311c25a4f5fd685f68e1817e399b5c" name="apps/mobile_frontend/modules/message/templates/showSuccess.php" role="data" />
+   <file baseinstalldir="/" md5sum="1145ec354680c246dcbe56d129a5608e" name="apps/mobile_frontend/modules/message/templates/_draftListRecord.php" role="data" />
+   <file baseinstalldir="/" md5sum="8b6f862cd34733220bb7936876ba5fcc" name="apps/mobile_frontend/modules/message/templates/_dustListRecord.php" role="data" />
    <file baseinstalldir="/" md5sum="d9dce86d160973557a5cb47c75dc70e2" name="apps/mobile_frontend/modules/message/templates/_menu.php" role="data" />
-   <file baseinstalldir="/" md5sum="31372c9dd04e86a8620e0f41cc72f05e" name="apps/mobile_frontend/modules/message/templates/_receiveListRecord.php" role="data" />
-   <file baseinstalldir="/" md5sum="1bd205fa98102a8148daf0bdc90c232d" name="apps/mobile_frontend/modules/message/templates/_sendListRecord.php" role="data" />
+   <file baseinstalldir="/" md5sum="12ece39f27b67202b952d207333bd6fc" name="apps/mobile_frontend/modules/message/templates/_receiveListRecord.php" role="data" />
+   <file baseinstalldir="/" md5sum="270c61cf74c59fb17117fdf9c9530121" name="apps/mobile_frontend/modules/message/templates/_sendListRecord.php" role="data" />
    <file baseinstalldir="/" md5sum="2da07fdc124fbe6441377316ada08046" name="apps/mobile_frontend/modules/message/templates/_sendMessageLink.php" role="data" />
    <file baseinstalldir="/" md5sum="1f8245629e934360c7992055ed901cc3" name="apps/mobile_frontend/modules/message/templates/_unreadMessage.php" role="data" />
    <file baseinstalldir="/" md5sum="ab54ad3747fbc31d87ebc84d59e79022" name="apps/pc_frontend/config/app.yml" role="data" />
-   <file baseinstalldir="/" md5sum="7d5feb51bf000f69504cc1ee6b622469" name="apps/pc_frontend/i18n/messages.ja.xml" role="data" />
+   <file baseinstalldir="/" md5sum="5edc373cf72a616c290f6ff776d1fc96" name="apps/pc_frontend/i18n/messages.ja.xml" role="data" />
    <file baseinstalldir="/" md5sum="5bb99e9de0810b4e5de0ad02c0056004" name="apps/pc_frontend/modules/member/config/view.yml" role="data" />
    <file baseinstalldir="/" md5sum="3646a3c9a0967f163272ec8b0e7350f8" name="apps/pc_frontend/modules/message/actions/actions.class.php" role="data" />
    <file baseinstalldir="/" md5sum="b446569e3cbab0460a77cd95c91d26d3" name="apps/pc_frontend/modules/message/actions/components.class.php" role="data" />
    <file baseinstalldir="/" md5sum="23a85a877ba78a09b520b19d03c3650c" name="apps/pc_frontend/modules/message/config/security.yml" role="data" />
    <file baseinstalldir="/" md5sum="d8336a90f8b31de6fe4fb03e57934950" name="apps/pc_frontend/modules/message/config/view.yml" role="data" />
-   <file baseinstalldir="/" md5sum="d460564ab64b9f898bedec6f1a2237d2" name="apps/pc_frontend/modules/message/templates/listSuccess.php" role="data" />
+   <file baseinstalldir="/" md5sum="b97aff1838d8d13bc67f863e3df984a2" name="apps/pc_frontend/modules/message/templates/deleteConfirmSuccess.php" role="data" />
+   <file baseinstalldir="/" md5sum="6d01902ae73324c35d72ada4b5c353ee" name="apps/pc_frontend/modules/message/templates/deleteListConfirmSuccess.php" role="data" />
+   <file baseinstalldir="/" md5sum="f4eca95831ad92f79efed7933aa67ee8" name="apps/pc_frontend/modules/message/templates/listSuccess.php" role="data" />
    <file baseinstalldir="/" md5sum="45d6ebeb81d552055c61d96fafacf46d" name="apps/pc_frontend/modules/message/templates/sendToFriendInput.php" role="data" />
-   <file baseinstalldir="/" md5sum="28a653d190bbaab416c467114bef675f" name="apps/pc_frontend/modules/message/templates/showSuccess.php" role="data" />
+   <file baseinstalldir="/" md5sum="5e59fb5113d4adffdb71151feacd7ade" name="apps/pc_frontend/modules/message/templates/showSuccess.php" role="data" />
    <file baseinstalldir="/" md5sum="603874ed71787f8173b8ac30e37fc5f0" name="apps/pc_frontend/modules/message/templates/_formEditImage.php" role="data" />
    <file baseinstalldir="/" md5sum="9097574a4ba13cd6603144891b699f78" name="apps/pc_frontend/modules/message/templates/_sendDraftButton.php" role="data" />
    <file baseinstalldir="/" md5sum="7608959af2807cde94ccb3de5eab3213" name="apps/pc_frontend/modules/message/templates/_sidemenu.php" role="data" />
@@ -87,12 +91,12 @@ fixed sending message that allows from access-blocked member
    <file baseinstalldir="/" md5sum="66d393502b07b0c3d0ff581a88bf0e9d" name="data/migrations/0.9.0/003_create_foreign_id_column.php" role="data" />
    <file baseinstalldir="/" md5sum="9e50a767f7c7237cb853c4791c89dc31" name="data/migrations/0.9.0/004_dummy_for_loading_fixture.php" role="data" />
    <file baseinstalldir="/" md5sum="716324fa4ca105bd235d39a84eee0b9f" name="data/migrations/0.9.0/fixtures/004_add_message_type.yml" role="data" />
-   <file baseinstalldir="/" md5sum="053b6df5e739425ecdb45320af04c0d6" name="i18n/messages.ja.xml" role="data" />
+   <file baseinstalldir="/" md5sum="d7d6d7ea3368cc136514996773908fad" name="i18n/messages.ja.xml" role="data" />
    <file baseinstalldir="/" md5sum="4eff7ede53f292d8877a4df9a14198c1" name="lib/opMessagePluginFormatter.class.php" role="data" />
    <file baseinstalldir="/" md5sum="2ac94fa8b23ae6b7c38718b8e4ee33a1" name="lib/opMessagePluginObserver.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="a946263e470b731e97242052c7ed5606" name="lib/opMessagePluginRouting.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="245235477ae7f0f0a26341355690eb7b" name="lib/action/opMessagePluginActions.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="d20b88f235cde4476241612418dd3847" name="lib/action/opMessagePluginMessageActions.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="7a3e35b9cbb2c5d9551ad23484eaf151" name="lib/opMessagePluginRouting.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="be99b6092a53a94f451ab9224abf89e5" name="lib/action/opMessagePluginActions.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="87cd4705ca6470d33acc7e57bd551d44" name="lib/action/opMessagePluginMessageActions.class.php" role="data" />
    <file baseinstalldir="/" md5sum="14816f2a96af5014c1e572c5a819e25c" name="lib/action/opMessagePluginMessageComponents.class.php" role="data" />
    <file baseinstalldir="/" md5sum="8b69e5253d448f3db29cd97e83cad6e2" name="lib/filter/doctrine/PluginDeletedMessageFormFilter.class.php" role="data" />
    <file baseinstalldir="/" md5sum="76c0f4690d16eac581fc40ec3c2574d4" name="lib/filter/doctrine/PluginMessageFileFormFilter.class.php" role="data" />
@@ -108,7 +112,7 @@ fixed sending message that allows from access-blocked member
    <file baseinstalldir="/" md5sum="0f14768883173848eeddc79d28db53da" name="lib/form/doctrine/PluginMessageTypeTranslationForm.class.php" role="data" />
    <file baseinstalldir="/" md5sum="457561c5a2e4f18cf848c1d634f4d641" name="lib/form/doctrine/PluginSendMessageDataForm.class.php" role="data" />
    <file baseinstalldir="/" md5sum="23939fc91369fe490309a71743789d41" name="lib/form/doctrine/PluginSendMessageForm.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="e4bbb89347a8f30eda8b9509a5d0671b" name="lib/model/doctrine/PluginDeletedMessage.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="e43e583f6c67706beabb83985e8f6260" name="lib/model/doctrine/PluginDeletedMessage.class.php" role="data" />
    <file baseinstalldir="/" md5sum="cb4de1d2eaeb14fe87b64c221598eb45" name="lib/model/doctrine/PluginDeletedMessageTable.class.php" role="data" />
    <file baseinstalldir="/" md5sum="0e3122e0e948b0d42cdc942fac48acec" name="lib/model/doctrine/PluginMessageFile.class.php" role="data" />
    <file baseinstalldir="/" md5sum="726056acae9381fc20416240e9200916" name="lib/model/doctrine/PluginMessageFileTable.class.php" role="data" />
@@ -122,6 +126,13 @@ fixed sending message that allows from access-blocked member
    <file baseinstalldir="/" md5sum="eb142e641ca59009837a4e4ecd92b6bf" name="templates/_communityJoiningRequestMessage.php" role="data" />
    <file baseinstalldir="/" md5sum="867857e77399163c50bb04f54467c41d" name="templates/_communityTakingOverMessage.php" role="data" />
    <file baseinstalldir="/" md5sum="9caf305e9e3488e1807e129718466a91" name="templates/_friendLinkMessage.php" role="data" />
+   <file baseinstalldir="/" md5sum="8a585d7165b066c62d5d1c69d7877362" name="test/bootstrap/database.php" role="data" />
+   <file baseinstalldir="/" md5sum="652a0d72910be1a5786698aaf5b9b508" name="test/bootstrap/functional.php" role="data" />
+   <file baseinstalldir="/" md5sum="d8bf6b95d1466267251a5f47cd20d9e5" name="test/fixtures/001_member.yml" role="data" />
+   <file baseinstalldir="/" md5sum="1e83f6081dcda15f35caf10ac966ef17" name="test/fixtures/010_message.yml" role="data" />
+   <file baseinstalldir="/" md5sum="eb9d389b56456483fd8e1e2cdd3b02d9" name="test/fixtures/020_import_sns_config.yml" role="data" />
+   <file baseinstalldir="/" md5sum="15a6e0d43e5e2286877a1ed29a323392" name="test/functional/mobile_frontend/messageActionsTest.php" role="data" />
+   <file baseinstalldir="/" md5sum="2edaa19857e1ba8ad8401ddc7a482f44" name="test/functional/pc_frontend/messageActionsTest.php" role="data" />
    <file baseinstalldir="/" md5sum="4c62db3435618cd0299727253ccd4d9e" name="web/css/message.css" role="data" />
    <file baseinstalldir="/" md5sum="3d40a300272ec2812ae4ca958b7038d9" name="web/images/icon_mail_1.gif" role="data" />
    <file baseinstalldir="/" md5sum="f20567b31473c2d80f0b8c2e225307f7" name="web/images/icon_mail_2.gif" role="data" />
@@ -260,6 +271,21 @@ Some bug fix
    <license>apache</license>
    <notes>
 fixed sending message that allows from access-blocked member
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.9.2</release>
+    <api>0.9.2</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2011-07-21</date>
+   <license>apache</license>
+   <notes>
+Some bug fix
    </notes>
   </release>
  </changelog>
