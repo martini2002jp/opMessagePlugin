@@ -1,4 +1,4 @@
-<?php use_helper('Date', 'JavascriptBase'); ?>
+<?php use_helper('Date', 'JavascriptBase', 'opMessage'); ?>
 <?php include_partial('message/sidemenu', array('listType' => $messageType, 'forceLink' => false)); ?>
 <?php echo javascript_tag("
 function checkAll() {
@@ -132,7 +132,7 @@ endswitch;
 <?php echo $form_delete_error ?>
 </span></td> 
 <td><span>
-<?php echo op_link_to_member($sender) ?>
+<?php echo op_message_link_to_member($sender) ?>
 </span></td> 
 <td><span>
 <?php if ($messageType == 'draft' && !$sender->getId()):?>

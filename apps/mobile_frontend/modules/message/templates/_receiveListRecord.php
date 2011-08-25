@@ -1,3 +1,4 @@
+<?php use_helper('opMessage') ?>
 <?php echo op_format_date($message->getCreatedAt(), 'XDateTime') ?> 
 <?php if ($message->getIsHensin()): ?>
 <font color="#0000FF">(<?php echo __('Replied') ?>)</font>
@@ -8,5 +9,5 @@
 <?php endif; ?><br>
 <?php echo sprintf('%s (%s)',
   link_to(op_truncate($message->getSubject(), 28), '@readReceiveMessage?id='. $message->getMessageId()),
-  op_link_to_member($message->getSendFrom())
+  op_message_link_to_member($message->getSendFrom())
 ); ?>

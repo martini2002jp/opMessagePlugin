@@ -1,15 +1,16 @@
+<?php use_helper('opMessage') ?>
 <?php op_mobile_page_title(__($title), __('Message')) ?>
 <?php if ($message->getIsSender()): ?>
 <?php echo __('To') ?>：
 <?php foreach ($message->getMessageSendLists() as $sendTo): ?>
-<?php echo op_link_to_member($sendTo->getMember()) ?>
+<?php echo op_message_link_to_member($sendTo->getMember()) ?>
 <?php if (!$sendTo->getMemberId()): ?>
 <?php $isDeletedMember = true; ?>
 <?php endif; ?><br>
 <?php endforeach; ?>
 <?php else: ?>
 <?php echo __('From') ?>：
-<?php echo op_link_to_member($message->getMember()) ?>
+<?php echo op_message_link_to_member($message->getMember()) ?>
 <?php if (!$message->getMemberId()): ?>
 <?php $isDeletedMember = true; ?>
 <?php endif; ?><br>

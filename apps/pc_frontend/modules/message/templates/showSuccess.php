@@ -1,4 +1,4 @@
-<?php use_helper('Date', 'Text'); ?>
+<?php use_helper('Date', 'Text', 'opMessage'); ?>
 <?php include_partial('message/sidemenu', array('listType' => $messageType, 'forceLink' => true)) ?>
 <div class="dparts messageDetailBox">
 <div class="parts">
@@ -23,7 +23,7 @@
 <td>
 <ul>
 <?php foreach ($fromOrToMembers as $member): ?>
-  <li><?php echo op_link_to_member($member) ?></li>
+  <li><?php echo op_message_link_to_member($member) ?></li>
 <?php if (!$member->getId()): ?>
 <?php $isDeletedMember = true; ?>
 <?php endif; ?>
