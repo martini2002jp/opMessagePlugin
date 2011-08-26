@@ -31,11 +31,11 @@
   <email />
   <active>yes</active>
  </developer>
- <date>2011-07-21</date>
- <time>20:08:23</time>
+ <date>2011-08-26</date>
+ <time>16:23:09</time>
  <version>
-  <release>0.9.2</release>
-  <api>0.9.2</api>
+  <release>0.9.2.1</release>
+  <api>0.9.2.1</api>
  </version>
  <stability>
   <release>beta</release>
@@ -43,7 +43,7 @@
  </stability>
  <license>apache</license>
  <notes>
-Some bug fix
+fixed fatal error by use &apos;op_link_to_member&apos; that doesn&apos;t exist in OpenPNE-3.4.x
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
@@ -57,12 +57,12 @@ Some bug fix
    <file baseinstalldir="/" md5sum="bfccd76ab9b5394e10a306727bfcfdf5" name="apps/mobile_frontend/modules/message/templates/deleteListConfirmSuccess.php" role="data" />
    <file baseinstalldir="/" md5sum="7ba615e95fe1b6d3abc21491709f04a1" name="apps/mobile_frontend/modules/message/templates/listSuccess.php" role="data" />
    <file baseinstalldir="/" md5sum="300f9b14d458b2b982a00f8ca254fd5f" name="apps/mobile_frontend/modules/message/templates/sendToFriendInput.php" role="data" />
-   <file baseinstalldir="/" md5sum="fd311c25a4f5fd685f68e1817e399b5c" name="apps/mobile_frontend/modules/message/templates/showSuccess.php" role="data" />
-   <file baseinstalldir="/" md5sum="1145ec354680c246dcbe56d129a5608e" name="apps/mobile_frontend/modules/message/templates/_draftListRecord.php" role="data" />
-   <file baseinstalldir="/" md5sum="8b6f862cd34733220bb7936876ba5fcc" name="apps/mobile_frontend/modules/message/templates/_dustListRecord.php" role="data" />
+   <file baseinstalldir="/" md5sum="bbbea92b2f0841d55b7b582824b2ea6c" name="apps/mobile_frontend/modules/message/templates/showSuccess.php" role="data" />
+   <file baseinstalldir="/" md5sum="6dac58910c5ae946690aec934c874216" name="apps/mobile_frontend/modules/message/templates/_draftListRecord.php" role="data" />
+   <file baseinstalldir="/" md5sum="df16169ab0771b20eafcca2a0468a197" name="apps/mobile_frontend/modules/message/templates/_dustListRecord.php" role="data" />
    <file baseinstalldir="/" md5sum="d9dce86d160973557a5cb47c75dc70e2" name="apps/mobile_frontend/modules/message/templates/_menu.php" role="data" />
-   <file baseinstalldir="/" md5sum="12ece39f27b67202b952d207333bd6fc" name="apps/mobile_frontend/modules/message/templates/_receiveListRecord.php" role="data" />
-   <file baseinstalldir="/" md5sum="270c61cf74c59fb17117fdf9c9530121" name="apps/mobile_frontend/modules/message/templates/_sendListRecord.php" role="data" />
+   <file baseinstalldir="/" md5sum="e06dce00df57c4472c25c479298065fc" name="apps/mobile_frontend/modules/message/templates/_receiveListRecord.php" role="data" />
+   <file baseinstalldir="/" md5sum="7fa0c7a9120e1b77bb930a996a576fd3" name="apps/mobile_frontend/modules/message/templates/_sendListRecord.php" role="data" />
    <file baseinstalldir="/" md5sum="2da07fdc124fbe6441377316ada08046" name="apps/mobile_frontend/modules/message/templates/_sendMessageLink.php" role="data" />
    <file baseinstalldir="/" md5sum="1f8245629e934360c7992055ed901cc3" name="apps/mobile_frontend/modules/message/templates/_unreadMessage.php" role="data" />
    <file baseinstalldir="/" md5sum="ab54ad3747fbc31d87ebc84d59e79022" name="apps/pc_frontend/config/app.yml" role="data" />
@@ -74,9 +74,9 @@ Some bug fix
    <file baseinstalldir="/" md5sum="d8336a90f8b31de6fe4fb03e57934950" name="apps/pc_frontend/modules/message/config/view.yml" role="data" />
    <file baseinstalldir="/" md5sum="b97aff1838d8d13bc67f863e3df984a2" name="apps/pc_frontend/modules/message/templates/deleteConfirmSuccess.php" role="data" />
    <file baseinstalldir="/" md5sum="6d01902ae73324c35d72ada4b5c353ee" name="apps/pc_frontend/modules/message/templates/deleteListConfirmSuccess.php" role="data" />
-   <file baseinstalldir="/" md5sum="f4eca95831ad92f79efed7933aa67ee8" name="apps/pc_frontend/modules/message/templates/listSuccess.php" role="data" />
+   <file baseinstalldir="/" md5sum="f108363f8b4ab8b7a9fa478b12da2818" name="apps/pc_frontend/modules/message/templates/listSuccess.php" role="data" />
    <file baseinstalldir="/" md5sum="45d6ebeb81d552055c61d96fafacf46d" name="apps/pc_frontend/modules/message/templates/sendToFriendInput.php" role="data" />
-   <file baseinstalldir="/" md5sum="5e59fb5113d4adffdb71151feacd7ade" name="apps/pc_frontend/modules/message/templates/showSuccess.php" role="data" />
+   <file baseinstalldir="/" md5sum="2215c0d19b4fb4d55e8c01f4f5f9f50b" name="apps/pc_frontend/modules/message/templates/showSuccess.php" role="data" />
    <file baseinstalldir="/" md5sum="603874ed71787f8173b8ac30e37fc5f0" name="apps/pc_frontend/modules/message/templates/_formEditImage.php" role="data" />
    <file baseinstalldir="/" md5sum="9097574a4ba13cd6603144891b699f78" name="apps/pc_frontend/modules/message/templates/_sendDraftButton.php" role="data" />
    <file baseinstalldir="/" md5sum="7608959af2807cde94ccb3de5eab3213" name="apps/pc_frontend/modules/message/templates/_sidemenu.php" role="data" />
@@ -112,6 +112,7 @@ Some bug fix
    <file baseinstalldir="/" md5sum="0f14768883173848eeddc79d28db53da" name="lib/form/doctrine/PluginMessageTypeTranslationForm.class.php" role="data" />
    <file baseinstalldir="/" md5sum="457561c5a2e4f18cf848c1d634f4d641" name="lib/form/doctrine/PluginSendMessageDataForm.class.php" role="data" />
    <file baseinstalldir="/" md5sum="23939fc91369fe490309a71743789d41" name="lib/form/doctrine/PluginSendMessageForm.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="c9db7e42fde314b1e3900387044c6078" name="lib/helper/opMessageHelper.php" role="data" />
    <file baseinstalldir="/" md5sum="e43e583f6c67706beabb83985e8f6260" name="lib/model/doctrine/PluginDeletedMessage.class.php" role="data" />
    <file baseinstalldir="/" md5sum="cb4de1d2eaeb14fe87b64c221598eb45" name="lib/model/doctrine/PluginDeletedMessageTable.class.php" role="data" />
    <file baseinstalldir="/" md5sum="0e3122e0e948b0d42cdc942fac48acec" name="lib/model/doctrine/PluginMessageFile.class.php" role="data" />
@@ -286,6 +287,21 @@ fixed sending message that allows from access-blocked member
    <license>apache</license>
    <notes>
 Some bug fix
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>0.9.2.1</release>
+    <api>0.9.2.1</api>
+   </version>
+   <stability>
+    <release>beta</release>
+    <api>beta</api>
+   </stability>
+   <date>2011-08-26</date>
+   <license>apache</license>
+   <notes>
+fixed fatal error by use &apos;op_link_to_member&apos; that doesn&apos;t exist in OpenPNE-3.4.x
    </notes>
   </release>
  </changelog>
