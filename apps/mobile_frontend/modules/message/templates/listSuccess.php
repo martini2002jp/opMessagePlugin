@@ -21,5 +21,5 @@ get_partial($messageType.'ListRecord', array('message' => $message)); ?>
 <?php else: ?>
 <?php echo __('There are no messages.') ?><br><br>
 <?php endif; ?>
-<hr>
+<hr color="<?php echo $op_color['core_color_11'] ?>">
 <?php include_partial('message/menu', array('messageType' => $messageType)) ?>

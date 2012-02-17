@@ -30,11 +30,11 @@
 <?php endforeach; ?>
 <?php endif; ?>
 
-<hr>
+<hr color="<?php echo $op_color['core_color_11'] ?>">
 
 <?php echo nl2br($message->getBody()) ?>
 
-<hr>
+<hr color="<?php echo $op_color['core_color_11'] ?>">
 
 <?php if ($messageType == 'dust'): ?>
 <?php echo $form->renderFormTag(url_for('message/restore?id='.$deletedId)); ?>
@@ -52,7 +52,7 @@
 <br><?php echo link_to(__('Reply'), 'message/reply?id='.$message->getId()) ?>
 <?php endif; ?>
 
-<hr>
+<hr color="<?php echo $op_color['core_color_11'] ?>">
 
 
 <?php if ($messageType == 'receive'): ?>
