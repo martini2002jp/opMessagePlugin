@@ -31,6 +31,7 @@ class SendMessageForm extends PluginSendMessageDataForm
   {
     $object = parent::updateObject($values);
     $object->setMessageType(Doctrine::getTable('MessageType')->getMessageTypeIdByName('message'));
+    $object->setCreatedAt(date('Y-m-d H:i:s'));
 
     return $object;
   }

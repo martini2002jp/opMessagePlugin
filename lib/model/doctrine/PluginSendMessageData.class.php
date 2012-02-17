@@ -167,4 +167,16 @@ abstract class PluginSendMessageData extends BaseSendMessageData
 
     return $instance->$methodName($this);
   }
+
+  public function preUpdate($event)
+  {
+    if (in_array('is_send', $this->_modified) && 1 == $this->_data['is_send'])
+    {
+      Doctrine_Query::create()
+        ->update('MessageSendList m')
+        ->set('m.created_at', '?', date('Y-m-d H:i:s'))
+        ->where('m.message_id = ?', $this->id)
+        ->execute();
+    }
+  }
 }
