@@ -12,5 +12,5 @@ profileSuccess:
   customize:
     sendMessageLink:
       template: [message, sendMessageLink]
-      parts:    [friendList]
-      target:   [before]
+      parts:    [menu]
+      target:   [friendBottom]
