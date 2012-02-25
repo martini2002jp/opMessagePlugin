@@ -12,7 +12,7 @@
 get_partial($messageType.'ListRecord', array('message' => $message)); ?>
 <?php endforeach; ?>
 <?php op_include_list('messageList', $_list, array()); ?>
-<?php if ($messageType == 'dust'): ?>
+<?php if ('dust' == $messageType): ?>
 <input type="submit" name="restore" value="<?php echo __('Restore') ?>"><br>
 <?php endif; ?>
 <input type="submit" value="<?php echo __('Delete') ?>">

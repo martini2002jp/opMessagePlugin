@@ -36,7 +36,7 @@
 
 <hr color="<?php echo $op_color['core_color_11'] ?>">
 
-<?php if ($messageType == 'dust'): ?>
+<?php if ('dust' == $messageType): ?>
 <?php echo $form->renderFormTag(url_for('message/restore?id='.$deletedId)); ?>
 <?php echo $form ?>
 <input type="submit" value="<?php echo __('Restore') ?>" />
@@ -48,16 +48,16 @@
 <input type="submit" value="<?php echo __('Delete') ?>"  />
 </form>
 
-<?php if ($messageType != 'dust' && !$message->getIsSender() && !$isDeletedMember): ?>
+<?php if ('dust' != $messageType && !$message->getIsSender() && !$isDeletedMember): ?>
 <br><?php echo link_to(__('Reply'), 'message/reply?id='.$message->getId()) ?>
 <?php endif; ?>
 
 <hr color="<?php echo $op_color['core_color_11'] ?>">
 
 
-<?php if ($messageType == 'receive'): ?>
+<?php if ('receive' == $messageType): ?>
 <?php echo link_to(__('Inbox'), '@receiveList') ?>
-<?php elseif ($messageType == 'send'): ?>
+<?php elseif ('send' == $messageType): ?>
 <?php echo link_to(__('Sent Messages'), '@sendList') ?>
 <?php else : ?>
 <?php echo link_to(__('Trash'), '@dustList') ?>
