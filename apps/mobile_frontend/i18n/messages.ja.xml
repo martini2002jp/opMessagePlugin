@@ -47,6 +47,10 @@
         <target>件名</target>
       </trans-unit>
       <trans-unit id="">
+        <source>Body</source>
+        <target>本文</target>
+      </trans-unit>
+      <trans-unit id="">
         <source>Created At</source>
         <target>日付</target>
       </trans-unit>
