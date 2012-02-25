@@ -2,7 +2,7 @@
 <?php if ($pager->getNbResults()): ?>
 <center><?php op_include_pager_total($pager) ?></center>
 <?php if ($form->hasGlobalErrors()): ?>
-<font color="#FF0000"><?php echo $form->renderGlobalErrors() ?></font>
+<font color="<?php echo $op_color["core_color_22"] ?>"><?php echo $form->renderGlobalErrors() ?></font>
 <?php endif; ?>
 <form action="<?php echo url_for('@'.$messageType.'List') ?>" method="post">
 <?php echo $form->renderHiddenFields(); ?>
