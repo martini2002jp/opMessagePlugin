@@ -40,10 +40,12 @@ abstract class PluginSendMessageData extends BaseSendMessageData
     }
     if ($this->getMemberId() == $memberId)
     {
+
       return 1;
     }
     else
     {
+
       return 0;
     }
   }
@@ -53,12 +55,17 @@ abstract class PluginSendMessageData extends BaseSendMessageData
    * @param  $member_id
    * @return int
    */
-  public function getIsReceiver($member_id)
+  public function getIsReceiver($memberId)
   { 
-    $message = Doctrine::getTable('MessageSendList')->getMessageByReferences($member_id, $this->getId());
-    if ($message && $this->getIsSend()) {
+    $message = Doctrine::getTable('MessageSendList')->getMessageByReferences($memberId, $this->getId());
+    if ($message && $this->getIsSend())
+    {
+
       return 1;
-    } else {
+    }
+    else
+    {
+
       return 0;
     }
   }
@@ -70,6 +77,7 @@ abstract class PluginSendMessageData extends BaseSendMessageData
   public function getSendList()
   {
     $objs = Doctrine::getTable('MessageSendList')->getMessageSendList($this->getId());
+
     return $objs;
   }
 
@@ -80,9 +88,12 @@ abstract class PluginSendMessageData extends BaseSendMessageData
   public function getSendTo()
   {
     $objs = $this->getSendList();
-    if ($cnt = count($objs) == 0) {
+    if (0 == count($objs))
+    {
+
       return null;
     }
+
     return $objs[0]->getMember();
   }
 
@@ -98,6 +109,7 @@ abstract class PluginSendMessageData extends BaseSendMessageData
         ->orderBy('id ASC');
     }
     $files = parent::getMessageFile($q);
+
     return $files;
   }
 
@@ -155,8 +167,9 @@ abstract class PluginSendMessageData extends BaseSendMessageData
   public function getDecoratedMessageBody()
   {
     $type = $this->getMessageType()->type_name;
-    if ($type === 'message')
+    if ('message' === $type)
     {
+
       return $this->body;
     }
 
