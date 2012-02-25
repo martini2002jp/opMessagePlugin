@@ -43,7 +43,7 @@ class opMessagePluginObserver
     $getMessageCallback = array(__CLASS__, 'get'.sfInflector::camelize($event['category']).'Message');
     if (!is_callable($getMessageCallback))
     {
-      var_dump($getMessageCallback);
+
       return $list;
     }
 
@@ -59,17 +59,6 @@ class opMessagePluginObserver
     }
 
     return $list;
-  }
-
-  public static function sendConfirmationMessage(sfEvent $event, $params = array())
-  {
-    if ($arguments['result'] !== sfView::SUCCESS)
-    {
-      return false;
-    }
-
-    $message = new CONSTRUCTOR();
-    $message->send();
   }
 
   static public function listenToPostActionEventSendFriendLinkRequestMessage($arguments)
@@ -150,12 +139,40 @@ class opMessagePluginObserver
     }
   }
 
+  static public function listenToPostActionEventSendCommunitySubAdminRequestMessage($arguments)
+  {
+    if ($arguments['result'] == sfView::SUCCESS)
+    {
+      $community = $arguments['actionInstance']->community;
+      $member = $arguments['actionInstance']->member;
+
+      $form  = $arguments['actionInstance']->form;
+      $param = $form->getValues();
+
+      $sender = new opMessageSender();
+      $sender->setToMember($member)
+        ->setSubject(sfContext::getInstance()->getI18N()->__('%Community% sub admin request message'))
+        ->setBody($param['message'])
+        ->setMessageType('community_sub_admin_request')
+        ->setIdentifier($community->id)
+        ->send();
+    }
+  }
+
   protected static function getCommunityAdminRequestMessage(sfEvent $event, $params = array())
   {
     $currentMemberId = sfContext::getInstance()->getUser()->getMemberId();
     $community = Doctrine::getTable('Community')->find($params['id']);
 
     return Doctrine::getTable('SendMessageData')->getMessageByTypeAndIdentifier($community->getAdminMember()->id, $currentMemberId, 'community_taking_over', $params['id']);
+  }
+
+  protected static function getCommunitySubAdminRequestMessage(sfEvent $event, $params = array())
+  {
+    $currentMemberId = sfContext::getInstance()->getUser()->getMemberId();
+    $community = Doctrine::getTable('Community')->find($params['id']);
+
+    return Doctrine::getTable('SendMessageData')->getMessageByTypeAndIdentifier($community->getAdminMember()->id, $currentMemberId, 'community_sub_admin_request', $params['id']);
   }
 
   protected static function getFriendConfirmMessage(sfEvent $event, $params = array())

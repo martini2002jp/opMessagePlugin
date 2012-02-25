@@ -31,3 +31,10 @@ MessageType:
     Translation:
       ja_JP:
         caption: "コミュニティ参加申請メッセージ"
+
+  message_type_community_sub_admin_request:
+    type_name: "community_sub_admin_request"
+    foreign_table: "community"
+    Translation:
+      ja_JP:
+        caption: "サークル副管理者依頼メッセージ"

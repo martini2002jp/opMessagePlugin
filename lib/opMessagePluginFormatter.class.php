@@ -35,6 +35,24 @@ class opMessagePluginFormatter
     return opMessageSender::decorateBySpecifiedTemplate('communityTakingOverMessage', $params);
   }
 
+  public function decorateCommunitySubAdminRequestBody(SendMessageData $message)
+  {
+    $id = $message->getForeignId();
+    $community = Doctrine::getTable('Community')->find($id);
+    if (!$community)
+    {
+      return $this->body;
+    }
+
+    $params = array(
+      'fromMember' => $message->getMember(),
+      'message'    => $message->body,
+      'community'  => $community,
+    );
+
+    return opMessageSender::decorateBySpecifiedTemplate('communitySubAdminRequestMessage', $params);
+  }
+
   public function decorateCommunityJoiningRequestBody(SendMessageData $message)
   {
     $id = $message->getForeignId();
