@@ -43,7 +43,6 @@ class opMessagePluginObserver
     $getMessageCallback = array(__CLASS__, 'get'.sfInflector::camelize($event['category']).'Message');
     if (!is_callable($getMessageCallback))
     {
-
       return $list;
     }
 
