@@ -87,7 +87,8 @@ class opMessagePluginObserver
     if ($arguments['result'] == sfView::SUCCESS)
     {
       $community = $arguments['actionInstance']->community;
-      if ('close' !== $community->getConfig('register_poricy'))
+      //'poricy' is for keeping backward compatibility
+      if ('close' !== $community->getConfig('register_poricy') && 'close' !== $community->getConfig('register_policy'))
       {
         return false;
       }
@@ -110,7 +111,8 @@ class opMessagePluginObserver
     else
     {
       $community = $arguments['actionInstance']->community;
-      if ('close' !== $community->getConfig('register_poricy'))
+      //'poricy' is for keeping backward compatibility
+      if ('close' !== $community->getConfig('register_poricy') && 'close' !== $community->getConfig('register_policy'))
       {
         // Injected message field is not useful in this community
         unset($arguments['actionInstance']->form['message']);
