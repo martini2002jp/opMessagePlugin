@@ -16,7 +16,7 @@
  * @author     Maki TAKAHASHI <takahashi@tejimaya.com>
  */
 
-function op_message_link_to_member(sfOutputEscaper $member)
+function op_message_link_to_member(sfOutputEscaper $member = null)
 {
   if (function_exists('op_link_to_member'))
   {
