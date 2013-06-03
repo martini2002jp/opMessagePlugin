@@ -1,0 +1,9 @@
+message_post:
+  url: /message/post.json
+  param: { module: message, action: post, sf_format: json }
+  requirements: { sf_method: [post] }
+
+message_search:
+  url: /message/search.json
+  param: { module: message, action: search, sf_format: json }
+  requirements: { sf_method: [get] }

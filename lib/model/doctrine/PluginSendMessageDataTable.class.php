@@ -193,4 +193,96 @@ class PluginSendMessageDataTable extends Doctrine_Table
 
     return $obj->getSendMessageData();
   }
+
+  /** * メッセージ送受信者一覧
+   * @param $member_id
+   * @return member object（の配列）
+   */
+  public function getSenderList($memberId)
+  {
+    $con = $this->getConnection();
+    $sql = 'select member_id from message_send_list where message_id in (select id from message where member_id = ?) and created_at in (select max(created_at) from message_send_list group by member_id) order by created_at desc';
+    $memberIdList = $con->fetchAll($sql, array($memberId));
+
+    $sql2 = 'select member_id from message where id in (select message_id from message_send_list where member_id = ?) and created_at in (select max(created_at) from message group by member_id) order by created_at desc';
+    $memberIdList2 = $con->fetchAll($sql2, array($memberId));
+
+    $members = array();
+    $existIds = array();
+    foreach ($memberIdList as $id)
+    {
+      foreach ($memberIdList2 as $id2)
+      {
+        if (!in_array($id2, $existIds))
+        {
+          $members[] = Doctrine::getTable('Member')->find($id2);
+          $existIds[] = $id2;
+        }
+      }
+
+      if (!in_array($id, $existIds))
+      {
+        $members[] = Doctrine::getTable('Member')->find($id);
+        $existIds[] = $id;
+      }
+    }
+
+    return $members;
+  }
+
+  /** * メンバーとの最新のメッセージ
+   * @param $memberId
+   * @return Message object
+   */
+  public function getLatestMemberMessage($memberId)
+  {
+    $myMemberId = sfContext::getInstance()->getUser()->getMemberId();
+
+    $con = $this->getConnection();
+    $sql = 'select * from message where id in (select message_id from message_send_list where member_id = ?) and member_id = ? order by created_at desc limit 1';
+    $message = $con->fetchAll($sql, array($memberId, $myMemberId));
+
+    $sql2 = 'select * from message where id in (select message_id from message_send_list where member_id = ?) and member_id = ? order by created_at desc limit 1';
+    $message2 = $con->fetchAll($sql2, array($myMemberId, $memberId));
+
+    $result = null;
+    if (0 < count($message))
+    {
+      $result = $message;
+    }
+    elseif (0 < count($message2))
+    {
+      $result = $message2;
+    }
+
+    if (0 < count($message) && 0 < count($message2) && $message[0]['created_at'] < $message2[0]['created_at'])
+    {
+      $result = $message2;
+    }
+
+    return $result;
+  }
+
+  /** * メンバーとのメッセージを25件取得
+   * @param $memberId
+   * @param SmaxId
+   * @return Message object list
+   */
+  public function getMemberMessages($memberId, $maxId = -1)
+  {
+    $myMemberId = sfContext::getInstance()->getUser()->getMemberId();
+
+    $q = $this->createQuery()
+      ->where('(member_id = ? OR member_id = ?)', array($memberId, $myMemberId))
+      ->andWhere('id in (SELECT m.message_id FROM MessageSendList m WHERE m.member_id = ? or m.member_id = ?)', array($memberId, $myMemberId));
+
+    if (0 <= $maxId)
+    {
+      $q->andWhere('id < ?', $maxId);
+    }
+
+    return $q->orderBy('created_at desc')
+      ->limit(25)
+      ->execute();
+  }
 }

@@ -66,6 +66,29 @@ class PluginMessageSendListTable extends Doctrine_Table
   }
 
   /**
+   * メンバーから来たメッセージに未読があるかどうかを返す
+   * @param $messageId
+   * @return boolean
+   */
+  public function checkUnreadMessage($memberId)
+  {
+    $myMemberId = sfContext::getInstance()->getUser()->getMemberId();
+    $m = $this->createQuery()
+      ->where('member_id = ?', $myMemberId)
+      ->andWhere('is_read = ?' ,false)
+      ->andWhere('message_id IN (SELECT m1.id FROM SendMessageData m1 WHERE m1.member_id = ?)', $memberId)
+      ->limit(1)
+      ->count();
+
+    if (0 < $m)
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
    * member_idとmessage_idから本人宛のメッセージであることを確認する
    * @param $memberId
    * @param $messageId

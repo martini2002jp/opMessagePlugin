@@ -38,3 +38,20 @@ function op_message_link_to_member(sfOutputEscaper $member)
 
   return '';
 }
+
+function op_api_message($message, $member)
+{
+  if ($message)
+  {
+    $body = preg_replace(array('/&lt;op:.*?&gt;/', '/&lt;\/op:.*?&gt;/'), '', $message->getBody());
+    $body = preg_replace('/http.:\/\/maps\.google\.co[[:graph:]]*/', '', $body);
+    $body = op_auto_link_text($body);
+    return array(
+      'id'          => $message->getId(),
+      'member'      => op_api_member($member),
+      'subject'     => $message->getSubject(),
+      'body'        => nl2br($body),
+      'created_at'  => $message->getCreatedAt(),
+    );
+  }
+}

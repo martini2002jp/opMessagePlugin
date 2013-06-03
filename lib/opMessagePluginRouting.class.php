@@ -99,5 +99,14 @@ class opMessagePluginRouting
         array('id' => '\d+')
       )
     );
+
+    //smartphone only page
+    $routing->prependRoute('messageChain',
+      new sfRoute(
+        '/message/chain/:id',
+        array('module' => 'message', 'action' => 'smtChain', 'type' => 'receive'),
+        array('id' => '\d+')
+      )
+    );
   }
 }
