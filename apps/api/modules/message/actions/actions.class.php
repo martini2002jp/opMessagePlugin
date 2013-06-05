@@ -26,7 +26,6 @@ class messageActions extends opJsonApiActions
   {
     $this->forward400If('' === (string)$request['body'], 'body parameter is not specified.');
     $this->forward400If('' === (string)$request['toMember'], 'toMember parameter is not specified.');
-    // TODO 返信用IDとかを設定
 
     $body = $request['body'];
     $this->myMember = $this->member;
@@ -34,6 +33,40 @@ class messageActions extends opJsonApiActions
     $this->forward400Unless($toMember, 'invalid member');
 
     $this->message = Doctrine::getTable('SendMessageData')->sendMessage($toMember, mb_substr($body, 0, 25), $body, array());
+
+    $filename = basename($_FILES['message_image']['name']);
+    if (!is_null($filename) && '' !== $filename)
+    {
+      try
+      {
+        $validator = new opValidatorImageFile(array('required' => false));
+        $validFile = $validator->clean($_FILES['message_image']);
+      }
+      catch (Exception $e)
+      {
+        $this->forward400($e->getMessage());
+      }
+
+      $f = new File();
+      $f->setFromValidatedFile($validFile);
+      $f->setName(hash('md5', uniqid(microtime()).$filename));
+      if ($stream = fopen($_FILES['message_image']['tmp_name'], 'r'))
+      {
+        $bin = new FileBin();
+        $bin->setBin(stream_get_contents($stream));
+        $f->setFileBin($bin);
+        $f->save();
+
+        $di = new MessageFile();
+        $di->setMessageId($this->message->getId());
+        $di->setFileId($f->getId());
+        $di->save();
+      }
+      else
+      {
+        $this->forward400(__('Failed to write file to disk.'));
+      }
+    }
   }
 
   public function executeSearch(sfWebRequest $request)

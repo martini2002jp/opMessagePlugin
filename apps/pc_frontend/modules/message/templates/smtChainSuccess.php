@@ -41,6 +41,18 @@ var memberId = '.$member->getId().';
   <div class="span3">
     <p class="timeago" title="<?php echo $messageList[$i]['created_at'] ?>"></p>
   </div>
+
+  <?php $images = $messageList[$i]->getMessageFile() ?>
+  <?php if (count($images)): ?>
+  </div>
+  <div class="row">
+    <ul class="photo">
+      <?php foreach ($images as $image): ?>
+      <li><a href="<?php echo sf_image_path($image->getFile()) ?>" target="_blank">
+      <?php echo image_tag_sf_image($image->getFile(), array('size' => '76x76')) ?></a></li>
+      <?php endforeach; ?>
+    </ul>
+  <?php endif; ?>
 </div>
 <hr class="toumei" />
 <?php endfor ?>
@@ -53,29 +65,38 @@ var memberId = '.$member->getId().';
     <?php echo op_image_tag('ajax-loader.gif');?>
   </div>
 </div>
+
 <div id="submit-wrapper" class="row">
   <div class="span9">
-    <textarea id="submit-message"></textarea>
+    <form>
+      <input type="file" name="message_image" id="message_image" />
+      <textarea name="body" id="submit-message"></textarea>
+    </form>
   </div>
   <div class="span3">
-    <button id="submit" class="btn btn-primary" to-member="<?php echo $member->getId() ?>"><?php echo __('Send') ?></button>
+    <button id="do-submit" class="btn btn-primary" to-member="<?php echo $member->getId() ?>"><?php echo __('Send') ?></button>
   </div>
 </div>
 
-<div id="message-template" class="message-wrapper row" style="display: none;">
-  <div class="span2">
-    <a class="member-link">
-      <img class="member-image" />
-    </a>
+<div id="message-template" class="message-wrapper" style="display: none;">
+  <div class="row">
+    <div class="span2">
+      <a class="member-link">
+        <img class="member-image" />
+      </a>
+    </div>
+    <div class="span7">
+      <p>
+        <a class="member-link"><span class="member-name"></span></a>
+      </p>
+      <p class="message-body"></p>
+    </div>
+    <div class="span3">
+      <p class="timeago message-created-at"></p>
+    </div>
   </div>
-  <div class="span7">
-    <p>
-      <a class="member-link"><span class="member-name"></span></a>
-    </p>
-    <p class="message-body"></p>
-  </div>
-  <div class="span3">
-    <p class="timeago message-created-at"></p>
+  <div class="row">
+    <ul class="photo">
+    </ul>
   </div>
 </div>
-<hr class="toumei" />

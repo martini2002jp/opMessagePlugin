@@ -13,12 +13,12 @@
 }
 
 #submit-message {
-  height: 50px;
+  height: 35px;
 }
 
-#submit {
+#do-submit {
   width: 100%;
-  height: 60px;
+  height: 70px;
 }
 
 #loading, #loading-more {
@@ -26,5 +26,19 @@
 }
 
 #more {
+  width: 318px;
   padding: 5px 0;
+  margin: 0;
+}
+
+.photo > li {
+  margin-left:0px;
+  list-style-type: none;
+  display: inline;
+}
+
+#message_image {
+  margin: 0;
+  width: 220px;
+  height: 25px;
 }

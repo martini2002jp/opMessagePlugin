@@ -1,7 +1,7 @@
 $(function() {
   jQuery(".timeago").timeago();
 
-  $('#submit').click(function() {
+  $('#do-submit').click(function() {
     var body = $('#submit-message').val();
     if (1 > jQuery.trim(body))
     {
@@ -11,10 +11,12 @@ $(function() {
 
     var form = $('form');
     var fd = new FormData(form[0]);
-    fd.append('body', body);
-    fd.append('toMember', $(this).attr('to-member'));
-    fd.append('apiKey', openpne.apiKey);
-    // TODO 画像投稿出来るように
+    var json = getParams();
+
+    for (i in json)
+    {
+      fd.append(i, json[i]);
+    }
 
     $.ajax({
       url: openpne.apiBase + "message/post.json",
@@ -26,15 +28,7 @@ $(function() {
       success: function(res) {
         if ('success' === res.status)
         {
-          var template = $('#message-template').clone();
-          template.find('.member-link').attr('href', res.data.member.profile_url);
-          template.find('.member-image').attr('src', res.data.member.profile_image);
-          template.find('.member-name').append(res.data.member.name);
-          template.find('.message-body').append(res.data.body);
-          template.find('.message-created-at').attr('title', res.data.created_at);
-          template.removeAttr('id');
-          template.css('display', 'block');
-          template.css('margin-bottom', '30px'); $('#message-wrapper-parent').append(template);
+          $('#message-wrapper-parent').append(addTemplate(res.data));
 
           jQuery(".timeago").timeago();
           $('#no-message').hide();
@@ -45,6 +39,7 @@ $(function() {
       },
       complete: function() {
         $('#submit-message').val('');
+        $('#message_image').val('');
         submitFilter();
       }
     });
@@ -75,17 +70,7 @@ $(function() {
         {
           for (var i = 0; i < res.data.length; i++)
           {
-            var template = $('#message-template').clone();
-            template.find('.member-link').attr('href', res.data[i].member.profile_url);
-            template.find('.member-image').attr('src', res.data[i].member.profile_image);
-            template.find('.member-name').append(res.data[i].member.name);
-            template.find('.message-body').append(res.data[i].body);
-            template.find('.message-created-at').attr('title', res.data[i].created_at);
-            template.removeAttr('id');
-            template.attr('data-message-id', res.data[i].id);
-            template.css('display', 'block');
-            template.css('margin-bottom', '30px');
-            $('#message-wrapper-parent').prepend(template);
+            $('#message-wrapper-parent').prepend(addTemplate(res.data[i]));
           }
 
           jQuery(".timeago").timeago();
@@ -103,17 +88,65 @@ $(function() {
       }
     });
   });
+
+  $('#message_image').change(function() {
+    var a = $(this).prop('files');
+    if(0 < a.length)
+    {
+      var fileType = a[0].type;
+      if (null === fileType.match(/(jpeg|gif|png)/))
+      {
+        alert('ファイル形式が間違っています。');
+        $(this).val('');
+      }
+    }
+  });
 });
 
 function submitFilter()
 {
   $('#loading').toggle();
   $('#submit-message').toggle();
-  $('#submit').toggle();
+  $('#do-submit').toggle();
+  $('#message_image').toggle();
 }
 
 function moreFilter()
 {
   $('#loading-more').toggle();
   $('#more').toggle();
+}
+
+function getParams()
+{
+  var query = $('form').serializeArray(),
+    json = {apiKey: openpne.apiKey};
+  for (i in query)
+  {
+     json[query[i].name] = query[i].value
+  }
+
+  json['toMember'] = $('#do-submit').attr('to-member');
+
+  return json;
+}
+
+function addTemplate(data)
+{
+  var template = $('#message-template').clone();
+  template.find('.member-link').attr('href', data.member.profile_url);
+  template.find('.member-image').attr('src', data.member.profile_image);
+  template.find('.member-name').append(data.member.name);
+  template.find('.message-body').append(data.body);
+  template.attr('data-message-id', data.id);
+  if (null !== data.image_path && null !== data.image_tag)
+  {
+    template.find('.photo').append('<li><a href="' + data.image_path + '">' + data.image_tag + '</a></li>');
+  }
+  template.find('.message-created-at').attr('title', data.created_at);
+  template.removeAttr('id');
+  template.css('display', 'block');
+  template.css('margin-bottom', '30px');
+
+  return template;
 }

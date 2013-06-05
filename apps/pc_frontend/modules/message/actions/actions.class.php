@@ -75,6 +75,7 @@ class messageActions extends opMessagePluginMessageActions
     $this->forward404Unless($this->member);
 
     $this->myMember = $this->getUser()->getMember();
+    $this->forward404If($this->myMember->getId() === $this->member->getId());
 
     $this->messageList = Doctrine::getTable('SendMessageData')->getMemberMessages($request['id']);
     foreach ($this->messageList as $message)
