@@ -110,6 +110,9 @@ class opMessageSender
     $view = new opGlobalPartialView(sfContext::getInstance(), 'superGlobal', $templateName, '');
     $view->setPartialVars($templateParams);
 
+    // decorated message is not HTML
+    $view->getAttributeHolder()->setEscaping(false);
+
     return $view->render();
   }
 
