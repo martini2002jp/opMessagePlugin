@@ -43,6 +43,27 @@ abstract class PluginMessageSendList extends BaseMessageSendList
   }
 
   /**
+   * get partner Member.
+   *
+   * @param string $memberId
+   * @return Member
+   */
+  public function getPartnerMember($memberId = null)
+  {
+    if (is_null($memberId))
+    {
+      $memberId = sfContext::getInstance()->getUser()->getMemberId();
+    }
+
+    if ($this->getMemberId() !== $memberId)
+    {
+      return $this->getMember();
+    }
+
+    return $this->getSendFrom();
+  }
+
+  /**
    * get message send from
    *
    * @return Member
@@ -60,5 +81,16 @@ abstract class PluginMessageSendList extends BaseMessageSendList
   public function getSubject()
   {
     return $this->getSendMessageData()->getSubject();
+  }
+
+  /**
+   * has unread message.
+   *
+   * @return boolean
+   */
+  public function hasUnreadMessage()
+  {
+    return $this->getTable()
+      ->checkUnreadMessage($this->getMemberId());
   }
 }
