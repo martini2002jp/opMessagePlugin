@@ -35,6 +35,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeList(sfWebRequest $request)
   {
+    $this->forwardIf($request->isSmartphone(), 'message', 'smtList');
     $this->messageType = $request->getParameter('type');
     switch ($this->messageType)
     {
@@ -111,6 +112,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeShow(sfWebRequest $request)
   {
+    $this->forwardIf($request->isSmartphone(), 'message', 'smtList');
     $this->message = Doctrine::getTable('SendMessageData')->find($request->getParameter('id'));
     $this->messageType = $request->getParameter('type');
     $this->forward404unless($message = $this->isReadable($this->messageType));
@@ -161,6 +163,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
    */
   public function executeDeleteConfirm(sfWebRequest $request)
   {
+    $this->forwardIf($request->isSmartphone(), 'message', 'smtList');
     $this->message = Doctrine::getTable('SendMessageData')->find($request->getParameter('id'));
     $this->messageType = $request->getParameter('type');
     $this->forward404unless($message = $this->isReadable($this->messageType));
@@ -237,6 +240,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeSendToFriend(sfWebRequest $request)
   {
+    $this->forwardIf($request->isSmartphone(), 'message', 'smtList');
     if ($params = $request->getParameter('message'))
     {
       $sendMemberId = $params['send_member_id'];
@@ -281,6 +285,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
         $this->message = $this->form->save();
         if ($this->message->getIsSend())
         {
+          opMessagePluginUtil::sendNotification($this->getUser()->getMember(), $this->sendMember, $this->message->getId());
           $this->getUser()->setFlash('notice', 'The message was sent successfully.');
           $this->redirect('@sendList');
         }
@@ -302,6 +307,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeEdit(sfWebRequest $request)
   {
+    $this->forwardIf($request->isSmartphone(), 'message', 'smtList');
     $this->message = Doctrine::getTable('SendMessageData')->find($request->getParameter('id'));
     $this->forward404unless($this->message);
     $this->forward404If($this->message->getIsSend());
@@ -328,6 +334,7 @@ class opMessagePluginMessageActions extends opMessagePluginActions
   */
   public function executeReply(sfWebRequest $request)
   {
+    $this->forwardIf($request->isSmartphone(), 'message', 'smtList');
     $message = Doctrine::getTable('SendMessageData')->find($request->getParameter('id'));
     $this->forward404unless($message && $message->getIsReceiver($this->getUser()->getMemberId()));
     $this->message = new SendMessageData();

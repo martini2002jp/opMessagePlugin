@@ -38,3 +38,32 @@ function op_message_link_to_member(sfOutputEscaper $member)
 
   return '';
 }
+
+function op_api_message($message, $member)
+{
+  if ($message)
+  {
+    $body = preg_replace(array('/&lt;op:.*?&gt;/', '/&lt;\/op:.*?&gt;/'), '', $message->getBody());
+    $body = preg_replace('/http.:\/\/maps\.google\.co[[:graph:]]*/', '', $body);
+    $body = op_auto_link_text($body);
+    $imagePath = null;
+    $imageTag = null;
+    $image = $message->getMessageFile();
+
+    if (0 < count($image))
+    {
+      $imageTag = image_tag_sf_image($image[0]->getFile(), array('size' => '76x76'));
+      $imagePath = sf_image_path($image[0]->getFile());
+    }
+
+    return array(
+      'id'          => $message->getId(),
+      'member'      => op_api_member($member),
+      'subject'     => $message->getSubject(),
+      'body'        => nl2br($body),
+      'image_path'  => $imagePath,
+      'image_tag'   => $imageTag,
+      'created_at'  => $message->getCreatedAt(),
+    );
+  }
+}
