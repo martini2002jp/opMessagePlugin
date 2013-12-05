@@ -2,9 +2,10 @@
 use_helper('opMessage');
 $data = array();
 
-foreach ($messageList as $message)
+foreach ($pager->getResults() as $message)
 {
-  $data[] = op_api_message($message, Doctrine::getTable('Member')->find($message->getMemberId()));
+  $message->readMessage();
+  $data[] = op_api_message($message->getSendMessageData(), $message->getMember());
 }
 
 return array(
