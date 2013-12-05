@@ -202,4 +202,73 @@ class PluginMessageSendListTable extends Doctrine_Table
 
     return false;
   }
+
+  /**
+   * get member messages
+   *
+   * @param string $memberId
+   * @param integer $start
+   * @return sfReversibleDoctrinePager
+   */
+  public function getMemberMessagesPager($memberId, $myMemberId = null, $order = sfReversibleDoctrinePager::ASC, $maxId = null, $size = 20)
+  {
+    if (is_null($myMemberId))
+    {
+      $myMemberId = sfContext::getInstance()->getUser()->getMemberId();
+    }
+
+    $q = $this->createQuery('m')
+      ->leftJoin('m.SendMessageData m2')
+      ->where('(m.member_id = ? OR (m.member_id = ? AND m.is_deleted = ?))', array($memberId, $myMemberId, false))
+      ->andWhere('(m2.member_id = ? OR (m2.member_id = ? AND m2.is_deleted = ?))', array($memberId, $myMemberId, false))
+      ->andWhere('m2.is_send = ?', true);
+
+    if ($maxId)
+    {
+      $q->andWhere('m2.id < ?', $maxId);
+    }
+
+    $pager = new sfReversibleDoctrinePager('MessageSendList', $size);
+    $pager->setQuery($q);
+    $pager->setPage(1);
+    $pager->setSqlOrderColumn('id');
+    $pager->setSqlOrder(sfReversibleDoctrinePager::DESC);
+    $pager->setListOrder($order);
+    $pager->setMaxPerPage($size);
+    $pager->init();
+
+    return $pager;
+  }
+
+  /**
+   * update read all messages by memberId
+   *
+   * @param string $memberId
+   * @param string $myMemberId
+   */
+  public function updateReadAllMessagesByMemberId($memberId, $myMemberId = null)
+  {
+    $results = $this->createLeftJoinMessageDataQuery($myMemberId)
+      ->select('m.id')
+      ->andWhere('m.is_read = ?', false)
+      ->andWhere('m2.member_id = ?', $memberId)
+      ->execute(array(), Doctrine_Core::HYDRATE_NONE);
+
+    if (!count($results))
+    {
+      return;
+    }
+
+    $ids = array();
+    foreach ($results as $result)
+    {
+      $id = $result[0];
+      $ids[] = $id;
+    }
+
+    $this->createQuery()->update()
+      ->set('is_read', '?', true)
+      ->whereIn('id', $ids)
+      ->execute();
+  }
 }
