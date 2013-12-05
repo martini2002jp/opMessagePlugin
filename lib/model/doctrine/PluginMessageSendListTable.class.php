@@ -31,25 +31,83 @@ class PluginMessageSendListTable extends Doctrine_Table
   }
 
   /**
-   * add receive message query
+   * create left joined MessageData query
    *
-   * @param string $memberId
    * @param string $localAlias
    * @param string $foreignAlias
    * @return Doctrine_Query
    */
-  public function createLeftJoinMessageDataQuery($memberId = null, $localAlias = 'm', $foreignAlias = 'm2')
+  public function createLeftJoinMessageDataQuery($localAlias = 'm', $foreignAlias = 'm2')
   {
-    if (is_null($memberId))
+    return $this->createQuery($localAlias)
+      ->leftJoin($localAlias.'.SendMessageData '.$foreignAlias);
+  }
+
+  /**
+   * create send and receive query
+   *
+   * @param mixed $memberId (string|null)
+   * @param mixed $myMemberId (string|null)
+   * @param string $localAlias
+   * @param string $foreignAlias
+   * @return Doctrine_Query
+   */
+  public function createSendAndReceiveQuery($memberId = null, $myMemberId = null, $localAlias = 'm', $foreignAlias = 'm2')
+  {
+    if (is_null($myMemberId))
     {
-      $memberId = sfContext::getInstance()->getUser()->getMemberId();
+      $myMemberId = sfContext::getInstance()->getUser()->getMemberId();
     }
 
-    return $this->createQuery($localAlias)
-      ->leftJoin($localAlias.'.SendMessageData '.$foreignAlias)
-      ->where($localAlias.'.member_id = ?', $memberId)
-      ->andWhere($localAlias.'.is_deleted = ?', false)
+    if ($memberId)
+    {
+      $where = '('.$foreignAlias.'.member_id = ?'
+             . ' AND '.$localAlias.'.member_id = ?'
+             . ' AND '.$localAlias.'.is_deleted = ?)'
+             . ' OR '
+             . '('.$localAlias.'.member_id = ?'
+             . ' AND '.$foreignAlias.'.member_id = ?'
+             . ' AND '.$foreignAlias.'.is_deleted = ?)';
+
+      $params = array($memberId, $myMemberId, false, $memberId, $myMemberId, false);
+    }
+    else
+    {
+      $where = '('.$localAlias.'.member_id = ?'
+             . ' AND '.$localAlias.'.is_deleted = ?)'
+             . ' OR '
+             . '('.$foreignAlias.'.member_id = ?'
+             . ' AND '.$foreignAlias.'.is_deleted = ?)';
+
+      $params = array($myMemberId, false, $myMemberId, false);
+    }
+
+    return $this->createLeftJoinMessageDataQuery($localAlias, $foreignAlias)
+      ->where($where, $params)
       ->andWhere($foreignAlias.'.is_send = ?', true);
+  }
+
+  /**
+   * create receive query
+   *
+   * @param string $memberId
+   * @param mixed $myMemberId (string|null)
+   * @param string $localAlias
+   * @param string $foreignAlias
+   * @return Doctrine_Query
+   */
+  public function createReceiveQuery($memberId, $myMemberId = null, $localAlias = 'm', $foreignAlias = 'm2')
+  {
+    if (is_null($myMemberId))
+    {
+      $myMemberId = sfContext::getInstance()->getUser()->getMemberId();
+    }
+
+    return $this->createLeftJoinMessageDataQuery($localAlias, $foreignAlias)
+      ->where($localAlias.'.member_id = ?', $myMemberId)
+      ->andWhere($localAlias.'.is_deleted = ?', false)
+      ->andWhere($foreignAlias.'.is_send = ?', true)
+      ->andWhere($foreignAlias.'.member_id = ?', $memberId);
   }
 
   /**
@@ -75,39 +133,36 @@ class PluginMessageSendListTable extends Doctrine_Table
   /**
    * Newest Message List.
    *
-   * @param $memberId
+   * @param mixed $myMemberId (string|null)
    * @return Doctrine_Collection
    */
-  public function getRecentMessageList($memberId)
+  public function getRecentMessageList($myMemberId = null)
   {
-    $results = $this->createQuery('m')
-      ->leftJoin('m.SendMessageData m2')
+    $results = $this->createSendAndReceiveQuery(null, $myMemberId)
       ->select('m.member_id')
       ->addSelect('m2.member_id')
       ->addSelect('MAX(m.id)')
-      ->where('(m.member_id = ? OR m2.member_id = ?)', array($memberId, $memberId))
-      ->andWhere('is_deleted = ?', false)
-      ->andWhere('m2.is_send = ?', true)
       ->groupBy('m.member_id, m2.member_id')
       ->execute(array(), Doctrine_Core::HYDRATE_NONE);
 
-    $messageIds = array();
+    $ids = array();
     foreach ($results as $result)
     {
       $receiveMemberId = $result[0];
       $sendMemberId = $result[1];
       $id = (int) $result[2];
 
-      $partnerMemberId = $receiveMemberId === $memberId ? $sendMemberId : $receiveMemberId;
+      // Check more large MessageSendList.id. Use key that is partnerMemberId's memberId.
+      $partnerMemberId = $receiveMemberId === $myMemberId ? $sendMemberId : $receiveMemberId;
 
-      if (!isset($messageIds[$partnerMemberId]) || $messageIds[$partnerMemberId] < $id)
+      if (!isset($ids[$partnerMemberId]) || $ids[$partnerMemberId] < $id)
       {
-        $messageIds[$partnerMemberId] = $id;
+        $ids[$partnerMemberId] = $id;
       }
     }
 
     return $this->createQuery()
-      ->whereIn('id', $messageIds)
+      ->whereIn('id', $ids)
       ->orderBy('created_at DESC')
       ->execute();
   }
@@ -131,15 +186,14 @@ class PluginMessageSendListTable extends Doctrine_Table
    * Has unread message.
    *
    * @param string $memberId
-   * @param string $myMemberId
+   * @param mixed $myMemberId (string|null)
    * @return bool
    */
   public function hasUnreadMessage($memberId, $myMemberId = null)
   {
     return (bool) $this
-      ->createLeftJoinMessageDataQuery($myMemberId)
+      ->createReceiveQuery($memberId, $myMemberId)
       ->andWhere('m.is_read = ?' ,false)
-      ->andWhere('m2.member_id = ?', $memberId)
       ->count();
   }
 
@@ -204,24 +258,18 @@ class PluginMessageSendListTable extends Doctrine_Table
   }
 
   /**
-   * get member messages
+   * get member messages pager
    *
    * @param string $memberId
-   * @param integer $start
+   * @param mixed $myMemberId (string|null)
+   * @param string $order (sfReversibleDoctrinePager::ASC|sfReversibleDoctrinePager::DESC)
+   * @param mixed $maxId (string|null)
+   * @param integer $size
    * @return sfReversibleDoctrinePager
    */
   public function getMemberMessagesPager($memberId, $myMemberId = null, $order = sfReversibleDoctrinePager::ASC, $maxId = null, $size = 20)
   {
-    if (is_null($myMemberId))
-    {
-      $myMemberId = sfContext::getInstance()->getUser()->getMemberId();
-    }
-
-    $q = $this->createQuery('m')
-      ->leftJoin('m.SendMessageData m2')
-      ->where('(m.member_id = ? OR (m.member_id = ? AND m.is_deleted = ?))', array($memberId, $myMemberId, false))
-      ->andWhere('(m2.member_id = ? OR (m2.member_id = ? AND m2.is_deleted = ?))', array($memberId, $myMemberId, false))
-      ->andWhere('m2.is_send = ?', true);
+    $q = $this->createSendAndReceiveQuery($memberId, $myMemberId);
 
     if ($maxId)
     {
@@ -244,14 +292,13 @@ class PluginMessageSendListTable extends Doctrine_Table
    * update read all messages by memberId
    *
    * @param string $memberId
-   * @param string $myMemberId
+   * @param mixed $myMemberId (string|null)
    */
   public function updateReadAllMessagesByMemberId($memberId, $myMemberId = null)
   {
-    $results = $this->createLeftJoinMessageDataQuery($myMemberId)
+    $results = $this->createReceiveQuery($memberId, $myMemberId)
       ->select('m.id')
       ->andWhere('m.is_read = ?', false)
-      ->andWhere('m2.member_id = ?', $memberId)
       ->execute(array(), Doctrine_Core::HYDRATE_NONE);
 
     if (!count($results))
