@@ -31,6 +31,28 @@ class PluginMessageSendListTable extends Doctrine_Table
   }
 
   /**
+   * add receive message query
+   *
+   * @param string $memberId
+   * @param string $localAlias
+   * @param string $foreignAlias
+   * @return Doctrine_Query
+   */
+  public function createLeftJoinMessageDataQuery($memberId = null, $localAlias = 'm', $foreignAlias = 'm2')
+  {
+    if (is_null($memberId))
+    {
+      $memberId = sfContext::getInstance()->getUser()->getMemberId();
+    }
+
+    return $this->createQuery($localAlias)
+      ->leftJoin($localAlias.'.SendMessageData '.$foreignAlias)
+      ->where($localAlias.'.member_id = ?', $memberId)
+      ->andWhere($localAlias.'.is_deleted = ?', false)
+      ->andWhere($foreignAlias.'.is_send = ?', true);
+  }
+
+  /**
    * 受信メッセージ一覧
    * @param $memberId
    * @param $page
@@ -106,26 +128,19 @@ class PluginMessageSendListTable extends Doctrine_Table
   }
 
   /**
-   * メンバーから来たメッセージに未読があるかどうかを返す
-   * @param $messageId
-   * @return boolean
+   * Has unread message.
+   *
+   * @param string $memberId
+   * @param string $myMemberId
+   * @return bool
    */
-  public function checkUnreadMessage($memberId)
+  public function hasUnreadMessage($memberId, $myMemberId = null)
   {
-    $myMemberId = sfContext::getInstance()->getUser()->getMemberId();
-    $m = $this->createQuery()
-      ->where('member_id = ?', $myMemberId)
-      ->andWhere('is_read = ?' ,false)
-      ->andWhere('message_id IN (SELECT m1.id FROM SendMessageData m1 WHERE m1.member_id = ?)', $memberId)
-      ->limit(1)
+    return (bool) $this
+      ->createLeftJoinMessageDataQuery($myMemberId)
+      ->andWhere('m.is_read = ?' ,false)
+      ->andWhere('m2.member_id = ?', $memberId)
       ->count();
-
-    if (0 < $m)
-    {
-      return true;
-    }
-
-    return false;
   }
 
   /**
