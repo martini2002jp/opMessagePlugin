@@ -5,7 +5,8 @@ $data = array();
 foreach ($pager->getResults() as $message)
 {
   $message->readMessage();
-  $data[] = op_api_message($message->getSendMessageData(), $message->getMember());
+  $sendMessageData = $message->getSendMessageData();
+  $data[] = op_api_message($sendMessageData, $sendMessageData->getMember());
 }
 
 return array(
