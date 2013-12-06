@@ -63,6 +63,7 @@ var memberId = '.$member->getId().';
   </div>
 </div>
 
+<?php if (!$isBlocked): ?>
 <div id="submit-wrapper" class="row">
   <div class="span9">
     <form>
@@ -74,6 +75,7 @@ var memberId = '.$member->getId().';
     <button id="do-submit" class="btn btn-primary" to-member="<?php echo $member->getId() ?>"><?php echo __('Send') ?></button>
   </div>
 </div>
+<?php endif ?>
 
 <div id="message-template" class="message-wrapper" style="display: none;">
   <div class="row">
