@@ -37,39 +37,33 @@ class messageActions extends opJsonApiActions
 
     $this->message = Doctrine::getTable('SendMessageData')->sendMessage($toMember, mb_substr($body, 0, 25), $body, array());
 
-    $filename = basename($_FILES['message_image']['name']);
-    if (!is_null($filename) && '' !== $filename)
+    $file = $request->getFiles('message_image');
+    try
     {
-      try
-      {
-        $validator = new opValidatorImageFile(array('required' => false));
-        $validFile = $validator->clean($_FILES['message_image']);
-      }
-      catch (Exception $e)
-      {
-        $this->forward400($e->getMessage());
-      }
+      $validator = new opValidatorImageFile(array('required' => false));
+      $clean = $validator->clean($file);
 
-      $f = new File();
-      $f->setFromValidatedFile($validFile);
-      $f->setName(hash('md5', uniqid(microtime()).$filename));
-      if ($stream = fopen($_FILES['message_image']['tmp_name'], 'r'))
+      if (is_null($clean))
       {
-        $bin = new FileBin();
-        $bin->setBin(stream_get_contents($stream));
-        $f->setFileBin($bin);
-        $f->save();
-
-        $di = new MessageFile();
-        $di->setMessageId($this->message->getId());
-        $di->setFileId($f->getId());
-        $di->save();
-      }
-      else
-      {
-        $this->forward400(__('Failed to write file to disk.'));
+        // if empty.
+        return sfView::SUCCESS;
       }
     }
+    catch (Exception $e)
+    {
+      $this->logMessage($e->getMessage());
+
+      $this->forward400('This image file is invalid.');
+    }
+
+    $file = new File();
+    $file->setFromValidatedFile($clean);
+    $file->save();
+
+    $messageFile = new MessageFile();
+    $messageFile->setMessageId($this->message->getId());
+    $messageFile->setFile($file);
+    $messageFile->save();
   }
 
   public function executeSearch(sfWebRequest $request)
