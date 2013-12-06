@@ -32,6 +32,9 @@ class messageActions extends opJsonApiActions
     $toMember = Doctrine::getTable('Member')->find($request['toMember']);
     $this->forward400Unless($toMember, 'invalid member');
 
+    $relation = Doctrine_Core::getTable('MemberRelationship')->retrieveByFromAndTo($toMember->getId(), $this->member->getId());
+    $this->forward400If($relation && $relation->getIsAccessBlock(), 'Cannot send the message.');
+
     $this->message = Doctrine::getTable('SendMessageData')->sendMessage($toMember, mb_substr($body, 0, 25), $body, array());
 
     $filename = basename($_FILES['message_image']['name']);
