@@ -1,5 +1,5 @@
 Navigation:
-  smartphone_diary_new:
+  smartphone_message_list:
     type: "smartphone_default"
     uri: "@receiveList"
     sort_order: 34
