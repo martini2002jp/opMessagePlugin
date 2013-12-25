@@ -267,7 +267,7 @@ class PluginMessageSendListTable extends Doctrine_Table
    * @param integer $size
    * @return sfReversibleDoctrinePager
    */
-  public function getMemberMessagesPager($memberId, $myMemberId = null, $order = sfReversibleDoctrinePager::ASC, $maxId = null, $size = 20)
+  public function getMemberMessagesPager($memberId, $myMemberId = null, $order = sfReversibleDoctrinePager::ASC, $maxId = null, $size = 25)
   {
     $q = $this->createSendAndReceiveQuery($memberId, $myMemberId);
 
