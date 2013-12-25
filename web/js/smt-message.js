@@ -84,7 +84,7 @@ $(document).ready(function() {
       template.addClass('show');
 
       $timeInfo.append(data.formatted_date);
-      $timeInfoWrapper.attr('data-created-at-date', data.created_at_date);
+      $timeInfoWrapper.attr('data-created-at-date', data.formatted_date);
 
       $popoverTitle.append(data.member.name);
       $messageBody.append(data.body);
