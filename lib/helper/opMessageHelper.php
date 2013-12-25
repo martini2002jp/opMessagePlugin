@@ -64,6 +64,12 @@ function op_api_message($message, $member)
       'image_path'  => $imagePath,
       'image_tag'   => $imageTag,
       'created_at'  => $message->getCreatedAt(),
+      'formatted_date' => get_formatted_date($message->getCreatedAt()),
     );
   }
+}
+
+function get_formatted_date($date)
+{
+  return op_format_date($date, 'yyyy/MM/dd (EEE)');
 }
