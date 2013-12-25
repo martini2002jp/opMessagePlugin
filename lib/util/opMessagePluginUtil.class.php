@@ -23,7 +23,7 @@ class opMessagePluginUtil
 
     $message = sfContext::getInstance()->getI18n()->__('There are new %d messages!', array('%d' => 1));
 
-    opNotificationCenter::notify($fromMember, $toMember, $message, array('category' => 'other', 'url' => $url, 'icon_url' => null));
+    opNotificationCenter::notify($fromMember, $toMember, $message, array('category' => 'message', 'url' => $url, 'icon_url' => null));
   }
 }
 
