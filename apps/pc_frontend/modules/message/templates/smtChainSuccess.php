@@ -4,10 +4,7 @@
 <?php op_smt_use_javascript('/opMessagePlugin/js/jquery.timeago.js', sfWebResponse::LAST) ?>
 <?php op_smt_use_javascript('/opMessagePlugin/js/smt-message.js', sfWebResponse::LAST) ?>
 <?php op_smt_use_javascript('/opMessagePlugin/js/bootstrap.min.js', sfWebResponse::LAST) ?>
-<?php echo javascript_tag('
-var memberId = '.$member->getId().';
-');
-?>
+<input type="hidden" value="<?php echo $member->getId() ?>" name="toMember" id="messageToMember" />
 <div class="row">
   <div class="gadget_header span12"><?php echo __('Read messages') ?></div>
 </div>
@@ -68,7 +65,6 @@ var memberId = '.$member->getId().';
     <form enctype="multipart/form-data" method="post" id="send-message-form">
       <input type="file" name="message_image" id="message_image" />
       <textarea name="body" id="submit-message"></textarea>
-      <input type="hidden" value="<?php echo $member->getId() ?>" name="toMember" />
     </form>
   </div>
   <div class="span3">

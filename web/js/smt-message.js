@@ -39,6 +39,7 @@ $(document).ready(function() {
           formData = new FormData(form[0]);
 
         formData.append('apiKey', openpne.apiKey);
+        formData.append('toMember', $messageWrapper.func.getMemberId());
 
         $(form.serializeArray()).each(function(i, v) {
           formData.append(v.name, v.value);
@@ -51,17 +52,25 @@ $(document).ready(function() {
   $messageWrapper.param = {
 
    /**
-    * partner member id.
-    */
-    memberId: memberId,
-
-   /**
     * message template.
     */
     $template: $('#message-template'),
   };
 
   $messageWrapper.func = {
+
+   /**
+    * partner member id.
+    */
+    getMemberId: function() {
+      var toMemberObj = $('#messageToMember');
+      if (toMemberObj)
+      {
+        return toMemberObj.val();
+      }
+
+      return null;
+    },
 
     /**
      * insert Message template by data.
@@ -77,7 +86,7 @@ $(document).ready(function() {
         $messageBody = template.find('.message-body'),
         $photo = template.find('.photo'),
         $messageCreatedAt = template.find('.message-created-at'),
-        position = data.member.id == this.memberId ? 'right' : 'left';
+        position = data.member.id == this.getMemberId() ? 'right' : 'left';
 
       template.attr('data-message-id', data.id);
       template.addClass(position);
@@ -189,7 +198,7 @@ $(document).ready(function() {
       type: 'GET',
       data: {
         apiKey: openpne.apiKey,
-        memberId: $messageWrapper.param.memberId,
+        memberId: $messageWrapper.func.getMemberId(),
         maxId: maxId
       },
       dataType: 'json',
