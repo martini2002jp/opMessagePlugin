@@ -2,14 +2,14 @@
 $(document).ready(function() {
 
   var
-   /**
-    * message wrapper.
-    */
+    /**
+     * message wrapper.
+     */
     $messageWrapper = $('#message-wrapper-parent'),
 
-   /**
-    * message functions.
-    */
+    /**
+     * message functions.
+     */
     func = {
 
       /**
@@ -51,17 +51,17 @@ $(document).ready(function() {
 
   $messageWrapper.param = {
 
-   /**
-    * message template.
-    */
+    /**
+     * message template.
+     */
     $template: $('#message-template'),
   };
 
   $messageWrapper.func = {
 
-   /**
-    * partner member id.
-    */
+    /**
+     * partner member id.
+     */
     getMemberId: function() {
       var toMemberObj = $('#messageToMember');
       if (toMemberObj)
