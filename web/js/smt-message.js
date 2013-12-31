@@ -9,7 +9,7 @@ $(document).ready(function() {
     $template: $('#message-template'),
 
     /**
-     * hearbeat timer.
+     * config.
      */
     config: {
 
@@ -24,6 +24,9 @@ $(document).ready(function() {
       interval: 5
     },
 
+    /**
+     * initialize.
+     */
     initialize: function() {
       // common.
       $('.message-created-at').timeago();
@@ -293,10 +296,16 @@ $(document).ready(function() {
       }
     },
 
+    /**
+     * start heartbeat timer.
+     */
     startHeartbeatTimer: function() {
       this.config.timer = setTimeout(this.addNewMessages.bind(false), this.config.interval * 1000);
     },
 
+    /**
+     * stop heartbeat timer.
+     */
     stopHeartbeatTimer: function() {
       clearTimeout(this.config.timer);
     },
