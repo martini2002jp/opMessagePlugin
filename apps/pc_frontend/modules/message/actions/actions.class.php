@@ -80,9 +80,6 @@ class messageActions extends opMessagePluginMessageActions
     $relation = Doctrine_Core::getTable('MemberRelationship')->retrieveByFromAndTo($this->member->getId(), $this->myMember->getId());
     $this->isBlocked = $relation && $relation->getIsAccessBlock();
 
-    Doctrine_Core::getTable('MessageSendList')->updateReadAllMessagesByMemberId($this->member->getId(), $this->myMember->getId());
-    $this->pager = Doctrine_Core::getTable('MessageSendList')->getMemberMessagesPager($this->member->getId());
-
     $this->setLayout('smtLayoutHome');
   }
 
