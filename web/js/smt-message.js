@@ -33,10 +33,10 @@ $(document).ready(function() {
         // message date line. - show or hide.
         this.updateTimeInfo();
 
-        this.addNewMessages(true);
-
-        // set timer.
-        this.startHeartbeatTimer();
+        this.addNewMessages(true).always(function() {
+          // set timer.
+          message.startHeartbeatTimer();
+        });
 
         $('#do-submit').click(function() {
           message.clickDoSubmitButton();
@@ -92,15 +92,16 @@ $(document).ready(function() {
     clickDoSubmitButton: function() {
 
       var body = $('#submit-message').val();
-      if (1 > jQuery.trim(body))
-      {
+      if (1 > jQuery.trim(body)) {
         return;
       }
-      this.submitFilter();
 
       var
         form = $('form#send-message-form'),
         formData = this.getFormData(form);
+
+      this.submitFilter();
+      this.stopHeartbeatTimer();
 
       $.ajax({
         url: openpne.apiBase + "message/post.json",
@@ -109,23 +110,16 @@ $(document).ready(function() {
         contentType: false,
         data: formData,
         dataType: 'json',
-        success: function(res) {
-          if ('success' === res.status)
-          {
-            message.insertMessageTemplate(res.data, true);
-            message.updateTimeInfo();
+      }).always(function() {
 
-            $('#no-message').hide();
-          }
-        },
-        error: function(e) {
-          // TODO error design.
-        },
-        complete: function() {
+        message.addNewMessages(true).always(function() {
+          message.updateTimeInfo();
+          $('#no-message').hide();
           $('#submit-message').val('');
           $('#message_image').val('');
           message.submitFilter();
-        }
+          message.startHeartbeatTimer();
+        });
       });
     },
 
@@ -136,46 +130,28 @@ $(document).ready(function() {
 
       var
         firstMessageWrapper = $('.message-wrapper:first'),
-        maxId = -1;
+        maxId = Number(firstMessageWrapper.attr('data-message-id'));
+
+      if (isNaN(maxId))
+      {
+        return false;
+      }
 
       this.moreFilter();
 
-      if (firstMessageWrapper)
-      {
-        maxId = parseInt(firstMessageWrapper.attr('data-message-id'));
-      }
+      this.getMessages(maxId, false).done(function(response) {
 
-      $.ajax({
-        url: openpne.apiBase + "message/search.json",
-        type: 'GET',
-        data: {
-          apiKey: openpne.apiKey,
-          memberId: this.getMemberId(),
-          maxId: maxId
-        },
-        dataType: 'json',
-        success: function(res) {
-          if (0 < res.data.length)
-          {
-            for (var i = 0; i < res.data.length; i++)
-            {
-              message.insertMessageTemplate(res.data[i], false);
-            }
+        message.insertMessages(response.data, false);
 
-            message.updateTimeInfo();
+        message.moreFilter();
 
-            message.moreFilter();
-          }
-
-          if (!res.has_more)
-          {
-            $('#more').hide();
-            $('#loading-more').hide();
-          }
-        },
-        error: function(e) {
-          // TODO error design.
+        if (!response.has_more)
+        {
+          message.hideMore();
         }
+
+      }).fail(function() {
+        // TODO error design.
       });
     },
 
@@ -362,7 +338,8 @@ $(document).ready(function() {
 
       var
         lastMessageWrapper = $('#message-wrapper-parent').find('.message-wrapper:last'),
-        minId = Number(lastMessageWrapper.attr('data-message-id'));
+        minId = Number(lastMessageWrapper.attr('data-message-id')),
+        dfd = $.Deferred();
 
       if (isNaN(minId))
       {
@@ -373,6 +350,7 @@ $(document).ready(function() {
 
         $('#first-loading').hide();
         message.insertMessages(response.data, true);
+        dfd.resolve();
 
         if (!$('#message-wrapper-parent').find('.message-wrapper').length) {
           message.hideMore();
@@ -395,8 +373,11 @@ $(document).ready(function() {
         }
 
       }).fail(function() {
+        dfd.reject();
         // TODO error design.
       });
+
+      return dfd.promise();
     }
   };
 
