@@ -280,18 +280,16 @@ $(document).ready(function() {
         currentDate,
         baseDate;
 
-      if (timeInfoWrapper.length) {
-        for (var i = 0; i < timeInfoWrapper.length; i++) {
-          currentDate = timeInfoWrapper.eq(i).attr('data-created-at-date');
-          if (currentDate) {
-            if (currentDate === baseDate) {
-              timeInfoWrapper.eq(i).hide();
-            } else {
-              timeInfoWrapper.eq(i).show();
-            }
-
-            baseDate = currentDate;
+      for (var i = 0; i < timeInfoWrapper.length; i++) {
+        currentDate = timeInfoWrapper.eq(i).attr('data-created-at-date');
+        if (currentDate) {
+          if (currentDate === baseDate) {
+            timeInfoWrapper.eq(i).hide();
+          } else {
+            timeInfoWrapper.eq(i).show();
           }
+
+          baseDate = currentDate;
         }
       }
     },
