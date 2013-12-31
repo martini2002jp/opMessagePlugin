@@ -234,23 +234,30 @@ $(document).ready(function() {
     insertMessageTemplate: function(data, isAddRow) {
       var
         template = this.$template.children().clone(),
-        $timeInfo = template.find('.time-info'),
-        $timeInfoWrapper = $timeInfo.parent('.time-info-wrapper'),
-        $popoverTitle = template.find('.popover-title'),
-        $messageBody = template.find('.message-body'),
         $photo = template.find('.photo'),
-        $messageCreatedAt = template.find('.message-created-at'),
         position = data.member.id == this.getMemberId() ? 'right' : 'left';
 
-      template.attr('data-message-id', data.id);
-      template.addClass(position);
-      template.addClass('show');
-
-      $timeInfo.append(data.formatted_date);
-      $timeInfoWrapper.attr('data-created-at-date', data.formatted_date);
-
-      $popoverTitle.append(data.member.name);
-      $messageBody.append(data.body);
+      template
+        .attr('data-message-id', data.id)
+        .addClass(position)
+        .addClass('show')
+          .find('.time-info')
+          .append(data.formatted_date)
+            .parent('.time-info-wrapper')
+            .attr('data-created-at-date', data.formatted_date)
+          .end()
+        .end()
+          .find('.popover-title')
+          .append(data.member.name)
+        .end()
+          .find('.message-body')
+          .append(data.body)
+        .end()
+          .find('.message-created-at')
+          .addClass(position)
+          .attr('title', data.created_at)
+          .timeago()
+        .end();
 
       // has one image data from api. this opMessagePlugin version.
       if (data.image_path && data.image_tag) {
@@ -258,11 +265,6 @@ $(document).ready(function() {
       } else {
         $photo.remove();
       }
-
-      $messageCreatedAt
-        .addClass(position)
-        .attr('title', data.created_at)
-        .timeago();
 
       if (isAddRow) {
         $('#message-wrapper-parent').append(template);
