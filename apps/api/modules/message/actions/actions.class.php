@@ -74,7 +74,7 @@ class messageActions extends opJsonApiActions
     $this->pager = Doctrine_Core::getTable('MessageSendList')->getMemberMessagesPager(
       $request['memberId'],
       $this->getUser()->getMemberId(),
-      sfReversibleDoctrinePager::DESC,
+      (bool) $request['isAddLow'],
       $request['maxId']
     );
   }
