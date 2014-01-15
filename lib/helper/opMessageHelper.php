@@ -39,7 +39,7 @@ function op_message_link_to_member(sfOutputEscaper $member)
   return '';
 }
 
-function op_api_message($messageList, $member)
+function op_api_message($messageList, $member, $useIsReadFlag = false)
 {
   $message = $messageList->getSendMessageData();
   $body = preg_replace(array('/&lt;op:.*?&gt;/', '/&lt;\/op:.*?&gt;/'), '', $message->getBody());
@@ -55,7 +55,7 @@ function op_api_message($messageList, $member)
     $imagePath = sf_image_path($image[0]->getFile());
   }
 
-  return array(
+  $data = array(
     'id'          => $message->getId(),
     'member'      => op_api_member($member),
     'subject'     => $message->getSubject(),
@@ -65,6 +65,13 @@ function op_api_message($messageList, $member)
     'created_at'  => $message->getCreatedAt(),
     'formatted_date' => get_formatted_date($message->getCreatedAt()),
   );
+
+  if ($useIsReadFlag)
+  {
+    $data['is_read'] = $messageList->isSelf() ? (bool) $messageList->getIsRead() : null;
+  }
+
+  return $data;
 }
 
 function get_formatted_date($date)
