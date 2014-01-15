@@ -134,14 +134,16 @@ class PluginMessageSendListTable extends Doctrine_Table
    * Newest Message List.
    *
    * @param mixed $myMemberId (string|null)
+   * @param int   $keyId , 0 ~
    * @return Doctrine_Collection
    */
-  public function getRecentMessageList($myMemberId = null)
+  public function getRecentMessageList($myMemberId = null, $keyId = 0)
   {
     $results = $this->createSendAndReceiveQuery(null, $myMemberId)
       ->select('m.member_id')
       ->addSelect('m2.member_id')
       ->addSelect('MAX(m.id)')
+      ->addWhere('m2.id > ?', $keyId)
       ->groupBy('m.member_id, m2.member_id')
       ->execute(array(), Doctrine_Core::HYDRATE_NONE);
 

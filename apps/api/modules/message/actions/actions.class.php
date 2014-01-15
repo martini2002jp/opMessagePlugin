@@ -81,4 +81,10 @@ class messageActions extends opJsonApiActions
       $request['maxId']
     );
   }
+
+  public function executeRecentList(sfWebRequest $request)
+  {
+    $keyId = (int) $request->getParameter('keyId', 0);
+    $this->messageLists = Doctrine_Core::getTable('MessageSendList')->getRecentMessageList($this->getUser()->getMemberId(), $keyId);
+  }
 }

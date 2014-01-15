@@ -7,3 +7,8 @@ message_search:
   url: /message/search.json
   param: { module: message, action: search, sf_format: json }
   requirements: { sf_method: [get] }
+
+recent_message_list:
+  url:   /message/recentList.json
+  param: { module: message, action: recentList, sf_format: json }
+  requirements: { sf_method: post }
