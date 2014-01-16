@@ -2,10 +2,9 @@
 use_helper('opMessage');
 $data = array();
 
-foreach ($pager->getResults() as $message)
+foreach ($pager->getResults() as $messageList)
 {
-  $sendMessageData = $message->getSendMessageData();
-  $data[] = op_api_message($sendMessageData, $sendMessageData->getMember());
+  $data[] = op_api_message($messageList, $messageList->getSendFrom());
 }
 
 return array(
