@@ -60,6 +60,7 @@ function op_api_message($messageList, $member, $useIsReadFlag = false)
     'member'      => op_api_member($member),
     'subject'     => $message->getSubject(),
     'body'        => nl2br($body),
+    'summary'     => op_truncate(op_decoration($body, true), 25, '...'),
     'image_path'  => $imagePath,
     'image_tag'   => $imageTag,
     'created_at'  => $message->getCreatedAt(),
