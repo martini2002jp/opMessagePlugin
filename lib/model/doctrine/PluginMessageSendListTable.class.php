@@ -165,7 +165,7 @@ class PluginMessageSendListTable extends Doctrine_Table
 
     return $this->createQuery()
       ->whereIn('id', $ids)
-      ->orderBy('created_at DESC')
+      ->orderBy('created_at, id ASC')
       ->execute();
   }
 

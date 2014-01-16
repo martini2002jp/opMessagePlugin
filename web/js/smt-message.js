@@ -21,7 +21,12 @@ $(document).ready(function() {
       /**
        * interval (second).
        */
-      interval: 5
+      interval: 5,
+
+      /**
+       * heartbeat function.
+       */
+      heartbeatTarget: null
     },
 
     /**
@@ -35,6 +40,8 @@ $(document).ready(function() {
       if ($('body').is('#page_message_smtChain')) {
         // message date line. - show or hide.
         this.updateTimeInfo();
+
+        this.config.heartbeatTarget = this.addNewMessages.bind(false);
 
         this.addNewMessages(true).always(function() {
           // set timer.
@@ -51,6 +58,16 @@ $(document).ready(function() {
 
         $('#message_image').change(function() {
           message.imageChangeValidator.call(this);
+        });
+      }
+
+      // for message/receiveList page.
+      if ($('body').is('#page_message_smtList')) {
+        this.config.heartbeatTarget = this.updateNewRecentList.bind(false);
+
+        this.updateNewRecentList(true).always(function() {
+          // set timer.
+          message.startHeartbeatTimer();
         });
       }
     },
@@ -274,6 +291,60 @@ $(document).ready(function() {
     },
 
     /**
+     * update recent list message data.
+     * @param datas
+     */
+    updateRecentListMessageTemplate: function(datas) {
+      var maxId = Number($('#messageKeyId').val());
+
+      if (isNaN(maxId))
+      {
+        maxId = 0;
+      }
+
+      $(datas).each(function(i, data) {
+        var
+          template = message.$template.children().clone(),
+          $oldHtml = $('div[data-member-id="' + data.member.id + '"]');
+
+        if ($oldHtml.is('.message-wrapper')) {
+          $oldHtml.remove();
+        }
+
+        if (maxId < data.id)
+        {
+          maxId = data.id;
+        }
+
+        template
+          .attr('data-member-id', data.member.id)
+          .addClass('show')
+            .find('.memberIcon')
+            .append('<a href="' + data.member.profile_url + '"><img src="' + data.member.profile_image + '" /></a>')
+          .end()
+            .find('.memberProfile')
+            .append('<a href="' + data.member.profile_url + '">' + data.member.name + '</a>')
+          .end()
+            .find('.lastMessage')
+            .append('<a href="' + openpne.baseUrl + 'message/smtChain?id=' + data.member.id + '">' + data.subject + '</a>')
+          .end()
+            .find('.message-created-at')
+            .attr('title', data.created_at)
+          .end();
+
+        if (typeof data.is_read == 'boolean' && !data.is_read)
+        {
+          template.addClass('message-unread');
+        }
+
+         $('#message-wrapper-parent').prepend(template);
+      });
+
+      $('.message-created-at').timeago();
+      $('#messageKeyId').val(maxId);
+    },
+
+    /**
      * update Time info line.
      */
     updateTimeInfo: function() {
@@ -300,7 +371,7 @@ $(document).ready(function() {
      * start heartbeat timer.
      */
     startHeartbeatTimer: function() {
-      this.config.timer = setTimeout(this.addNewMessages.bind(false), this.config.interval * 1000);
+      this.config.timer = setTimeout(this.config.heartbeatTarget, this.config.interval * 1000);
     },
 
     /**
@@ -327,6 +398,33 @@ $(document).ready(function() {
           memberId: Number(this.getMemberId()),
           maxId: Number(keyId),
           isAddLow: Number(isAddLow)
+        },
+        dataType: 'json',
+        success: function(response) {
+          dfd.resolve(response);
+        },
+        error: function(e) {
+          dfd.reject();
+        }
+      });
+
+      return dfd.promise();
+    },
+
+    /**
+     * insert Message template by data.
+     * @param keyId
+     */
+    getRecentList: function(keyId) {
+
+      var dfd = $.Deferred();
+
+      $.ajax({
+        url: openpne.apiBase + "message/recentList.json",
+        type: 'POST',
+        data: {
+          apiKey: openpne.apiKey,
+          keyId: Number(keyId),
         },
         dataType: 'json',
         success: function(response) {
@@ -373,6 +471,49 @@ $(document).ready(function() {
         if (minId == -1 && response.has_more) {
           message.showMore();
         }
+
+      }).always(function() {
+
+        if (!notUseHeartbeat)
+        {
+          message.startHeartbeatTimer();
+        }
+
+      }).fail(function() {
+        dfd.reject();
+        // TODO error design.
+      });
+
+      return dfd.promise();
+    },
+
+    /**
+     * update new recent list.
+     */
+    updateNewRecentList: function(notUseHeartbeat) {
+
+      var
+        keyId = Number($('#messageKeyId').val()),
+        dfd = $.Deferred();
+
+      if (isNaN(keyId))
+      {
+        keyId = 0;
+      }
+
+      message.getRecentList(keyId).done(function(response) {
+
+        $('#first-loading').hide();
+        message.updateRecentListMessageTemplate(response.data);
+        dfd.resolve();
+
+        if (!$('#message-wrapper-parent').find('.message-wrapper').length) {
+          $('#no-message').show();
+
+          return false;
+        }
+
+        $('#no-message').hide();
 
       }).always(function() {
 
