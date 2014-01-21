@@ -50,6 +50,10 @@
         <source>Do you delete messages?</source>
         <target>削除してよろしいですか？</target>
       </trans-unit>
+      <trans-unit id="">
+        <source>Message from smartphone</source>
+        <target>スマートフォンからのメッセージ</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

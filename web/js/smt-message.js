@@ -326,7 +326,7 @@ $(document).ready(function() {
             .append('<a href="' + data.member.profile_url + '">' + data.member.name + '</a>')
           .end()
             .find('.lastMessage')
-            .append('<a href="' + openpne.baseUrl + 'message/smtChain?id=' + data.member.id + '">' + data.subject + '</a>')
+            .append('<a href="' + openpne.baseUrl + 'message/smtChain?id=' + data.member.id + '">' + data.summary + '</a>')
           .end()
             .find('.message-created-at')
             .attr('title', data.created_at)
