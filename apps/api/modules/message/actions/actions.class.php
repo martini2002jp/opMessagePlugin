@@ -85,6 +85,9 @@ class messageActions extends opJsonApiActions
   public function executeRecentList(sfWebRequest $request)
   {
     $keyId = (int) $request->getParameter('keyId', 0);
-    $this->messageLists = Doctrine_Core::getTable('MessageSendList')->getRecentMessageList($this->getUser()->getMemberId(), $keyId);
+    $page = (int) $request->getParameter('page', 1);
+    $memberIds = opMessagePluginUtil::getMemberIdListFromString($request->getParameter('memberIds'));
+
+    $this->pager = Doctrine_Core::getTable('MessageSendList')->getRecentMessagePager($memberIds, $this->getUser()->getMemberId(), $keyId, $page);
   }
 }

@@ -25,5 +25,46 @@ class opMessagePluginUtil
 
     opNotificationCenter::notify($fromMember, $toMember, $message, array('category' => 'message', 'url' => $url, 'icon_url' => null));
   }
-}
 
+  CONST SPLIT_KEY = ',';
+
+  public static function getMemberIdListFromString($key)
+  {
+    if (!is_string($key))
+    {
+      return null;
+    }
+
+    $key = trim($key);
+
+    if (!$key)
+    {
+      return null;
+    }
+
+    $memberIds = array();
+    foreach (explode(self::SPLIT_KEY, $key) as $memberId)
+    {
+      if (is_numeric($memberId))
+      {
+        $memberIds[] = $memberId;
+      }
+    }
+
+    return count($memberIds) ? $memberIds : null;
+  }
+
+  public static function getStringFromMemberIdList(array $memberIds)
+  {
+    $clean = array();
+    foreach ($memberIds as $memberId)
+    {
+      if (is_numeric($memberId))
+      {
+        $clean[] = $memberId;
+      }
+    }
+
+    return implode(self::SPLIT_KEY, $clean);
+  }
+}

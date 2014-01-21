@@ -3,6 +3,10 @@
 <?php op_smt_use_javascript('/opMessagePlugin/js/jquery.timeago.js', 'last') ?>
 <?php op_smt_use_javascript('/opMessagePlugin/js/smt-message.js', 'last') ?>
 <input type="hidden" value="0" name="messageKeyId" id="messageKeyId" />
+<input type="hidden" value="" name="prevPage" id="prevPage" />
+<input type="hidden" value="" name="nextPage" id="nextPage" />
+<input type="hidden" value="" name="page" id="page" />
+<input type="hidden" value="" name="memberIds" id="memberIds" />
 <div class="row">
   <div class="gadget_header span12"><?php echo __('Read messages') ?></div>
 </div>
@@ -27,3 +31,12 @@
     </div>
   </div>
 </div>
+
+<ul class="pager" style="display: none;">
+  <li class="previous">
+    <a href="javascript:void(0)" id="messagePrevLink" style="display: none;">&larr; <?php echo __('Prev') ?></a>
+  </li>
+  <li class="next">
+    <a href="javascript:void(0)" id="messageNextLink" style="display: none;"><?php echo __('Next') ?> &rarr;</a>
+  </li>
+</ul>
