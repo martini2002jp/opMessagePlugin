@@ -69,6 +69,14 @@ $(document).ready(function() {
           // set timer.
           message.startHeartbeatTimer();
         });
+
+        $('#messagePrevLink').click(function() {
+          message.clickPrevButton();
+        });
+
+        $('#messageNextLink').click(function() {
+          message.clickNextButton();
+        });
       }
     },
 
@@ -172,6 +180,47 @@ $(document).ready(function() {
 
       }).fail(function() {
         // TODO error design.
+      });
+    },
+
+    /**
+     * click #messagePrevLink id button.
+     */
+    clickPrevButton: function() {
+      var prevPage = Number($('#prevPage').val());
+
+      this.clickPagerLink(prevPage);
+    },
+
+    /**
+     * click #messageNextLink id button.
+     */
+    clickNextButton: function() {
+      var nextPage = Number($('#nextPage').val());
+
+      this.clickPagerLink(nextPage);
+    },
+
+    clickPagerLink: function(page) {
+
+      if (isNaN(page) || page === 0)
+      {
+        return;
+      }
+
+      this.hidePager();
+      $('#message-wrapper-parent').find('.message-wrapper').remove();
+      $('#messageKeyId').val(0);
+      $('#memberIds').val('');
+
+      $('#first-loading').show();
+      this.stopHeartbeatTimer();
+
+      $('#page').val(page);
+
+      this.updateNewRecentList(true).always(function() {
+        // set timer.
+        message.startHeartbeatTimer();
       });
     },
 
@@ -345,6 +394,45 @@ $(document).ready(function() {
     },
 
     /**
+     * update recent list pagenation.
+     */
+    updatePager: function(response) {
+
+      $('#page').val(response.page);
+
+      if (response.previousPage)
+      {
+        $('#prevPage').val(response.previousPage);
+        $('#messagePrevLink').show();
+      }
+
+      if (response.nextPage)
+      {
+        $('#nextPage').val(response.nextPage);
+        $('#messageNextLink').show();
+      }
+
+      if (response.previousPage || response.nextPage)
+      {
+        $('.pager').show();
+      }
+    },
+
+    /**
+     * hide pagenation.
+     */
+    hidePager: function()
+    {
+      $('#messagePrevLink').hide();
+      $('#messageNextLink').hide();
+      $('.pager').hide();
+
+      $('#nextPage').val('');
+      $('#prevPage').val('');
+      $('#page').val('');
+    },
+
+    /**
      * update Time info line.
      */
     updateTimeInfo: function() {
@@ -415,7 +503,7 @@ $(document).ready(function() {
      * insert Message template by data.
      * @param keyId
      */
-    getRecentList: function(keyId) {
+    getRecentList: function(keyId, page, memberIds) {
 
       var dfd = $.Deferred();
 
@@ -425,6 +513,8 @@ $(document).ready(function() {
         data: {
           apiKey: openpne.apiKey,
           keyId: Number(keyId),
+          page: Number(page),
+          memberIds: memberIds,
         },
         dataType: 'json',
         success: function(response) {
@@ -494,6 +584,8 @@ $(document).ready(function() {
 
       var
         keyId = Number($('#messageKeyId').val()),
+        page = Number($('#page').val()),
+        memberIds = $('#memberIds').val(),
         dfd = $.Deferred();
 
       if (isNaN(keyId))
@@ -501,9 +593,20 @@ $(document).ready(function() {
         keyId = 0;
       }
 
-      message.getRecentList(keyId).done(function(response) {
+      if (isNaN(page))
+      {
+        page = 1;
+      }
+
+      message.getRecentList(keyId, page, memberIds).done(function(response) {
 
         $('#first-loading').hide();
+
+        if (response.memberIds.length) {
+          $('#memberIds').val(response.memberIds);
+        }
+
+        message.updatePager(response);
         message.updateRecentListMessageTemplate(response.data);
         dfd.resolve();
 
