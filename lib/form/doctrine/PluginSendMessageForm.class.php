@@ -25,7 +25,7 @@ class SendMessageForm extends PluginSendMessageDataForm
     $this->setValidator("subject", new opValidatorString(array('rtrim' => true)));
     $this->setValidator("body", new opValidatorString(array('rtrim' => true)));
     $this->setDefault("send_member_id", $this->getOption('send_member_id'));
-    
+
     if ($this->getObject()->getReturnMessageId())
     {
       $returnMessage = Doctrine::getTable('SendMessageData')->find($this->getObject()->getReturnMessageId());
