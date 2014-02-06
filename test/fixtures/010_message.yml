@@ -61,6 +61,17 @@ SendMessageData:
     return_message_id: 0
     MessageType: message_type_default
     foreign_id: 0
+  ordinary_sent_message_but_blank:
+    id: 6
+    Member: first_member
+    subject: ""
+    body: ""
+    is_deleted: 0
+    is_send: 1
+    thread_message_id: 0
+    return_message_id: 0
+    MessageType: message_type_default
+    foreign_id: 0
 
 MessageSendList:
   send_message_send_list:
