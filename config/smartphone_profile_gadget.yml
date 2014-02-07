@@ -1,0 +1,8 @@
+smtMessage:
+  caption:
+    ja_JP: "メンバーにメッセージを送る"
+    en_US: "I will send a message to the members"
+  description:
+    ja_JP: "メンバーにメッセージを送ります。"
+    en_US: "I will send a message to the members."
+  component: [message, smtMessage]

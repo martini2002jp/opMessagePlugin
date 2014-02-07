@@ -64,4 +64,35 @@ class messageActions extends opMessagePluginMessageActions
     return $result;
   }
 
+ /**
+  * Executes reply message action
+  M
+  * @param sfWebRequest A request object
+  */
+  public function executeSmtChain(sfWebRequest $request)
+  {
+    $this->member = Doctrine::getTable('Member')->find($request['id']);
+    $this->forward404Unless($this->member);
+
+    $this->myMember = $this->getUser()->getMember();
+    $this->forward404If($this->myMember->getId() === $this->member->getId());
+
+    $this->messageList = Doctrine::getTable('SendMessageData')->getMemberMessages($request['id']);
+    foreach ($this->messageList as $message)
+    {
+      $readMessage = Doctrine::getTable('MessageSendList')->getMessageByReferences(
+        $this->getUser()->getMemberId(), $message->getId());
+      if ($readMessage && 0 === (int)$readMessage->getIsRead()) {
+        $readMessage->readMessage();
+      }
+    }
+
+    $this->setLayout('smtLayoutHome');
+  }
+
+  public function executeSmtList(sfWebRequest $request)
+  {
+    $this->messageLists = Doctrine::getTable('MessageSendList')->getRecentMessageList($this->getUser()->getMemberId());
+    $this->setLayout('smtLayoutHome');
+  }
 }

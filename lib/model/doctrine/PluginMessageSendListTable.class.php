@@ -51,6 +51,46 @@ class PluginMessageSendListTable extends Doctrine_Table
   }
 
   /**
+   * Newest Message List.
+   *
+   * @param $memberId
+   * @return Doctrine_Collection
+   */
+  public function getRecentMessageList($memberId)
+  {
+    $results = $this->createQuery('m')
+      ->leftJoin('m.SendMessageData m2')
+      ->select('m.member_id')
+      ->addSelect('m2.member_id')
+      ->addSelect('MAX(m.id)')
+      ->where('(m.member_id = ? OR m2.member_id = ?)', array($memberId, $memberId))
+      ->andWhere('is_deleted = ?', false)
+      ->andWhere('m2.is_send = ?', true)
+      ->groupBy('m.member_id, m2.member_id')
+      ->execute(array(), Doctrine_Core::HYDRATE_NONE);
+
+    $messageIds = array();
+    foreach ($results as $result)
+    {
+      $receiveMemberId = $result[0];
+      $sendMemberId = $result[1];
+      $id = (int) $result[2];
+
+      $partnerMemberId = $receiveMemberId === $memberId ? $sendMemberId : $receiveMemberId;
+
+      if (!isset($messageIds[$partnerMemberId]) || $messageIds[$partnerMemberId] < $id)
+      {
+        $messageIds[$partnerMemberId] = $id;
+      }
+    }
+
+    return $this->createQuery()
+      ->whereIn('id', $messageIds)
+      ->orderBy('created_at DESC')
+      ->execute();
+  }
+
+  /**
    * 未読メッセージ数を返す
    * @param $member_id
    * @return int 
@@ -63,6 +103,29 @@ class PluginMessageSendListTable extends Doctrine_Table
       ->andWhere('is_read = ?', false)
       ->andWhere('message_id IN (SELECT m2.id FROM SendMessageData m2 WHERE m2.is_send = ?)', true);
     return $q->count();
+  }
+
+  /**
+   * メンバーから来たメッセージに未読があるかどうかを返す
+   * @param $messageId
+   * @return boolean
+   */
+  public function checkUnreadMessage($memberId)
+  {
+    $myMemberId = sfContext::getInstance()->getUser()->getMemberId();
+    $m = $this->createQuery()
+      ->where('member_id = ?', $myMemberId)
+      ->andWhere('is_read = ?' ,false)
+      ->andWhere('message_id IN (SELECT m1.id FROM SendMessageData m1 WHERE m1.member_id = ?)', $memberId)
+      ->limit(1)
+      ->count();
+
+    if (0 < $m)
+    {
+      return true;
+    }
+
+    return false;
   }
 
   /**

@@ -1,0 +1,44 @@
+.message-wrapper {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.timeago {
+  float: right;
+  color: #999;
+}
+
+.message-unread {
+  background-color: #fef8a0;
+}
+
+#submit-message {
+  height: 35px;
+}
+
+#do-submit {
+  width: 100%;
+  height: 70px;
+}
+
+#loading, #loading-more {
+  display: none;
+}
+
+#more {
+  width: 318px;
+  padding: 5px 0;
+  margin: 0;
+}
+
+.photo > li {
+  margin-left:0px;
+  list-style-type: none;
+  display: inline;
+}
+
+#message_image {
+  margin: 0;
+  width: 220px;
+  height: 25px;
+}

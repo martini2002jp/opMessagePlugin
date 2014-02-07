@@ -17,5 +17,14 @@
  */
 class messageComponents extends opMessagePluginMessageComponents
 {
+  public function executeSmtMessage(sfWebRequest $request)
+  {
+    $myMemberId = $this->getUser()->getMemberId();
+    $this->memberId = $request['id'];
 
+    if ($myMemberId === $this->memberId)
+    {
+      $this->memberId = false;
+    }
+  }
 }
