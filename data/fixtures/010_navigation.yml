@@ -1,0 +1,10 @@
+Navigation:
+  smartphone_diary_new:
+    type: "smartphone_default"
+    uri: "@receiveList"
+    sort_order: 34
+    Translation:
+      en:
+        caption: "Message"
+      ja_JP:
+        caption: "メッセージ"

@@ -193,4 +193,27 @@ class PluginSendMessageDataTable extends Doctrine_Table
 
     return $obj->getSendMessageData();
   }
+
+  /** * メンバーとのメッセージを25件取得
+   * @param $memberId
+   * @param SmaxId
+   * @return Message object list
+   */
+  public function getMemberMessages($memberId, $maxId = -1)
+  {
+    $myMemberId = sfContext::getInstance()->getUser()->getMemberId();
+
+    $q = $this->createQuery()
+      ->where('(member_id = ? OR member_id = ?)', array($memberId, $myMemberId))
+      ->andWhere('id in (SELECT m.message_id FROM MessageSendList m WHERE m.member_id = ? or m.member_id = ?)', array($memberId, $myMemberId));
+
+    if (0 <= $maxId)
+    {
+      $q->andWhere('id < ?', $maxId);
+    }
+
+    return $q->orderBy('created_at desc')
+      ->limit(25)
+      ->execute();
+  }
 }
