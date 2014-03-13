@@ -86,11 +86,12 @@ abstract class PluginMessageSendList extends BaseMessageSendList
   /**
    * has unread message.
    *
+   * @param string $memberId
    * @return boolean
    */
-  public function hasUnreadMessage()
+  public function hasUnreadMessage($memberId = null)
   {
     return $this->getTable()
-      ->checkUnreadMessage($this->getMemberId());
+      ->hasUnreadMessage($this->getPartnerMember($memberId)->getId(), $memberId);
   }
 }
