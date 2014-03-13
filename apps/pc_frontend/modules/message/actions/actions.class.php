@@ -77,6 +77,9 @@ class messageActions extends opMessagePluginMessageActions
     $this->myMember = $this->getUser()->getMember();
     $this->forward404If($this->myMember->getId() === $this->member->getId());
 
+    $relation = Doctrine_Core::getTable('MemberRelationship')->retrieveByFromAndTo($this->member->getId(), $this->myMember->getId());
+    $this->isBlocked = $relation && $relation->getIsAccessBlock();
+
     Doctrine_Core::getTable('MessageSendList')->updateReadAllMessagesByMemberId($this->member->getId(), $this->myMember->getId());
     $this->pager = Doctrine_Core::getTable('MessageSendList')->getMemberMessagesPager($this->member->getId());
 
