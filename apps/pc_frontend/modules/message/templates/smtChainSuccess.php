@@ -10,7 +10,7 @@ var memberId = '.$member->getId().';
   <div class="gadget_header span12"><?php echo __('Read messages') ?></div>
 </div>
 
-<?php if (25 <= count($messageList)): ?>
+<?php if ($pager->hasOlderPage()): ?>
 <div class="row">
   <hr class="toumei" />
   <div id="loading-more" class="center">
@@ -21,28 +21,25 @@ var memberId = '.$member->getId().';
 <?php endif ?>
 
 <div id="message-wrapper-parent">
-<?php if (false === $messageList || 1 > count($messageList) || is_null($messageList)): ?>
+<?php if (!$pager->getNbResults()): ?>
   <p id="no-message"><?php echo __('There are no messages') ?></p>
 <?php else: ?>
-<?php for ($i = count($messageList) - 1; $i >= 0; $i--): ?>
-<?php if ($messageList[$i]['member_id'] === $member->getId()): ?>
-<?php $thisLoopMember = $member ?>
-<?php else: ?>
-<?php $thisLoopMember = $myMember ?>
-<?php endif ?>
-<div class="message-wrapper row" data-message-id="<?php echo $messageList[$i]['id'] ?>">
+<?php foreach ($pager->getResults() as $messageList): ?>
+<?php $message = $messageList->getSendMessageData() ?>
+<?php $thisLoopMember = $message->getMember() ?>
+<div class="message-wrapper row" data-message-id="<?php echo $messageList->getId() ?>">
   <div class="span2">
     <?php echo link_to(op_image_tag_sf_image($thisLoopMember->getImageFileName(), array('size' => '48x48')), '@obj_member_profile?id='.$thisLoopMember->getId()) ?>
   </div>
   <div class="span7">
     <p><?php echo link_to($thisLoopMember->getName(), '@obj_member_profile?id='.$thisLoopMember->getId()) ?></p>
-    <p><?php echo op_auto_link_text($messageList[$i]['body']) ?></p>
+    <p><?php echo op_auto_link_text($message->getBody()) ?></p>
   </div>
   <div class="span3">
-    <p class="timeago" title="<?php echo $messageList[$i]['created_at'] ?>"></p>
+    <p class="timeago" title="<?php echo $message->getCreatedAt() ?>"></p>
   </div>
 
-  <?php $images = $messageList[$i]->getMessageFile() ?>
+  <?php $images = $message->getMessageFile() ?>
   <?php if (count($images)): ?>
   </div>
   <div class="row">
@@ -55,7 +52,7 @@ var memberId = '.$member->getId().';
   <?php endif; ?>
 </div>
 <hr class="toumei" />
-<?php endfor ?>
+<?php endforeach ?>
 <?php endif ?>
 </div>
 
