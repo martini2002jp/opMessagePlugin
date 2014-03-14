@@ -69,6 +69,14 @@ $(document).ready(function() {
           // set timer.
           message.startHeartbeatTimer();
         });
+
+        $('#messagePrevLink').click(function() {
+          message.clickPrevButton();
+        });
+
+        $('#messageNextLink').click(function() {
+          message.clickNextButton();
+        });
       }
     },
 
@@ -152,8 +160,7 @@ $(document).ready(function() {
         firstMessageWrapper = $('.message-wrapper:first'),
         maxId = Number(firstMessageWrapper.attr('data-message-id'));
 
-      if (isNaN(maxId))
-      {
+      if (isNaN(maxId)) {
         return false;
       }
 
@@ -165,8 +172,7 @@ $(document).ready(function() {
 
         message.moreFilter();
 
-        if (!response.has_more)
-        {
+        if (!response.has_more) {
           message.hideMore();
         }
 
@@ -176,16 +182,54 @@ $(document).ready(function() {
     },
 
     /**
+     * click #messagePrevLink id button.
+     */
+    clickPrevButton: function() {
+      var prevPage = Number($('#prevPage').val());
+
+      this.clickPagerLink(prevPage);
+    },
+
+    /**
+     * click #messageNextLink id button.
+     */
+    clickNextButton: function() {
+      var nextPage = Number($('#nextPage').val());
+
+      this.clickPagerLink(nextPage);
+    },
+
+    clickPagerLink: function(page) {
+
+      if (isNaN(page) || page === 0) {
+        return;
+      }
+
+      this.hidePager();
+      $('#message-wrapper-parent').find('.message-wrapper').remove();
+      $('#messageKeyId').val(0);
+      $('#memberIds').val('');
+
+      $('#first-loading').show();
+      this.stopHeartbeatTimer();
+
+      $('#page').val(page);
+
+      this.updateNewRecentList(true).always(function() {
+        // set timer.
+        message.startHeartbeatTimer();
+      });
+    },
+
+    /**
      * check image file name if change image data.
      */
     imageChangeValidator: function() {
 
       var a = $(this).prop('files');
-      if(0 < a.length)
-      {
+      if (0 < a.length) {
         var fileType = a[0].type;
-        if (null === fileType.match(/(jpeg|gif|png)/))
-        {
+        if (null === fileType.match(/(jpeg|gif|png)/)) {
           alert('ファイル形式が間違っています。');
           $(this).val('');
         }
@@ -195,8 +239,7 @@ $(document).ready(function() {
     /**
      * get FromData Object. openpne apyKey and form value.
      */
-    getFormData: function(form)
-    {
+    getFormData: function(form) {
       var
         formData = new FormData(form[0]);
 
@@ -215,8 +258,7 @@ $(document).ready(function() {
      */
     getMemberId: function() {
       var toMemberObj = $('#messageToMember');
-      if (toMemberObj)
-      {
+      if (toMemberObj) {
         return toMemberObj.val();
       }
 
@@ -230,13 +272,11 @@ $(document).ready(function() {
      */
     insertMessages: function(datas, isAddLow) {
 
-      if (!datas.length)
-      {
+      if (!datas.length) {
         return false;
       }
 
-      for (var i = 0; i < datas.length; i++)
-      {
+      for (var i = 0; i < datas.length; i++) {
         this.insertMessageTemplate(datas[i], isAddLow);
       }
 
@@ -297,8 +337,7 @@ $(document).ready(function() {
     updateRecentListMessageTemplate: function(datas) {
       var maxId = Number($('#messageKeyId').val());
 
-      if (isNaN(maxId))
-      {
+      if (isNaN(maxId)) {
         maxId = 0;
       }
 
@@ -311,8 +350,7 @@ $(document).ready(function() {
           $oldHtml.remove();
         }
 
-        if (maxId < data.id)
-        {
+        if (maxId < data.id) {
           maxId = data.id;
         }
 
@@ -332,8 +370,7 @@ $(document).ready(function() {
             .attr('title', data.created_at)
           .end();
 
-        if (typeof data.is_read == 'boolean' && !data.is_read)
-        {
+        if (typeof data.is_read == 'boolean' && !data.is_read) {
           template.addClass('message-unread');
         }
 
@@ -342,6 +379,41 @@ $(document).ready(function() {
 
       $('.message-created-at').timeago();
       $('#messageKeyId').val(maxId);
+    },
+
+    /**
+     * update recent list pagenation.
+     */
+    updatePager: function(response) {
+
+      $('#page').val(response.page);
+
+      if (response.previousPage) {
+        $('#prevPage').val(response.previousPage);
+        $('#messagePrevLink').show();
+      }
+
+      if (response.nextPage) {
+        $('#nextPage').val(response.nextPage);
+        $('#messageNextLink').show();
+      }
+
+      if (response.previousPage || response.nextPage) {
+        $('.pager').show();
+      }
+    },
+
+    /**
+     * hide pagenation.
+     */
+    hidePager: function() {
+      $('#messagePrevLink').hide();
+      $('#messageNextLink').hide();
+      $('.pager').hide();
+
+      $('#nextPage').val('');
+      $('#prevPage').val('');
+      $('#page').val('');
     },
 
     /**
@@ -415,7 +487,7 @@ $(document).ready(function() {
      * insert Message template by data.
      * @param keyId
      */
-    getRecentList: function(keyId) {
+    getRecentList: function(keyId, page, memberIds) {
 
       var dfd = $.Deferred();
 
@@ -425,6 +497,8 @@ $(document).ready(function() {
         data: {
           apiKey: openpne.apiKey,
           keyId: Number(keyId),
+          page: Number(page),
+          memberIds: memberIds,
         },
         dataType: 'json',
         success: function(response) {
@@ -448,8 +522,7 @@ $(document).ready(function() {
         minId = Number(lastMessageWrapper.attr('data-message-id')),
         dfd = $.Deferred();
 
-      if (isNaN(minId))
-      {
+      if (isNaN(minId)) {
         minId = -1;
       }
 
@@ -474,8 +547,7 @@ $(document).ready(function() {
 
       }).always(function() {
 
-        if (!notUseHeartbeat)
-        {
+        if (!notUseHeartbeat) {
           message.startHeartbeatTimer();
         }
 
@@ -494,16 +566,27 @@ $(document).ready(function() {
 
       var
         keyId = Number($('#messageKeyId').val()),
+        page = Number($('#page').val()),
+        memberIds = $('#memberIds').val(),
         dfd = $.Deferred();
 
-      if (isNaN(keyId))
-      {
+      if (isNaN(keyId)) {
         keyId = 0;
       }
 
-      message.getRecentList(keyId).done(function(response) {
+      if (isNaN(page)) {
+        page = 1;
+      }
+
+      message.getRecentList(keyId, page, memberIds).done(function(response) {
 
         $('#first-loading').hide();
+
+        if (response.memberIds.length) {
+          $('#memberIds').val(response.memberIds);
+        }
+
+        message.updatePager(response);
         message.updateRecentListMessageTemplate(response.data);
         dfd.resolve();
 
@@ -517,8 +600,7 @@ $(document).ready(function() {
 
       }).always(function() {
 
-        if (!notUseHeartbeat)
-        {
+        if (!notUseHeartbeat) {
           message.startHeartbeatTimer();
         }
 
