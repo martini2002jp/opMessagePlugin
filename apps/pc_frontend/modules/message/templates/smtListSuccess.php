@@ -2,27 +2,28 @@
 <?php op_smt_use_stylesheet('/opMessagePlugin/css/smt-message.css', 'last') ?>
 <?php op_smt_use_javascript('/opMessagePlugin/js/jquery.timeago.js', 'last') ?>
 <?php op_smt_use_javascript('/opMessagePlugin/js/smt-message.js', 'last') ?>
-<?php if (count($messageLists)): ?>
+<input type="hidden" value="0" name="messageKeyId" id="messageKeyId" />
 <div class="row">
   <div class="gadget_header span12"><?php echo __('Read messages') ?></div>
 </div>
-<?php foreach ($messageLists as $messageList): ?>
-<?php $member = $messageList->getPartnerMember() ?>
-<?php $message = $messageList->getSendMessageData() ?>
-<div class="message-wrapper row<?php if ($messageList->hasUnreadMessage()): ?> message-unread<?php endif ?>">
-  <div class="span2">
-    <?php echo link_to(op_image_tag_sf_image($member->getImageFileName(), array('size' => '48x48')), '@obj_member_profile?id='.$member->getId()) ?>
-  </div>
-  <div class="span7">
-    <p><?php echo link_to($member->getName(), '@obj_member_profile?id='.$member->getId()) ?></p>
-    <p><?php echo link_to($message->getSubject(), '@messageChain?id='.$member->getId().'#submit-wrapper') ?></p>
-  </div>
-  <div class="span3 timeago">
-    <p class="message-created-at" title="<?php echo $message->getCreatedAt() ?>"></p>
+
+<div id="message-wrapper-parent">
+  <p id="no-message" style="display: none;"><?php echo __('There are no messages') ?></p>
+  <div id="first-loading" class="center">
+    <?php echo op_image_tag('ajax-loader.gif');?>
   </div>
 </div>
-<hr class="toumei" />
-<?php endforeach ?>
-<?php else: ?>
-  <?php echo __('There are no messages') ?>
-<?php endif ?>
+
+<div id="message-template" style="display: none;">
+  <div class="message-wrapper row">
+    <div class="span2 memberIcon">
+    </div>
+    <div class="span7">
+      <p class="memberProfile"></p>
+      <p class="lastMessage"></p>
+    </div>
+    <div class="span3 timeago">
+      <p class="message-created-at"></p>
+    </div>
+  </div>
+</div>

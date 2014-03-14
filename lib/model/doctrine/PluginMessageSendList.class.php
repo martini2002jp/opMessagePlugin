@@ -42,6 +42,16 @@ abstract class PluginMessageSendList extends BaseMessageSendList
     $this->save();
   }
 
+  public function isSelf($memberId = null)
+  {
+    if (is_null($memberId))
+    {
+      $memberId = sfContext::getInstance()->getUser()->getMemberId();
+    }
+
+    return (int) $this->getMemberId() === (int) $memberId;
+  }
+
   /**
    * get partner Member.
    *
@@ -50,12 +60,7 @@ abstract class PluginMessageSendList extends BaseMessageSendList
    */
   public function getPartnerMember($memberId = null)
   {
-    if (is_null($memberId))
-    {
-      $memberId = sfContext::getInstance()->getUser()->getMemberId();
-    }
-
-    if ($this->getMemberId() !== $memberId)
+    if (!$this->isSelf($memberId))
     {
       return $this->getMember();
     }
