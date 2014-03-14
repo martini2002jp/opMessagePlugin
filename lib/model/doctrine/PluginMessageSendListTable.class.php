@@ -46,7 +46,7 @@ class PluginMessageSendListTable extends Doctrine_Table
   /**
    * create send and receive query
    *
-   * @param mixed $memberId (string|null)
+   * @param mixed $memberId (array|string|null)
    * @param mixed $myMemberId (string|null)
    * @param string $localAlias
    * @param string $foreignAlias
@@ -59,7 +59,24 @@ class PluginMessageSendListTable extends Doctrine_Table
       $myMemberId = sfContext::getInstance()->getUser()->getMemberId();
     }
 
-    if ($memberId)
+    if (is_array($memberId))
+    {
+      $binder = implode(', ', array_fill(0, count($memberId), '?'));
+
+      $where = sprintf('('.$foreignAlias.'.member_id IN (%s)'
+               . ' AND '.$localAlias.'.member_id = ?'
+               . ' AND '.$localAlias.'.is_deleted = ?)'
+               . ' OR '
+               . '('.$localAlias.'.member_id IN (%s)'
+               . ' AND '.$foreignAlias.'.member_id = ?'
+               . ' AND '.$foreignAlias.'.is_deleted = ?)',
+               $binder,
+               $binder
+             );
+
+      $params = array_merge($memberId, (array) $myMemberId, (array) false, $memberId, (array) $myMemberId, (array) false);
+    }
+    elseif (is_numeric($memberId))
     {
       $where = '('.$foreignAlias.'.member_id = ?'
              . ' AND '.$localAlias.'.member_id = ?'
@@ -133,13 +150,26 @@ class PluginMessageSendListTable extends Doctrine_Table
   /**
    * Newest Message List.
    *
+   * @param mixed $memberIds , Ex. array(1, 2, 3..) or null
    * @param mixed $myMemberId (string|null)
    * @param int   $keyId , 0 ~
-   * @return Doctrine_Collection
+   * @param int   $page , 1 ~
+   * @param int   $size , default 25
+   * @return sfReversibleDoctrinePager
    */
-  public function getRecentMessageList($myMemberId = null, $keyId = 0)
+  public function getRecentMessagePager(array $memberIds = null, $myMemberId = null, $keyId = 0, $page = 1, $size = 25)
   {
-    $results = $this->createSendAndReceiveQuery(null, $myMemberId)
+    if (is_array($memberIds) && count($memberIds))
+    {
+      // If search by memberIds, page fixing.
+      $page = 1;
+    }
+    else
+    {
+      $memberIds = null;
+    }
+
+    $results = $this->createSendAndReceiveQuery($memberIds, $myMemberId)
       ->select('m.member_id')
       ->addSelect('m2.member_id')
       ->addSelect('MAX(m.id)')
@@ -163,10 +193,18 @@ class PluginMessageSendListTable extends Doctrine_Table
       }
     }
 
-    return $this->createQuery()
+    $query = $this->createQuery()
       ->whereIn('id', $ids)
-      ->orderBy('created_at, id ASC')
-      ->execute();
+      ->orderBy('created_at, id DESC');
+
+    $pager = new sfReversibleDoctrinePager('MessageSendList', $size);
+    $pager->setSqlOrderColumn('created_at');
+    $pager->setListOrder(sfReversibleDoctrinePager::ASC);
+    $pager->setQuery($query);
+    $pager->setPage($page);
+    $pager->init();
+
+    return $pager;
   }
 
   /**
