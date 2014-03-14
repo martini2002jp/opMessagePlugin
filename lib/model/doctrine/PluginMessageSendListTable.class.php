@@ -262,18 +262,27 @@ class PluginMessageSendListTable extends Doctrine_Table
    *
    * @param string $memberId
    * @param mixed $myMemberId (string|null)
-   * @param string $order (sfReversibleDoctrinePager::ASC|sfReversibleDoctrinePager::DESC)
-   * @param mixed $maxId (string|null)
+   * @param bool $isAddLow
+   * @param mixed $keyId (string|null)
    * @param integer $size
    * @return sfReversibleDoctrinePager
    */
-  public function getMemberMessagesPager($memberId, $myMemberId = null, $order = sfReversibleDoctrinePager::ASC, $maxId = null, $size = 25)
+  public function getMemberMessagesPager($memberId, $myMemberId = null, $isAddLow = true, $keyId = null, $size = 25)
   {
     $q = $this->createSendAndReceiveQuery($memberId, $myMemberId);
 
-    if ($maxId)
+    $order =  sfReversibleDoctrinePager::ASC;
+    if ($keyId)
     {
-      $q->andWhere('m2.id < ?', $maxId);
+      if ($isAddLow)
+      {
+        $q->andWhere('m2.id > ?', $keyId);
+      }
+      else
+      {
+        $order = sfReversibleDoctrinePager::DESC;
+        $q->andWhere('m2.id < ?', $keyId);
+      }
     }
 
     $pager = new sfReversibleDoctrinePager('MessageSendList', $size);
