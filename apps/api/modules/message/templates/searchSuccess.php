@@ -12,4 +12,5 @@ foreach ($pager->getResults() as $message)
 return array(
   'status' => 'success',
   'data' => $data,
+  'has_more' => $pager->hasOlderPage(),
 );
