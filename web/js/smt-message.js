@@ -1,5 +1,5 @@
 $(function() {
-  jQuery(".timeago").timeago();
+  $('.message-created-at').timeago();
 
   $('#do-submit').click(function() {
     var body = $('#submit-message').val();
@@ -28,9 +28,8 @@ $(function() {
       success: function(res) {
         if ('success' === res.status)
         {
-          $('#message-wrapper-parent').append(addTemplate(res.data));
+          $('#message-wrapper-parent').append(addTemplate(res.data, memberId));
 
-          jQuery(".timeago").timeago();
           $('#no-message').hide();
         }
       },
@@ -70,10 +69,9 @@ $(function() {
         {
           for (var i = 0; i < res.data.length; i++)
           {
-            $('#message-wrapper-parent').prepend(addTemplate(res.data[i]));
+            $('#message-wrapper-parent').prepend(addTemplate(res.data[i], memberId));
           }
 
-          jQuery(".timeago").timeago();
           moreFilter();
         }
 
@@ -131,22 +129,25 @@ function getParams()
   return json;
 }
 
-function addTemplate(data)
+function addTemplate(data, memberId)
 {
-  var template = $('#message-template').clone();
-  template.find('.member-link').attr('href', data.member.profile_url);
+  var template = $('#message-template').children().clone();
   template.find('.member-image').attr('src', data.member.profile_image);
-  template.find('.member-name').append(data.member.name);
+  template.find('.popover-title').append(data.member.name);
   template.find('.message-body').append(data.body);
   template.attr('data-message-id', data.id);
-  if (null !== data.image_path && null !== data.image_tag)
+  if (data.image_path && data.image_tag)
   {
     template.find('.photo').append('<li><a href="' + data.image_path + '">' + data.image_tag + '</a></li>');
   }
-  template.find('.message-created-at').attr('title', data.created_at);
-  template.removeAttr('id');
-  template.css('display', 'block');
-  template.css('margin-bottom', '30px');
+  else
+  {
+    template.find('.photo').remove();
+  }
+  var position = data.member.id == memberId ? 'right' : 'left';
+  template.find('.message-created-at').addClass(position).attr('title', data.created_at).timeago();
+  template.addClass(position);
+  template.addClass('show');
 
   return template;
 }
