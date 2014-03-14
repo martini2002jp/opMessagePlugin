@@ -215,7 +215,7 @@ $(document).ready(function() {
           func.moreFilter();
         }
 
-        if (25 > res.data.length)
+        if (!res.has_more)
         {
           $('#more').hide();
           $('#loading-more').hide();
