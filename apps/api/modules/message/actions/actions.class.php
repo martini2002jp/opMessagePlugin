@@ -71,10 +71,13 @@ class messageActions extends opJsonApiActions
     $this->forward400If('' === (string)$request['memberId'], 'memberId parameter is not specified.');
     $this->forward400If('' === (string)$request['maxId'], 'maxId parameter is not specified.');
 
+    Doctrine_Core::getTable('MessageSendList')
+     ->updateReadAllMessagesByMemberId($request['memberId'], $this->getUser()->getMemberId());
+
     $this->pager = Doctrine_Core::getTable('MessageSendList')->getMemberMessagesPager(
       $request['memberId'],
       $this->getUser()->getMemberId(),
-      sfReversibleDoctrinePager::DESC,
+      (bool) $request['isAddLow'],
       $request['maxId']
     );
   }
