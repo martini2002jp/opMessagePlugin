@@ -69,3 +69,13 @@ body#page_message_smtChain div#message-wrapper-parent div.timeago p.right {
 body#page_message_smtChain div#message-wrapper-parent div.timeago p.left {
   text-align: right;
 }
+
+body#page_message_smtChain div#message-wrapper-parent i {
+  margin-right: 3px;
+}
+
+body#page_message_smtChain div#message-wrapper-parent p.time-info {
+  margin-top: 10px;
+  text-align: center;
+  color: #468847;
+}

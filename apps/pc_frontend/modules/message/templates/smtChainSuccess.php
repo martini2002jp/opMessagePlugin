@@ -1,13 +1,10 @@
-<?php use_helper('opAsset', 'Javascript') ?>
+<?php use_helper('opAsset', 'Javascript', 'opMessage') ?>
 <?php op_smt_use_stylesheet('/opMessagePlugin/css/smt-message.css', sfWebResponse::LAST) ?>
 <?php op_smt_use_stylesheet('/opMessagePlugin/css/bootstrap-popover.css', sfWebResponse::LAST) ?>
 <?php op_smt_use_javascript('/opMessagePlugin/js/jquery.timeago.js', sfWebResponse::LAST) ?>
 <?php op_smt_use_javascript('/opMessagePlugin/js/smt-message.js', sfWebResponse::LAST) ?>
 <?php op_smt_use_javascript('/opMessagePlugin/js/bootstrap.min.js', sfWebResponse::LAST) ?>
-<?php echo javascript_tag('
-var memberId = '.$member->getId().';
-');
-?>
+<input type="hidden" value="<?php echo $member->getId() ?>" name="toMember" id="messageToMember" />
 <div class="row">
   <div class="gadget_header span12"><?php echo __('Read messages') ?></div>
 </div>
@@ -28,6 +25,9 @@ var memberId = '.$member->getId().';
 <?php else: ?>
 <?php foreach ($pager->getResults() as $messageList): ?>
 <?php $message = $messageList->getSendMessageData() ?>
+<div class="time-info-wrapper" data-created-at-date="<?php echo get_formatted_date($message->getCreatedAt()) ?>" style="display: none;">
+  <p class="time-info"><i class="icon-time"></i><?php echo get_formatted_date($message->getCreatedAt()) ?></p>
+</div>
 <?php $thisLoopMember = $message->getMember() ?>
   <div class="timeago"><p class="message-created-at <?php echo $message->getIsSender($sf_user->getMemberId()) ? 'left' : 'right' ?>" title="<?php echo $message->getCreatedAt() ?>"></p></div>
   <div class="message-wrapper row popover <?php echo $message->getIsSender($sf_user->getMemberId()) ? 'left' : 'right' ?> show" data-message-id="<?php echo $messageList->getId() ?>">
@@ -62,18 +62,21 @@ var memberId = '.$member->getId().';
 <?php if (!$isBlocked): ?>
 <div id="submit-wrapper" class="row">
   <div class="span9">
-    <form>
+    <form enctype="multipart/form-data" method="post" id="send-message-form">
       <input type="file" name="message_image" id="message_image" />
       <textarea name="body" id="submit-message"></textarea>
     </form>
   </div>
   <div class="span3">
-    <button id="do-submit" class="btn btn-primary" to-member="<?php echo $member->getId() ?>"><?php echo __('Send') ?></button>
+    <button id="do-submit" class="btn btn-primary"><?php echo __('Send') ?></button>
   </div>
 </div>
 <?php endif ?>
 
-<div id="message-template">
+<div id="message-template" style="display: none;">
+  <div class="time-info-wrapper" style="display: none;">
+    <p class="time-info"><i class="icon-time"></i></p>
+  </div>
   <div class="timeago"><p class="message-created-at"></p></div>
   <div class="message-wrapper row popover">
     <div class="arrow"></div>
