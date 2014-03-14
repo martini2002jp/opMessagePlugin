@@ -35,7 +35,7 @@ class messageActions extends opJsonApiActions
     $relation = Doctrine_Core::getTable('MemberRelationship')->retrieveByFromAndTo($toMember->getId(), $this->member->getId());
     $this->forward400If($relation && $relation->getIsAccessBlock(), 'Cannot send the message.');
 
-    $message = Doctrine::getTable('SendMessageData')->sendMessage($toMember, mb_substr($body, 0, 25), $body, array());
+    $message = Doctrine::getTable('SendMessageData')->sendMessage($toMember, SendMessageData::SMARTPHONE_SUBJECT, $body, array());
 
     $file = $request->getFiles('message_image');
     try

@@ -118,6 +118,10 @@
         <source>Delete messages</source>
         <target>ﾒｯｾｰｼﾞを削除する</target>
       </trans-unit>
+      <trans-unit id="">
+        <source>Message from smartphone</source>
+        <target>ｽﾏｰﾄﾌｫﾝからのﾒｯｾｰｼﾞ</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

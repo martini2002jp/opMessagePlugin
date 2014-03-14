@@ -23,6 +23,8 @@ abstract class PluginSendMessageData extends BaseSendMessageData
   const MESSAGE_TYPE_DRAFT = 'draft';
   const MESSAGE_TYPE_DUST = 'dust';
 
+  const SMARTPHONE_SUBJECT = '%%%SMARTPHONE_SUBJECT%%%';
+
   protected
     $previous = null,
     $next = null;
@@ -191,5 +193,14 @@ abstract class PluginSendMessageData extends BaseSendMessageData
         ->where('m.message_id = ?', $this->id)
         ->execute();
     }
+  }
+
+  public function postHydrate($event)
+  {
+    $object = $event->data;
+    $replacement = sfContext::getInstance()->getI18n()->__('Message from smartphone');
+    $object->subject = str_replace(self::SMARTPHONE_SUBJECT, $replacement, $object->subject);
+
+    $event->set('data', $object);
   }
 }
