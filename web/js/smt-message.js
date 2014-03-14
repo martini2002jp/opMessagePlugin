@@ -33,6 +33,13 @@ $(document).ready(function() {
      * initialize.
      */
     initialize: function() {
+
+      // set baseUrl
+      if (typeof $('#baseUrl').val() == 'string') {
+        openpne.baseUrl = $('#baseUrl').val();
+      }
+      openpne.baseUrl += '/';
+
       // common.
       $('.message-created-at').timeago();
 

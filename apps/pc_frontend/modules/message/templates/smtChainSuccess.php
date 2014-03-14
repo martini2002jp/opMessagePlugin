@@ -5,6 +5,7 @@
 <?php op_smt_use_javascript('/opMessagePlugin/js/smt-message.js', sfWebResponse::LAST) ?>
 <?php op_smt_use_javascript('/opMessagePlugin/js/bootstrap.min.js', sfWebResponse::LAST) ?>
 <input type="hidden" value="<?php echo $member->getId() ?>" name="toMember" id="messageToMember" />
+<input type="hidden" value="<?php echo sfConfig::get('op_base_url') ?>" name="baseUrl" id="baseUrl" />
 <div class="row">
   <div class="gadget_header span12"><?php echo __('Read messages') ?></div>
 </div>

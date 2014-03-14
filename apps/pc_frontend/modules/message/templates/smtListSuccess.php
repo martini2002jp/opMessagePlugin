@@ -2,6 +2,7 @@
 <?php op_smt_use_stylesheet('/opMessagePlugin/css/smt-message.css', 'last') ?>
 <?php op_smt_use_javascript('/opMessagePlugin/js/jquery.timeago.js', 'last') ?>
 <?php op_smt_use_javascript('/opMessagePlugin/js/smt-message.js', 'last') ?>
+<input type="hidden" value="<?php echo sfConfig::get('op_base_url') ?>" name="baseUrl" id="baseUrl" />
 <input type="hidden" value="0" name="messageKeyId" id="messageKeyId" />
 <input type="hidden" value="" name="prevPage" id="prevPage" />
 <input type="hidden" value="" name="nextPage" id="nextPage" />
