@@ -17,8 +17,8 @@
     <p><?php echo link_to($member->getName(), '@obj_member_profile?id='.$member->getId()) ?></p>
     <p><?php echo link_to($message->getSubject(), '@messageChain?id='.$member->getId().'#submit-wrapper') ?></p>
   </div>
-  <div class="span3">
-    <p class="timeago" title="<?php echo $message->getCreatedAt() ?>"></p>
+  <div class="span3 timeago">
+    <p class="message-created-at" title="<?php echo $message->getCreatedAt() ?>"></p>
   </div>
 </div>
 <hr class="toumei" />
