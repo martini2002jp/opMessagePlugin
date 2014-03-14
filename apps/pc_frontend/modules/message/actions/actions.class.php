@@ -85,7 +85,6 @@ class messageActions extends opMessagePluginMessageActions
 
   public function executeSmtList(sfWebRequest $request)
   {
-    $this->messageLists = Doctrine::getTable('MessageSendList')->getRecentMessageList($this->getUser()->getMemberId());
     $this->setLayout('smtLayoutHome');
   }
 }
