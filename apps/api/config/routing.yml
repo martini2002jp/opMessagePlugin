@@ -1,14 +1,21 @@
 message_post:
   url: /message/post.json
+  class: sfRequestRoute
   param: { module: message, action: post, sf_format: json }
-  requirements: { sf_method: [post] }
+  requirements: { sf_method: post }
 
 message_search:
   url: /message/search.json
+  class: sfRequestRoute
   param: { module: message, action: search, sf_format: json }
-  requirements: { sf_method: [get] }
+  requirements: { sf_method: post }
 
 recent_message_list:
   url:   /message/recentList.json
+  class: sfRequestRoute
   param: { module: message, action: recentList, sf_format: json }
   requirements: { sf_method: post }
+
+message_no_default:
+  url:   /message/*
+  param: { module: default, action: error }
