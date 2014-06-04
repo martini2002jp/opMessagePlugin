@@ -35,9 +35,9 @@
 
 <ul class="pager" style="display: none;">
   <li class="previous">
-    <a href="javascript:void(0)" id="messagePrevLink" style="display: none;">&larr; <?php echo __('Prev') ?></a>
+    <a href="javascript:void(0)" id="messagePrevLink" style="display: none;">&larr; <?php echo __('Prev', array(), 'pager') ?></a>
   </li>
   <li class="next">
-    <a href="javascript:void(0)" id="messageNextLink" style="display: none;"><?php echo __('Next') ?> &rarr;</a>
+    <a href="javascript:void(0)" id="messageNextLink" style="display: none;"><?php echo __('Next', array(), 'pager') ?> &rarr;</a>
   </li>
 </ul>
