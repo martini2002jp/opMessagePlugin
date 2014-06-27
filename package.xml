@@ -6,16 +6,15 @@
  <name>opMessagePlugin</name>
  <channel>plugins.openpne.jp</channel>
  <summary>opMessagePlugin</summary>
- <description>opMessagePlugin</description>
+ <description>メッセージ機能を追加するプラグインです。
+
+バージョン体系（2014年6月現在）
+2.0.x: OpenPNE3.8向けスマートフォン対応版
+〜1.0.x: OpenPNE3.6/3.8向け
+ </description>
  <lead>
   <name>Maki Takahashi</name>
   <user>maki</user>
-  <email />
-  <active>yes</active>
- </lead>
- <lead>
-  <name>Kousuke Ebihara</name>
-  <user>ebihara</user>
   <email />
   <active>yes</active>
  </lead>
@@ -25,30 +24,53 @@
   <email />
   <active>yes</active>
  </lead>
+ <lead>
+  <name>kaoru nishizoe</name>
+  <user>nishizoe</user>
+  <email />
+  <active>yes</active>
+ </lead>
  <developer>
   <name>kashiwasan</name>
   <user>kashiwasan</user>
   <email />
   <active>yes</active>
  </developer>
- <date>2012-03-26</date>
- <time>12:06:35</time>
+ <developer>
+  <name>Yuya Watanabe</name>
+  <user>watanabe</user>
+  <email />
+  <active>yes</active>
+ </developer>
+ <contributor>
+  <name>Kousuke Ebihara</name>
+  <user>ebihara</user>
+  <email />
+  <active>yes</active>
+ </contributor>
+ <date>2014-06-27</date>
+ <time>16:13:19</time>
  <version>
-  <release>1.0.0</release>
-  <api>1.0.0</api>
+  <release>2.0.0</release>
+  <api>2.0.0</api>
  </version>
  <stability>
-  <release>stable</release>
-  <api>stable</api>
+  <release>alpha</release>
+  <api>alpha</api>
  </stability>
  <license>apache</license>
  <notes>
-Some bug fix
+2.0.0 alpha release.
  </notes>
  <contents>
   <dir baseinstalldir="/" name="/">
+   <file baseinstalldir="/" md5sum="0b0b4a34687488ad464288abc2c6d4bb" name="apps/api/config/routing.yml" role="data" />
+   <file baseinstalldir="/" md5sum="7ab175cfb477aeb173558fe5d53ff371" name="apps/api/modules/message/actions/actions.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="35f3a5ba42cf22773932bf438def74ee" name="apps/api/modules/message/templates/postSuccess.php" role="data" />
+   <file baseinstalldir="/" md5sum="ad0707eeb0a515beed06c5eb9b748755" name="apps/api/modules/message/templates/recentListSuccess.php" role="data" />
+   <file baseinstalldir="/" md5sum="3bb3b6329ffcb8bb0e3df3e1e661c823" name="apps/api/modules/message/templates/searchSuccess.php" role="data" />
    <file baseinstalldir="/" md5sum="6b0911df445ce8125d146636cb7e7cb9" name="apps/mobile_frontend/config/app.yml" role="data" />
-   <file baseinstalldir="/" md5sum="4e4e67cebe6699c9db97466f86857861" name="apps/mobile_frontend/i18n/messages.ja.xml" role="data" />
+   <file baseinstalldir="/" md5sum="0f2906432cbe3f7bebde24dd5d7ea671" name="apps/mobile_frontend/i18n/messages.ja.xml" role="data" />
    <file baseinstalldir="/" md5sum="602227d3b0616317669b7b2c46be264e" name="apps/mobile_frontend/modules/member/config/view.yml" role="data" />
    <file baseinstalldir="/" md5sum="de3c588edd78c80e2e39d6c36988275a" name="apps/mobile_frontend/modules/message/actions/actions.class.php" role="data" />
    <file baseinstalldir="/" md5sum="b0d20c3e0d33da637d77b444a4454a00" name="apps/mobile_frontend/modules/message/actions/components.class.php" role="data" />
@@ -68,8 +90,8 @@ Some bug fix
    <file baseinstalldir="/" md5sum="ab54ad3747fbc31d87ebc84d59e79022" name="apps/pc_frontend/config/app.yml" role="data" />
    <file baseinstalldir="/" md5sum="5edc373cf72a616c290f6ff776d1fc96" name="apps/pc_frontend/i18n/messages.ja.xml" role="data" />
    <file baseinstalldir="/" md5sum="5bb99e9de0810b4e5de0ad02c0056004" name="apps/pc_frontend/modules/member/config/view.yml" role="data" />
-   <file baseinstalldir="/" md5sum="3646a3c9a0967f163272ec8b0e7350f8" name="apps/pc_frontend/modules/message/actions/actions.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="b446569e3cbab0460a77cd95c91d26d3" name="apps/pc_frontend/modules/message/actions/components.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="16301dc20bfbc919dd4c2a194e8bf7e5" name="apps/pc_frontend/modules/message/actions/actions.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="5a572126bb81b5861e682993641d62a4" name="apps/pc_frontend/modules/message/actions/components.class.php" role="data" />
    <file baseinstalldir="/" md5sum="23a85a877ba78a09b520b19d03c3650c" name="apps/pc_frontend/modules/message/config/security.yml" role="data" />
    <file baseinstalldir="/" md5sum="d8336a90f8b31de6fe4fb03e57934950" name="apps/pc_frontend/modules/message/config/view.yml" role="data" />
    <file baseinstalldir="/" md5sum="b97aff1838d8d13bc67f863e3df984a2" name="apps/pc_frontend/modules/message/templates/deleteConfirmSuccess.php" role="data" />
@@ -77,15 +99,20 @@ Some bug fix
    <file baseinstalldir="/" md5sum="f108363f8b4ab8b7a9fa478b12da2818" name="apps/pc_frontend/modules/message/templates/listSuccess.php" role="data" />
    <file baseinstalldir="/" md5sum="45d6ebeb81d552055c61d96fafacf46d" name="apps/pc_frontend/modules/message/templates/sendToFriendInput.php" role="data" />
    <file baseinstalldir="/" md5sum="2215c0d19b4fb4d55e8c01f4f5f9f50b" name="apps/pc_frontend/modules/message/templates/showSuccess.php" role="data" />
+   <file baseinstalldir="/" md5sum="4ccbf31b80d16e905ab98b26cc0dbbae" name="apps/pc_frontend/modules/message/templates/smtChainSuccess.php" role="data" />
+   <file baseinstalldir="/" md5sum="ed4b51b9ae24ee28288344e08be6148e" name="apps/pc_frontend/modules/message/templates/smtListSuccess.php" role="data" />
    <file baseinstalldir="/" md5sum="603874ed71787f8173b8ac30e37fc5f0" name="apps/pc_frontend/modules/message/templates/_formEditImage.php" role="data" />
    <file baseinstalldir="/" md5sum="9097574a4ba13cd6603144891b699f78" name="apps/pc_frontend/modules/message/templates/_sendDraftButton.php" role="data" />
    <file baseinstalldir="/" md5sum="7608959af2807cde94ccb3de5eab3213" name="apps/pc_frontend/modules/message/templates/_sidemenu.php" role="data" />
+   <file baseinstalldir="/" md5sum="80eb5fdd4141b23998ece19d13c1c0bb" name="apps/pc_frontend/modules/message/templates/_smtMessage.php" role="data" />
    <file baseinstalldir="/" md5sum="461561728cf00812c42350f6e99012cf" name="apps/pc_frontend/modules/message/templates/_unreadMessage.php" role="data" />
    <file baseinstalldir="/" md5sum="e9ca3f80e31f89dec32e230b56ca796e" name="config/config.php" role="data" />
+   <file baseinstalldir="/" md5sum="8c2d634ad95d373f0789afeedb748c56" name="config/smartphone_profile_gadget.yml" role="data" />
    <file baseinstalldir="/" md5sum="d899f578dbfea062433d60da86101ebf" name="config/doctrine/schema.yml" role="data" />
-   <file baseinstalldir="/" md5sum="a519775bf0775e86daeac85b691d859d" name="data/fixtures/000_revision.yml" role="data" />
+   <file baseinstalldir="/" md5sum="d5bb24b08b5ebc6bbc531d5f79efa46f" name="data/fixtures/000_revision.yml" role="data" />
    <file baseinstalldir="/" md5sum="5700e49cca5c96bf0092f1350c76d2b4" name="data/fixtures/001_import_message_type.yml" role="data" />
    <file baseinstalldir="/" md5sum="00cdb586af380adad1e3c7fb0c4a7f63" name="data/fixtures/002_import_navi_menu.yml" role="data" />
+   <file baseinstalldir="/" md5sum="a29c1170c61963d16bb150b9ed5a7357" name="data/fixtures/010_navigation.yml" role="data" />
    <file baseinstalldir="/" md5sum="4ff4aa34b9c2c505d4d37f80b62b2a86" name="data/migrations/0.8.2/001_update_op_message_plugin_0_8_2_1.php" role="data" />
    <file baseinstalldir="/" md5sum="79b37c16ef10469a59b542d969451b48" name="data/migrations/0.8.2/002_update_op_message_plugin_0_8_2_2.php" role="data" />
    <file baseinstalldir="/" md5sum="66d393502b07b0c3d0ff581a88bf0e9d" name="data/migrations/0.9.0/003_create_foreign_id_column.php" role="data" />
@@ -93,12 +120,13 @@ Some bug fix
    <file baseinstalldir="/" md5sum="716324fa4ca105bd235d39a84eee0b9f" name="data/migrations/0.9.0/fixtures/004_add_message_type.yml" role="data" />
    <file baseinstalldir="/" md5sum="f2e88dd388fc3b6c387fab762dc55871" name="data/migrations/1.0.0/005_dummy_for_loading_fixture.php" role="data" />
    <file baseinstalldir="/" md5sum="5206be7f5f6409b3260a78b8bf9b6a33" name="data/migrations/1.0.0/fixtures/005_add_message_type.yml" role="data" />
-   <file baseinstalldir="/" md5sum="9c3298ff1f7e98b4f305812dda81f319" name="i18n/messages.ja.xml" role="data" />
+   <file baseinstalldir="/" md5sum="806ac863e9e368cd2902eabebedaa121" name="data/migrations/2.0.0/006_add_smartphone_default_navi.php" role="data" />
+   <file baseinstalldir="/" md5sum="67bb409e8135492d83ddd15b2ac992aa" name="i18n/messages.ja.xml" role="data" />
    <file baseinstalldir="/" md5sum="24e1e5c08a165ec40cf8b51084b92146" name="lib/opMessagePluginFormatter.class.php" role="data" />
    <file baseinstalldir="/" md5sum="3c7170011f8621b4255b11ccfbcc800f" name="lib/opMessagePluginObserver.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="7a3e35b9cbb2c5d9551ad23484eaf151" name="lib/opMessagePluginRouting.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="56f853926911d3967fec127df50da8fb" name="lib/opMessagePluginRouting.class.php" role="data" />
    <file baseinstalldir="/" md5sum="be99b6092a53a94f451ab9224abf89e5" name="lib/action/opMessagePluginActions.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="87cd4705ca6470d33acc7e57bd551d44" name="lib/action/opMessagePluginMessageActions.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="5422fcc43b9ecb1808dc5458c303933c" name="lib/action/opMessagePluginMessageActions.class.php" role="data" />
    <file baseinstalldir="/" md5sum="14816f2a96af5014c1e572c5a819e25c" name="lib/action/opMessagePluginMessageComponents.class.php" role="data" />
    <file baseinstalldir="/" md5sum="8b69e5253d448f3db29cd97e83cad6e2" name="lib/filter/doctrine/PluginDeletedMessageFormFilter.class.php" role="data" />
    <file baseinstalldir="/" md5sum="76c0f4690d16eac581fc40ec3c2574d4" name="lib/filter/doctrine/PluginMessageFileFormFilter.class.php" role="data" />
@@ -113,35 +141,43 @@ Some bug fix
    <file baseinstalldir="/" md5sum="995ad4075c05fb2fe5198b655dea2704" name="lib/form/doctrine/PluginMessageTypeForm.class.php" role="data" />
    <file baseinstalldir="/" md5sum="0f14768883173848eeddc79d28db53da" name="lib/form/doctrine/PluginMessageTypeTranslationForm.class.php" role="data" />
    <file baseinstalldir="/" md5sum="457561c5a2e4f18cf848c1d634f4d641" name="lib/form/doctrine/PluginSendMessageDataForm.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="007cef275323f0c650479dc733f84eaa" name="lib/form/doctrine/PluginSendMessageForm.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="c9db7e42fde314b1e3900387044c6078" name="lib/helper/opMessageHelper.php" role="data" />
+   <file baseinstalldir="/" md5sum="51a8559f19bb27f0d751006153af257e" name="lib/form/doctrine/PluginSendMessageForm.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="bbd415b6ec0b3f7d81b82b343f57f39f" name="lib/helper/opMessageHelper.php" role="data" />
    <file baseinstalldir="/" md5sum="e43e583f6c67706beabb83985e8f6260" name="lib/model/doctrine/PluginDeletedMessage.class.php" role="data" />
    <file baseinstalldir="/" md5sum="cb4de1d2eaeb14fe87b64c221598eb45" name="lib/model/doctrine/PluginDeletedMessageTable.class.php" role="data" />
    <file baseinstalldir="/" md5sum="0e3122e0e948b0d42cdc942fac48acec" name="lib/model/doctrine/PluginMessageFile.class.php" role="data" />
    <file baseinstalldir="/" md5sum="726056acae9381fc20416240e9200916" name="lib/model/doctrine/PluginMessageFileTable.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="93844a5a6267f27002976c3867699439" name="lib/model/doctrine/PluginMessageSendList.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="95d57bd80219c639efeb130b526b6311" name="lib/model/doctrine/PluginMessageSendListTable.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="8218f93c8d95e3d8ea88a7b3b0ace9a2" name="lib/model/doctrine/PluginMessageSendList.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="cc269b0de6395181928dc8e9b9bf156f" name="lib/model/doctrine/PluginMessageSendListTable.class.php" role="data" />
    <file baseinstalldir="/" md5sum="ab4f1af418ce7a4ec9058c85681c98cc" name="lib/model/doctrine/PluginMessageType.class.php" role="data" />
    <file baseinstalldir="/" md5sum="ee8e52be1f41daa2e62196765b930ff5" name="lib/model/doctrine/PluginMessageTypeTable.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="5685623389a23a8d4f82f9cf321515c3" name="lib/model/doctrine/PluginSendMessageData.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="893dac6bfd77a12aa99b208d7f39d270" name="lib/model/doctrine/PluginSendMessageData.class.php" role="data" />
    <file baseinstalldir="/" md5sum="d225a6354ba9b27649f67fb4a8203590" name="lib/model/doctrine/PluginSendMessageDataTable.class.php" role="data" />
-   <file baseinstalldir="/" md5sum="33788580fc6756ef6ecc0e1ca65250b8" name="lib/util/opMessageSender.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="3db359b3304f928c91cabed197125701" name="lib/util/opMessagePluginUtil.class.php" role="data" />
+   <file baseinstalldir="/" md5sum="3849c1f3545a053eeb3cf4cef4580244" name="lib/util/opMessageSender.class.php" role="data" />
    <file baseinstalldir="/" md5sum="eb142e641ca59009837a4e4ecd92b6bf" name="templates/_communityJoiningRequestMessage.php" role="data" />
    <file baseinstalldir="/" md5sum="fde8e49c37bf1d32f01867a558b46e24" name="templates/_communitySubAdminRequestMessage.php" role="data" />
    <file baseinstalldir="/" md5sum="867857e77399163c50bb04f54467c41d" name="templates/_communityTakingOverMessage.php" role="data" />
    <file baseinstalldir="/" md5sum="9caf305e9e3488e1807e129718466a91" name="templates/_friendLinkMessage.php" role="data" />
    <file baseinstalldir="/" md5sum="8a585d7165b066c62d5d1c69d7877362" name="test/bootstrap/database.php" role="data" />
    <file baseinstalldir="/" md5sum="652a0d72910be1a5786698aaf5b9b508" name="test/bootstrap/functional.php" role="data" />
+   <file baseinstalldir="/" md5sum="4bfa4b596e946c8a283410a2e2ba4315" name="test/bootstrap/unit.php" role="data" />
    <file baseinstalldir="/" md5sum="d8bf6b95d1466267251a5f47cd20d9e5" name="test/fixtures/001_member.yml" role="data" />
-   <file baseinstalldir="/" md5sum="1e83f6081dcda15f35caf10ac966ef17" name="test/fixtures/010_message.yml" role="data" />
+   <file baseinstalldir="/" md5sum="deb8c95a3ec03bdb2f6a9e442ce79cf7" name="test/fixtures/010_message.yml" role="data" />
    <file baseinstalldir="/" md5sum="eb9d389b56456483fd8e1e2cdd3b02d9" name="test/fixtures/020_import_sns_config.yml" role="data" />
    <file baseinstalldir="/" md5sum="15a6e0d43e5e2286877a1ed29a323392" name="test/functional/mobile_frontend/messageActionsTest.php" role="data" />
    <file baseinstalldir="/" md5sum="2edaa19857e1ba8ad8401ddc7a482f44" name="test/functional/pc_frontend/messageActionsTest.php" role="data" />
+   <file baseinstalldir="/" md5sum="2d3efb67ccf4bd27dd6501a07cbff6b8" name="test/unit/form/SendMessageFormTest.php" role="data" />
+   <file baseinstalldir="/" md5sum="265b6b526189cd691dc68bf4b7cb2627" name="web/css/bootstrap-popover.css" role="data" />
    <file baseinstalldir="/" md5sum="4c62db3435618cd0299727253ccd4d9e" name="web/css/message.css" role="data" />
+   <file baseinstalldir="/" md5sum="71adcba52896e055e78ecd47587e0ce4" name="web/css/smt-message.css" role="data" />
    <file baseinstalldir="/" md5sum="3d40a300272ec2812ae4ca958b7038d9" name="web/images/icon_mail_1.gif" role="data" />
    <file baseinstalldir="/" md5sum="f20567b31473c2d80f0b8c2e225307f7" name="web/images/icon_mail_2.gif" role="data" />
    <file baseinstalldir="/" md5sum="1c118e37db2cee0417d41d75de81757f" name="web/images/icon_mail_3.gif" role="data" />
    <file baseinstalldir="/" md5sum="251cde24c20378a312056c26635818da" name="web/images/icon_mail_4.gif" role="data" />
+   <file baseinstalldir="/" md5sum="7b5574cb13e165e38022ac65941725a8" name="web/js/bootstrap.min.js" role="data" />
+   <file baseinstalldir="/" md5sum="4c1e2a15b1eafb93a71ebc71b415b4eb" name="web/js/jquery.timeago.js" role="data" />
+   <file baseinstalldir="/" md5sum="51b5e2f591600541a1259b5ea2a86307" name="web/js/smt-message.js" role="data" />
    <file baseinstalldir="/" md5sum="3b83ef96387f14655fc854ddc3c6bd57" name="LICENSE" role="data" />
   </dir>
  </contents>
@@ -320,6 +356,21 @@ fixed fatal error by use &apos;op_link_to_member&apos; that doesn&apos;t exist i
    <license>apache</license>
    <notes>
 Some bug fix
+   </notes>
+  </release>
+  <release>
+   <version>
+    <release>2.0.0</release>
+    <api>2.0.0</api>
+   </version>
+   <stability>
+    <release>alpha</release>
+    <api>alpha</api>
+   </stability>
+   <date>2014-06-27</date>
+   <license>apache</license>
+   <notes>
+2.0.0 alpha release.
    </notes>
   </release>
  </changelog>
