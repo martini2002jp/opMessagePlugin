@@ -121,8 +121,26 @@ class PluginDeletedMessageTable extends Doctrine_Table
         $deleted_message->save();
       }
       $message->setIsDeleted(1);
-      /* @todo 完全削除の場合ファイルも削除すべきかも */
       $message->save();
+
+      if ($message instanceof DeletedMessage)
+      {
+        if ($message->message_send_list_id !== 0)
+        {
+          $messageSendList = Doctrine_Core::getTable('MessageSendList')->find($message->message_send_list_id);
+          $sendMessageData = $messageSendList->SendMessageData;
+        }
+        else
+        {
+          $sendMessageData = Doctrine_Core::getTable('SendMessageData')->find($message->message_id);
+        }
+
+        if ($sendMessageData)
+        {
+          $sendMessageData->purgeIfOrphaned();
+        }
+      }
+
       return true;
   }
 
