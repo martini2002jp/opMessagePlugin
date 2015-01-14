@@ -72,6 +72,21 @@ SendMessageData:
     return_message_id: 0
     MessageType: message_type_default
     foreign_id: 0
+  message_with_file:
+    id: 7
+    Member: first_member
+    subject: message7 subject
+    body: message7 body
+    MessageType: message_type_default
+
+MessageFile:
+  message7_file1:
+    id: 1
+    SendMessageData: message_with_file
+    File:
+      name: message7_file1
+      type: text/plain
+      FileBin: { bin: ~ }
 
 MessageSendList:
   send_message_send_list:

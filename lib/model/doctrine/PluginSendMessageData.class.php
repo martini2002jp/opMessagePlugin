@@ -183,6 +183,42 @@ abstract class PluginSendMessageData extends BaseSendMessageData
     return $instance->$methodName($this);
   }
 
+  public function purgeIfOrphaned(Doctrine_Connection $conn = null)
+  {
+    if (!$this->is_deleted)
+    {
+      return false;
+    }
+
+    $messageSendLists = Doctrine_Core::getTable('MessageSendList')->findByMessageId($this->id);
+    foreach ($messageSendLists as $messageSendList)
+    {
+      if (!$messageSendList->is_deleted)
+      {
+        return false;
+      }
+    }
+
+    $deletedMessages = Doctrine_Core::getTable('DeletedMessage')->createQuery('dm')
+      ->andWhereIn('dm.message_send_list_id', $messageSendLists->getPrimaryKeys())
+      ->orWhere('dm.message_id = ?', $this->id)
+      ->execute();
+    foreach ($deletedMessages as $deletedMessage)
+    {
+      if (!$deletedMessage->is_deleted)
+      {
+        return false;
+      }
+    }
+
+    // 孤立したメッセージ
+    $messageSendLists->delete($conn);
+    $deletedMessages->delete($conn);
+    $this->delete($conn);
+
+    return true;
+  }
+
   public function preUpdate($event)
   {
     if (in_array('is_send', $this->_modified) && 1 == $this->_data['is_send'])
@@ -192,6 +228,14 @@ abstract class PluginSendMessageData extends BaseSendMessageData
         ->set('m.created_at', '?', date('Y-m-d H:i:s'))
         ->where('m.message_id = ?', $this->id)
         ->execute();
+    }
+  }
+
+  public function preDelete($event)
+  {
+    foreach ($this->MessageFile as $messageFile)
+    {
+      $messageFile->delete();
     }
   }
 
