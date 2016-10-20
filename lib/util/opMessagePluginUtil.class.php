@@ -16,14 +16,65 @@
  */
 class opMessagePluginUtil
 {
-  public static function sendNotification($fromMember, $toMember, $messageId)
+  public static function sendNotification($fromMember, $toMember, $message)
   {
-    $rootPath = sfContext::getInstance()->getRequest()->getRelativeUrlRoot();
-    $url = $rootPath.'/message/read/'.$messageId;
+    $memberRelationship = Doctrine_Core::getTable('MemberRelationship')
+      ->retrieveByFromAndTo($fromMember->id, $toMember->id);
 
-    $message = sfContext::getInstance()->getI18n()->__('There are new %d messages!', array('%d' => 1));
+    $isFriend = $memberRelationship ? $memberRelationship->isFriend() : false;
 
-    opNotificationCenter::notify($fromMember, $toMember, $message, array('category' => 'message', 'url' => $url, 'icon_url' => null));
+    $notifyWeb = false;
+    $notifyEmail = false;
+
+    if ($toMember->getConfig('is_send_messageNew_web', '1') === '1')
+    {
+      $notifyWeb = true;
+    }
+    elseif ($isFriend && $toMember->getConfig('is_send_messageNewOnlyFriends_web', '1') === '1')
+    {
+      $notifyWeb = true;
+    }
+
+    if ($toMember->getConfig('is_send_pc_messageNew_mail', '1') === '1')
+    {
+      $notifyEmail = true;
+    }
+    elseif ($isFriend && $toMember->getConfig('is_send_pc_messageNewOnlyFriends_mail', '1') === '1')
+    {
+      $notifyEmail = true;
+    }
+
+    $messageUrl = sfContext::getInstance()->getConfiguration()
+      ->generateAppUrl('pc_frontend', array('sf_route' => 'readReceiveMessage', 'id' => $message->id), true);
+
+    if ($notifyWeb)
+    {
+      self::sendNotificationWeb($fromMember, $toMember, $message, $messageUrl);
+    }
+    if ($notifyEmail)
+    {
+      self::sendNotificationEmail($fromMember, $toMember, $message, $messageUrl);
+    }
+  }
+
+  private static function sendNotificationWeb($fromMember, $toMember, $message, $messageUrl)
+  {
+    $body = '[Message] '.$message->subject;
+
+    opNotificationCenter::notify($fromMember, $toMember, $body, array(
+      'category' => 'message',
+      'name' => 'message_'.$message->id,
+      'url' => $messageUrl,
+    ));
+  }
+
+  private static function sendNotificationEmail($fromMember, $toMember, $message, $messageUrl)
+  {
+    opMailSend::sendTemplateMailToMember('notifyNewMessage', $toMember, array(
+      'member' => $fromMember,
+      'message' => $message,
+      'url' => $messageUrl,
+    ));
   }
 
   CONST SPLIT_KEY = ',';

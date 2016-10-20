@@ -1,0 +1,20 @@
+pc:
+  notifyNewMessage:
+    caption: "Notification of New Message"
+    configurable: true
+    member_configurable: true
+    sample:
+      ja_JP:
+        - "【{{ op_config.sns_name }}】{{ member.name }}さんからのメッセージ「{{ message.subject }}」"
+        - |
+          {{ member.name }}>>
+
+          {{ message.body }}
+
+          {{ url }}
+    variables:
+      "op_config.sns_name": "SNS 名"
+      "member.name":  "差出人のニックネーム"
+      "message.subject":  "メッセージの件名"
+      "message.body":  "メッセージの本文"
+      url: "メッセージのURL"
