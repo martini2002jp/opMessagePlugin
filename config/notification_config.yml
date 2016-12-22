@@ -1,0 +1,8 @@
+message:
+  caption: メッセージ
+  configs:
+    messageNew:
+      caption: 新着メッセージ
+    messageNewOnlyFriends:
+      caption: 新着メッセージ (フレンドのみ)
+      dependOnNot: messageNew

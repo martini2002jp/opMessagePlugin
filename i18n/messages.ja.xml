@@ -54,6 +54,10 @@
         <source>Message from smartphone</source>
         <target>スマートフォンからのメッセージ</target>
       </trans-unit>
+      <trans-unit id="">
+        <source>Notification of New Message</source>
+        <target>新着メッセージお知らせメール</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

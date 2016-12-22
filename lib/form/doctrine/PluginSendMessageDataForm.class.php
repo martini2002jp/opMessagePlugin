@@ -108,6 +108,11 @@ abstract class PluginSendMessageDataForm extends BaseSendMessageDataForm
       $send->setMemberId($send_member_id);
       $send->save();
     }
+
+    if ($message->is_send)
+    {
+      opMessagePluginUtil::sendNotification($message->Member, $send->Member, $message);
+    }
   }
 
 /*

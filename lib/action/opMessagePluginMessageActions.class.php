@@ -285,7 +285,6 @@ class opMessagePluginMessageActions extends opMessagePluginActions
         $this->message = $this->form->save();
         if ($this->message->getIsSend())
         {
-          opMessagePluginUtil::sendNotification($this->getUser()->getMember(), $this->sendMember, $this->message->getId());
           $this->getUser()->setFlash('notice', 'The message was sent successfully.');
           $this->redirect('@sendList');
         }
