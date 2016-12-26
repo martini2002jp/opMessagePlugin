@@ -305,9 +305,10 @@ class PluginMessageSendListTable extends Doctrine_Table
    * @param bool $isAddLow
    * @param mixed $keyId (string|null)
    * @param integer $size
+   * @param bool $setIsRead
    * @return sfReversibleDoctrinePager
    */
-  public function getMemberMessagesPager($memberId, $myMemberId = null, $isAddLow = true, $keyId = null, $size = 25)
+  public function getMemberMessagesPager($memberId, $myMemberId = null, $isAddLow = true, $keyId = null, $size = 25, $setIsRead = false)
   {
     $q = $this->createSendAndReceiveQuery($memberId, $myMemberId);
 
@@ -325,6 +326,11 @@ class PluginMessageSendListTable extends Doctrine_Table
       }
     }
 
+    if ($setIsRead)
+    {
+      $this->updateReadTargetMessagesByMemberId(clone $q, $size);
+    }
+
     $pager = new sfReversibleDoctrinePager('MessageSendList', $size);
     $pager->setQuery($q);
     $pager->setPage(1);
@@ -338,16 +344,15 @@ class PluginMessageSendListTable extends Doctrine_Table
   }
 
   /**
-   * update read all messages by memberId
+   * update read target messages.
    *
-   * @param string $memberId
-   * @param mixed $myMemberId (string|null)
+   * @param Doctrine_Query $q
+   * @param integer $size
    */
-  public function updateReadAllMessagesByMemberId($memberId, $myMemberId = null)
+  public function updateReadTargetMessagesByMemberId(Doctrine_Query $q, $size = 25)
   {
-    $results = $this->createReceiveQuery($memberId, $myMemberId)
-      ->select('m.id')
-      ->andWhere('m.is_read = ?', false)
+    $results = $q->limit($size)
+      ->orderBy('m2.id DESC')
       ->execute(array(), Doctrine_Core::HYDRATE_NONE);
 
     if (!count($results))
