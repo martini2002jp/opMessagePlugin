@@ -14,7 +14,7 @@ $(document).ready(function() {
     config: {
 
       /**
-       * hearbeat timer.
+       * heartbeat timer.
        */
       timer: null,
 

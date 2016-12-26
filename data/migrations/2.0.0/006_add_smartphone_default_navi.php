@@ -17,7 +17,7 @@ class updateOpMessagePlugin_2_0_0_1 extends opMigration
     $naviTable = Doctrine_Core::getTable('Navigation');
     if ($naviTable->findOneByTypeAndUri('smartphone_default', '@receiveList'))
     {
-      // smartphone message navi is exsits.
+      // smartphone message navi is exists.
       return;
     }
 

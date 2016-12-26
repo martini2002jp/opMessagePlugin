@@ -161,6 +161,8 @@ class PluginSendMessageDataTable extends Doctrine_Table
       $send->setMember($member);
       $send->setIsRead($options['is_read']);
       $send->save();
+
+      opMessagePluginUtil::sendNotification($options['fromMember'], $send->Member, $sendMessageData);
     }
 
     return $sendMessageData;

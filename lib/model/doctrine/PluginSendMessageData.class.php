@@ -195,12 +195,14 @@ abstract class PluginSendMessageData extends BaseSendMessageData
     }
   }
 
-  public function postHydrate($event)
+  public function getSubject()
   {
-    $object = $event->data;
-    $replacement = sfContext::getInstance()->getI18n()->__('Message from smartphone');
-    $object->subject = str_replace(self::SMARTPHONE_SUBJECT, $replacement, $object->subject);
+    $subject = $this->_get('subject');
+    if ($subject === self::SMARTPHONE_SUBJECT)
+    {
+      return sfContext::getInstance()->getI18n()->__('Message from smartphone');
+    }
 
-    $event->set('data', $object);
+    return $subject;
   }
 }

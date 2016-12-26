@@ -25,15 +25,7 @@ function op_message_link_to_member(sfOutputEscaper $member = null)
 
   if ($member && $member->id)
   {
-    if (sfConfig::get('sf_app') == 'mobile_frontend')
-    {
-      $internal_uri = '@member_profile';
-    }
-    else
-    {
-      $internal_uri = '@obj_member_profile';
-    }
-    return link_to($member->name, sprintf('%s?id=%d', $internal_uri, $member->id));
+    return link_to($member->name, sprintf('@obj_member_profile?id=%d', $member->id));
   }
 
   return '';
